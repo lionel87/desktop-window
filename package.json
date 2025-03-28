@@ -1,6 +1,6 @@
 {
   "name": "desktop-window",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A Pure Web Components based `<desktop-window>` tag that creates a window that looks and feels like a regular window in a desktop environment.",
   "type": "module",
   "main": "index.mjs",
