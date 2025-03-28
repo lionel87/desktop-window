@@ -51,10 +51,10 @@ When the custom element is defined, use the `<desktop-window>` tag (or what you 
 </desktop-window>
 
 <script>
-const fullscreen = document.getElementById('fullscreen');
+const fullscreenButton = document.getElementById('fullscreen');
 let fs = false;
 fullscreenButton.addEventListener('click', (event) => {
-    this.dispatchEvent(new Event(fs ? 'exit-fullscreen' : 'request-fullscreen', { bubbles: true }));
+    fullscreenButton.dispatchEvent(new Event(fs ? 'exit-fullscreen' : 'request-fullscreen', { bubbles: true }));
     fs = !fs;
 });
 </script>
