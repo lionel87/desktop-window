@@ -21,5 +21,13 @@
     "floating-window"
   ],
   "author": "László BULIK",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/lionel87/desktop-window",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lionel87/desktop-window.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lionel87/desktop-window/issues"
+  }
 }
