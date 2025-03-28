@@ -144,35 +144,35 @@ fullscreenButton.addEventListener('click', (event) => {
 
 ### CSS Variables
 
-`--desktop-window-border-width`
-`--desktop-window-border-color`
-`--desktop-window-background-color`
-`--desktop-window-titlebar-height`
-`--desktop-window-titlebar-background-color`
-`--desktop-window-titlebar-font-family`
-`--desktop-window-titlebar-font-size`
-`--desktop-window-titlebar-text-color`
-`--desktop-window-buttons-width`
-`--desktop-window-buttons-text-color`
-`--desktop-window-buttons-background-color`
-`--desktop-window-buttons-hover-text-color`
-`--desktop-window-buttons-hover-background-color`
-`--desktop-window-minimize-text-color`
-`--desktop-window-minimize-background-color`
-`--desktop-window-minimize-hover-text-color`
-`--desktop-window-minimize-hover-background-color`
-`--desktop-window-maximize-text-color`
-`--desktop-window-maximize-background-color`
-`--desktop-window-maximize-hover-text-color`
-`--desktop-window-maximize-hover-background-color`
-`--desktop-window-restore-text-color`
-`--desktop-window-restore-background-color`
-`--desktop-window-restore-hover-text-color`
-`--desktop-window-restore-hover-background-color`
-`--desktop-window-close-text-color`
-`--desktop-window-close-background-color`
-`--desktop-window-close-hover-text-color`
-`--desktop-window-close-hover-background-color`
+- `--desktop-window-border-width`
+- `--desktop-window-border-color`
+- `--desktop-window-background-color`
+- `--desktop-window-titlebar-height`
+- `--desktop-window-titlebar-background-color`
+- `--desktop-window-titlebar-font-family`
+- `--desktop-window-titlebar-font-size`
+- `--desktop-window-titlebar-text-color`
+- `--desktop-window-buttons-width`
+- `--desktop-window-buttons-text-color`
+- `--desktop-window-buttons-background-color`
+- `--desktop-window-buttons-hover-text-color`
+- `--desktop-window-buttons-hover-background-color`
+- `--desktop-window-minimize-text-color`
+- `--desktop-window-minimize-background-color`
+- `--desktop-window-minimize-hover-text-color`
+- `--desktop-window-minimize-hover-background-color`
+- `--desktop-window-maximize-text-color`
+- `--desktop-window-maximize-background-color`
+- `--desktop-window-maximize-hover-text-color`
+- `--desktop-window-maximize-hover-background-color`
+- `--desktop-window-restore-text-color`
+- `--desktop-window-restore-background-color`
+- `--desktop-window-restore-hover-text-color`
+- `--desktop-window-restore-hover-background-color`
+- `--desktop-window-close-text-color`
+- `--desktop-window-close-background-color`
+- `--desktop-window-close-hover-text-color`
+- `--desktop-window-close-hover-background-color`
 
 ## Missing a feature?
 Create an issue describing your needs!
