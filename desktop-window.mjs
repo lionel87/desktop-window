@@ -247,7 +247,11 @@ export class DesktopWindow extends HTMLElement {
 		return style;
 	})();
 
-	#window;
+	#window = null;
+	#dragMouseMove = null;
+	#dragMouseUp = null;
+	#resizeMouseMove = null;
+	#resizeMouseUp = null;
 
 	constructor() {
 		super();
@@ -562,6 +566,27 @@ export class DesktopWindow extends HTMLElement {
 		this.#setupResizing();
 	}
 
+	disconnectedCallback() {
+		this.#window = null;
+
+		if (this.#dragMouseMove) {
+			window.removeEventListener('mousemove', this.#dragMouseMove);
+			this.#dragMouseMove = null;
+		}
+		if (this.#dragMouseUp) {
+			window.removeEventListener('mouseup', this.#dragMouseUp);
+			this.#dragMouseUp = null;
+		}
+		if (this.#resizeMouseMove) {
+			window.removeEventListener('mousemove', this.#resizeMouseMove);
+			this.#resizeMouseMove = null;
+		}
+		if (this.#resizeMouseUp) {
+			window.removeEventListener('mouseup', this.#resizeMouseUp);
+			this.#resizeMouseUp = null;
+		}
+	}
+
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (oldValue === newValue) return;
 		const boolValue = newValue === '' || newValue === 'true' || newValue === name;
@@ -648,16 +673,16 @@ export class DesktopWindow extends HTMLElement {
 		let windowX = 0;
 		let windowY = 0;
 
-		const onMouseMove = (e) => {
+		this.#dragMouseMove = (e) => {
 			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startX;
 			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startY;
 			this.#window.style.left = `${Math.round(windowX + dx)}px`;
 			this.#window.style.top = `${Math.round(windowY + dy)}px`;
 		};
 
-		const onMouseUp = () => {
-			window.removeEventListener('mousemove', onMouseMove);
-			window.removeEventListener('mouseup', onMouseUp);
+		this.#dragMouseUp = () => {
+			window.removeEventListener('mousemove', this.#dragMouseMove);
+			window.removeEventListener('mouseup', this.#dragMouseUp);
 			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
 			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
 			this.centered = false;
@@ -670,8 +695,8 @@ export class DesktopWindow extends HTMLElement {
 			startX = e.clientX;
 			startY = e.clientY;
 			parentRect = this.parentElement.getBoundingClientRect();
-			window.addEventListener('mousemove', onMouseMove);
-			window.addEventListener('mouseup', onMouseUp);
+			window.addEventListener('mousemove', this.#dragMouseMove);
+			window.addEventListener('mouseup', this.#dragMouseUp);
 		});
 	}
 
@@ -683,7 +708,7 @@ export class DesktopWindow extends HTMLElement {
 		let direction;
 		let minWidth, minHeight, maxWidth, maxHeight;
 
-		const onMouseMove = (e) => {
+		this.#resizeMouseMove = (e) => {
 			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startMouseX;
 			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startMouseY;
 
@@ -705,9 +730,9 @@ export class DesktopWindow extends HTMLElement {
 			}
 		};
 
-		const onMouseUp = () => {
-			window.removeEventListener('mousemove', onMouseMove);
-			window.removeEventListener('mouseup', onMouseUp);
+		this.#resizeMouseUp = () => {
+			window.removeEventListener('mousemove', this.#resizeMouseMove);
+			window.removeEventListener('mouseup', this.#resizeMouseUp);
 			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
 			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
 			this.width = Number.parseInt(this.#window.style.width.replace('px', ''));
@@ -733,8 +758,8 @@ export class DesktopWindow extends HTMLElement {
 				minHeight = this.minHeight;
 				maxWidth = this.maxWidth;
 				maxHeight = this.maxHeight;
-				window.addEventListener('mousemove', onMouseMove);
-				window.addEventListener('mouseup', onMouseUp);
+				window.addEventListener('mousemove', this.#resizeMouseMove);
+				window.addEventListener('mouseup', this.#resizeMouseUp);
 			});
 		}
 	}
