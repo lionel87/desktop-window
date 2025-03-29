@@ -479,7 +479,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	getPosition() {
-		const parentBounds = this.parentNode.getBoundingClientRect();
+		const parentBounds = this.parentElement.getBoundingClientRect();
 		const windowBounds = this.#window.getBoundingClientRect();
 		return [windowBounds.x - parentBounds.x, windowBounds.y - parentBounds.y];
 	}
@@ -511,7 +511,7 @@ export class DesktopWindow extends HTMLElement {
 	getBounds() {
 		// centered, fullscreen, maximized, minimized can change actual bounds
 		// so returning x, y, width, height attributes does not work here
-		const parentBounds = this.parentNode.getBoundingClientRect();
+		const parentBounds = this.parentElement.getBoundingClientRect();
 		const windowBounds = this.#window.getBoundingClientRect();
 		return {
 			x: windowBounds.x - parentBounds.x,
