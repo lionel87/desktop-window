@@ -174,6 +174,14 @@ fullscreenButton.addEventListener('click', (event) => {
 - `--desktop-window-close-hover-text-color`
 - `--desktop-window-close-hover-background-color`
 
+## Notes
+
+- Don't forget to set `display: relative` or `display: absolute` on the **immediate parent container**, or the window may behave unexpectedly. Only exception is when the parent is the `document.body`, because that does not need a special `display` value.
+
+- The window works only when there is a valid `parentElement`, so appending eg. to a shadow root directly will not work.
+
+- Appending to the `document.body` works, but don't forget to set the body height or have content that stretches the area!
+
 ## Missing a feature?
 Create an issue describing your needs!
 If it fits the scope of the project I will implement it.
