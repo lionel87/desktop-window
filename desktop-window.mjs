@@ -243,9 +243,6 @@ export class DesktopWindow extends HTMLElement {
 				width: auto !important;
 				height: auto !important;
 			}
-
-			/* hidden */
-			.hidden { display: none !important; }
 		`);
 		return style;
 	})();
