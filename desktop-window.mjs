@@ -371,9 +371,14 @@ export class DesktopWindow extends HTMLElement {
 		});
 	}
 
-	#parseInteger(value) {
+	#parseUnsigned(value) {
 		const intVal = Number.parseInt(value);
 		return Number.isNaN(intVal) || intVal < 0 ? null : intVal;
+	}
+
+	#parseInteger(value) {
+		const intVal = Number.parseInt(value);
+		return Number.isNaN(intVal) ? null : intVal;
 	}
 
 	#getBooleanAttribute(name) {
@@ -389,10 +394,16 @@ export class DesktopWindow extends HTMLElement {
 		}
 	}
 
+	#getUnsignedAttribute(name) { return this.#parseUnsigned(this.getAttribute(name)); }
+
+	#setUnsignedAttribute(name, value) {
+		this.setAttribute(name, String(Math.round(Math.max(0, value))));
+	}
+
 	#getIntegerAttribute(name) { return this.#parseInteger(this.getAttribute(name)); }
 
 	#setIntegerAttribute(name, value) {
-		this.setAttribute(name, String(Math.round(Math.max(0, value))));
+		this.setAttribute(name, String(Math.round(value)));
 	}
 
 	get name() { return this.getAttribute('name'); }
@@ -416,23 +427,23 @@ export class DesktopWindow extends HTMLElement {
 	get centered() { return this.#getBooleanAttribute('centered'); }
 	set centered(value) { return this.#setBooleanAttribute('centered', value); }
 
-	get width() { return this.#getIntegerAttribute('width') ?? DesktopWindow.defaultWidth; }
-	set width(value) { this.#setIntegerAttribute('width', value); }
+	get width() { return this.#getUnsignedAttribute('width') ?? DesktopWindow.defaultWidth; }
+	set width(value) { this.#setUnsignedAttribute('width', value); }
 
-	get height() { return this.#getIntegerAttribute('height') ?? DesktopWindow.defaultHeight; }
-	set height(value) { this.#setIntegerAttribute('height', value); }
+	get height() { return this.#getUnsignedAttribute('height') ?? DesktopWindow.defaultHeight; }
+	set height(value) { this.#setUnsignedAttribute('height', value); }
 
-	get minWidth() { return this.#getIntegerAttribute('minWidth') ?? DesktopWindow.defaultMinWidth; }
-	set minWidth(value) { this.#setIntegerAttribute('minWidth', value); }
+	get minWidth() { return this.#getUnsignedAttribute('minWidth') ?? DesktopWindow.defaultMinWidth; }
+	set minWidth(value) { this.#setUnsignedAttribute('minWidth', value); }
 
-	get minHeight() { return this.#getIntegerAttribute('minHeight') ?? DesktopWindow.defaultMinHeight; }
-	set minHeight(value) { this.#setIntegerAttribute('minHeight', value); }
+	get minHeight() { return this.#getUnsignedAttribute('minHeight') ?? DesktopWindow.defaultMinHeight; }
+	set minHeight(value) { this.#setUnsignedAttribute('minHeight', value); }
 
-	get maxWidth() { return this.#getIntegerAttribute('maxWidth') ?? DesktopWindow.defaultMaxWidth ?? this.parentElement.offsetWidth; }
-	set maxWidth(value) { this.#setIntegerAttribute('maxWidth', value); }
+	get maxWidth() { return this.#getUnsignedAttribute('maxWidth') ?? DesktopWindow.defaultMaxWidth ?? this.parentElement.offsetWidth; }
+	set maxWidth(value) { this.#setUnsignedAttribute('maxWidth', value); }
 
-	get maxHeight() { return this.#getIntegerAttribute('maxHeight') ?? DesktopWindow.defaultMaxHeight ?? this.parentElement.offsetHeight; }
-	set maxHeight(value) { this.#setIntegerAttribute('maxHeight', value); }
+	get maxHeight() { return this.#getUnsignedAttribute('maxHeight') ?? DesktopWindow.defaultMaxHeight ?? this.parentElement.offsetHeight; }
+	set maxHeight(value) { this.#setUnsignedAttribute('maxHeight', value); }
 
 	get resizable() { return this.#getBooleanAttribute('resizable'); }
 	set resizable(value) { this.#setBooleanAttribute('resizable', value); }
@@ -620,22 +631,22 @@ export class DesktopWindow extends HTMLElement {
 				this.#window.classList.toggle('resizable', boolValue);
 				break;
 			case 'width':
-				this.#window.style.width = this.#parseInteger(newValue) + 'px';
+				this.#window.style.width = this.#parseUnsigned(newValue) + 'px';
 				break;
 			case 'height':
-				this.#window.style.height = this.#parseInteger(newValue) + 'px';
+				this.#window.style.height = this.#parseUnsigned(newValue) + 'px';
 				break;
 			case 'minWidth':
-				this.width = Math.max(this.#parseInteger(newValue), this.width);
+				this.width = Math.max(this.#parseUnsigned(newValue), this.width);
 				break;
 			case 'minHeight':
-				this.height = Math.max(this.#parseInteger(newValue), this.height);
+				this.height = Math.max(this.#parseUnsigned(newValue), this.height);
 				break;
 			case 'maxWidth':
-				this.width = Math.min(this.width, this.#parseInteger(newValue));
+				this.width = Math.min(this.width, this.#parseUnsigned(newValue));
 				break;
 			case 'maxHeight':
-				this.height = Math.min(this.height, this.#parseInteger(newValue));
+				this.height = Math.min(this.height, this.#parseUnsigned(newValue));
 				break;
 			case 'minimizable':
 				this.#window.classList.toggle('minimizable', boolValue);
