@@ -201,6 +201,7 @@ export class DesktopWindow extends HTMLElement {
 				overflow: visible;
 				flex-grow: 1;
 				flex-shrink: 1;
+				height: calc(100% - var(--desktop-window-titlebar-height));
 			}
 
 			/* movable */
