@@ -8,6 +8,7 @@ const restoreIcon = svgToDataUrl(`<svg width="16" height="14" viewBox="0 0 16 14
 
 export class DesktopWindow extends HTMLElement {
 
+	static shadowMode = 'open';
 	static defaultX = 50;
 	static defaultY = 50;
 	static defaultWidth = 350;
@@ -248,6 +249,7 @@ export class DesktopWindow extends HTMLElement {
 		return style;
 	})();
 
+	#shadowRoot = null;
 	#window = null;
 	#dragMouseMove = null;
 	#dragMouseUp = null;
@@ -256,9 +258,9 @@ export class DesktopWindow extends HTMLElement {
 
 	constructor() {
 		super();
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
-		this.shadowRoot.innerHTML = `
+		this.#shadowRoot = this.attachShadow({ mode: DesktopWindow.shadowMode });
+		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
+		this.#shadowRoot.innerHTML = `
 			<div class="window">
 				<div class="titlebar">
 					<span class="title-text"></span>
@@ -281,7 +283,7 @@ export class DesktopWindow extends HTMLElement {
 			</div>
 		`;
 
-		this.shadowRoot.addEventListener('minimize', (event) => {
+		this.#shadowRoot.addEventListener('minimize', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const minimizing = new Event('minimizing', { bubbles: true, cancelable: true });
 			this.dispatchEvent(minimizing);
@@ -289,7 +291,7 @@ export class DesktopWindow extends HTMLElement {
 				this.minimized = true;
 			}
 		});
-		this.shadowRoot.addEventListener('maximize', (event) => {
+		this.#shadowRoot.addEventListener('maximize', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const maximizing = new Event('maximizing', { bubbles: true, cancelable: true });
 			this.dispatchEvent(maximizing);
@@ -297,7 +299,7 @@ export class DesktopWindow extends HTMLElement {
 				this.maximized = true;
 			}
 		});
-		this.shadowRoot.addEventListener('restore', (event) => {
+		this.#shadowRoot.addEventListener('restore', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const restoring = new Event('restoring', { bubbles: true, cancelable: true });
 			this.dispatchEvent(restoring);
@@ -306,7 +308,7 @@ export class DesktopWindow extends HTMLElement {
 				this.minimized = false;
 			}
 		});
-		this.shadowRoot.addEventListener('close', (event) => {
+		this.#shadowRoot.addEventListener('close', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const closing = new Event('closing', { bubbles: true, cancelable: true });
 			this.dispatchEvent(closing);
@@ -314,7 +316,7 @@ export class DesktopWindow extends HTMLElement {
 				this.destroy();
 			}
 		});
-		this.shadowRoot.addEventListener('request-fullscreen', (event) => {
+		this.#shadowRoot.addEventListener('request-fullscreen', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			if (this.fullscreen) return;
 			const requestingFullscreen = new Event('requesting-fullscreen', { bubbles: true, cancelable: true });
@@ -323,7 +325,7 @@ export class DesktopWindow extends HTMLElement {
 				this.fullscreen = true;
 			}
 		});
-		this.shadowRoot.addEventListener('exit-fullscreen', (event) => {
+		this.#shadowRoot.addEventListener('exit-fullscreen', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			if (!this.fullscreen) return;
 			const exitingFullscreen = new Event('exiting-fullscreen', { bubbles: true, cancelable: true });
@@ -335,13 +337,13 @@ export class DesktopWindow extends HTMLElement {
 
 		//--
 
-		this.#window = this.shadowRoot.querySelector('.window');
+		this.#window = this.#shadowRoot.querySelector('.window');
 		this.#window.addEventListener('mousedown', (e) => {
 			this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		});
 		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 
-		const controlButtons = this.shadowRoot.querySelectorAll('.control-btn');
+		const controlButtons = this.#shadowRoot.querySelectorAll('.control-btn');
 		for (const controlButton of controlButtons) {
 			controlButton.addEventListener('mousedown', (e) => {
 				e.stopPropagation();
@@ -351,22 +353,22 @@ export class DesktopWindow extends HTMLElement {
 
 		//--
 
-		const closeButton = this.shadowRoot.querySelector('.btn-close');
+		const closeButton = this.#shadowRoot.querySelector('.btn-close');
 		closeButton.addEventListener('click', (e) => {
 			closeButton.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }));
 		});
 
-		const minimizeButton = this.shadowRoot.querySelector('.btn-minimize');
+		const minimizeButton = this.#shadowRoot.querySelector('.btn-minimize');
 		minimizeButton.addEventListener('click', (e) => {
 			minimizeButton.dispatchEvent(new Event('minimize', { bubbles: true, cancelable: true }));
 		});
 
-		const restoreButton = this.shadowRoot.querySelector('.btn-restore');
+		const restoreButton = this.#shadowRoot.querySelector('.btn-restore');
 		restoreButton.addEventListener('click', (e) => {
 			restoreButton.dispatchEvent(new Event('restore', { bubbles: true, cancelable: true }));
 		});
 
-		const maximizeButton = this.shadowRoot.querySelector('.btn-maximize');
+		const maximizeButton = this.#shadowRoot.querySelector('.btn-maximize');
 		maximizeButton.addEventListener('click', (e) => {
 			maximizeButton.dispatchEvent(new Event('maximize', { bubbles: true, cancelable: true }));
 		});
@@ -579,6 +581,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		this.#shadowRoot = null;
 		this.#window = null;
 
 		if (this.#dragMouseMove) {
@@ -604,7 +607,7 @@ export class DesktopWindow extends HTMLElement {
 		const boolValue = newValue === '' || newValue === 'true' || newValue === name;
 		switch (name) {
 			case 'name':
-				this.shadowRoot.querySelector('.title-text').textContent = newValue;
+				this.#shadowRoot.querySelector('.title-text').textContent = newValue;
 				break;
 			case 'movable':
 				this.#window.classList.toggle('movable', boolValue);
@@ -700,7 +703,7 @@ export class DesktopWindow extends HTMLElement {
 			this.centered = false;
 		};
 
-		this.shadowRoot.querySelector('.titlebar')?.addEventListener('mousedown', (e) => {
+		this.#shadowRoot.querySelector('.titlebar')?.addEventListener('mousedown', (e) => {
 			if (!this.movable) return;
 			windowX = this.#window.offsetLeft;
 			windowY = this.#window.offsetTop;
@@ -753,7 +756,7 @@ export class DesktopWindow extends HTMLElement {
 		};
 
 		/** @type {HTMLElement[]} */
-		const handles = this.shadowRoot.querySelectorAll('.resize-handle');
+		const handles = this.#shadowRoot.querySelectorAll('.resize-handle');
 		for (const handle of handles) {
 			handle.addEventListener('mousedown', (e) => {
 				if (!this.resizable) return;
@@ -777,8 +780,11 @@ export class DesktopWindow extends HTMLElement {
 	}
 }
 
-export function register({ tag = 'desktop-window', shadowMode = 'open' } = {}) {
+export function register({ tag = 'desktop-window', shadowMode } = {}) {
 	if (customElements.get(tag)) return;
+	if (shadowMode) {
+		DesktopWindow.shadowMode = shadowMode;
+	}
 	customElements.define(tag, DesktopWindow);
 }
 
