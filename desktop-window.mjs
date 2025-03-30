@@ -777,10 +777,8 @@ export class DesktopWindow extends HTMLElement {
 	}
 }
 
-let registerCalled = false;
 export function register({ tag = 'desktop-window', shadowMode = 'open' } = {}) {
-	if (registerCalled) return;
-	registerCalled = true;
+	if (customElements.get(tag)) return;
 	customElements.define(tag, DesktopWindow);
 }
 
