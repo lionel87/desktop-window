@@ -381,13 +381,13 @@ export class DesktopWindow extends HTMLElement {
 		});
 		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
 		this.#shadowRoot.innerHTML = `
-			<div class="window" part="window" role="dialog" tabindex="-1">
+			<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="title-text">
 				<div class="bounds">
 					<div class="titlebar" part="titlebar">
 						<div class="titlebar-start" part="titlebar-start">
 							<slot name="titlebar-start"></slot>
 						</div>
-						<div class="title-text" part="title-text"></div>
+						<div id="title-text" class="title-text" part="title-text"></div>
 						<div class="titlebar-end" part="titlebar-end">
 							<slot name="titlebar-end"></slot>
 						</div>
@@ -396,7 +396,7 @@ export class DesktopWindow extends HTMLElement {
 						<div role="button" tabindex="0" class="control-btn btn-maximize" part="maximize-button"></div>
 						<div role="button" tabindex="0" class="control-btn btn-close" part="close-button"></div>
 					</div>
-					<div class="client-area" part="client-area" role="document">
+					<div role="document" class="client-area" part="client-area">
 						<slot></slot>
 					</div>
 				</div>
