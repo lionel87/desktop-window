@@ -11,13 +11,11 @@ This package is in active development, and not yet reached the point where I can
 
 ### Roadmap
 
-- focus / blur / focusable support
 - content pos/size/bounds support
 - frameless flag
 - aspect ratio locking
 - full typescript + build tooling
 - window animations?
-- ability to change icons
 - comprehensive documentation
 - a lot of examples incl. integration with a desktop environment
 - accessibility
@@ -81,9 +79,9 @@ fullscreenButton.addEventListener('click', (event) => {
 - `maximizable`
 - `maximized`
 - `closable`
-- `fullscreenable`
 - `fullscreen`
 - `hidden`
+- `autofocus`
 
 ### Events
 
@@ -118,16 +116,18 @@ fullscreenButton.addEventListener('click', (event) => {
 - `maxWidth`
 - `maxHeight`
 - `resizable`
-- `fullscreenable`
 - `fullscreen`
 - `minimizable`
 - `minimized`
 - `maximizable`
 - `maximized`
 - `closable`
+- `autofocus`
 
 ### Methods
 
+- `focus()`
+- `blur()`
 - `close()`
 - `destroy()`
 - `getPosition()`
@@ -142,17 +142,39 @@ fullscreenButton.addEventListener('click', (event) => {
 - `getContentBounds()`
 - `setContentBounds(bounds)`
 
+### Slots
+
+- `titlebar-start`
+- `titlebar-end`
+
+### Parts
+
+- `window`
+- `titlebar`
+- `title-text`
+- `minimize-button`
+- `restore-button`
+- `maximize-button`
+- `close-button`
+- `client-area`
+
 ### CSS Variables
 
+- `--desktop-window-background-color`
 - `--desktop-window-border-width`
 - `--desktop-window-border-color`
-- `--desktop-window-background-color`
 - `--desktop-window-titlebar-height`
+- `--desktop-window-titlebar-text-color`
 - `--desktop-window-titlebar-background-color`
 - `--desktop-window-titlebar-font-family`
 - `--desktop-window-titlebar-font-size`
-- `--desktop-window-titlebar-text-color`
+- `--desktop-window-minimize-button-mask-image`
+- `--desktop-window-maximize-button-mask-image`
+- `--desktop-window-restore-button-mask-image`
+- `--desktop-window-close-button-mask-image`
 - `--desktop-window-buttons-width`
+- `--desktop-window-buttons-height`
+- `--desktop-window-buttons-margin`
 - `--desktop-window-buttons-text-color`
 - `--desktop-window-buttons-background-color`
 - `--desktop-window-buttons-hover-text-color`
@@ -173,6 +195,30 @@ fullscreenButton.addEventListener('click', (event) => {
 - `--desktop-window-close-background-color`
 - `--desktop-window-close-hover-text-color`
 - `--desktop-window-close-hover-background-color`
+- `--desktop-window-focused-background-color`
+- `--desktop-window-focused-border-color`
+- `--desktop-window-focused-titlebar-text-color`
+- `--desktop-window-focused-titlebar-background-color`
+- `--desktop-window-focused-buttons-text-color`
+- `--desktop-window-focused-buttons-background-color`
+- `--desktop-window-focused-buttons-hover-text-color`
+- `--desktop-window-focused-buttons-hover-background-color`
+- `--desktop-window-focused-minimize-text-color`
+- `--desktop-window-focused-minimize-background-color`
+- `--desktop-window-focused-minimize-hover-text-color`
+- `--desktop-window-focused-minimize-hover-background-color`
+- `--desktop-window-focused-maximize-text-color`
+- `--desktop-window-focused-maximize-background-color`
+- `--desktop-window-focused-maximize-hover-text-color`
+- `--desktop-window-focused-maximize-hover-background-color`
+- `--desktop-window-focused-restore-text-color`
+- `--desktop-window-focused-restore-background-color`
+- `--desktop-window-focused-restore-hover-text-color`
+- `--desktop-window-focused-restore-hover-background-color`
+- `--desktop-window-focused-close-text-color`
+- `--desktop-window-focused-close-background-color`
+- `--desktop-window-focused-close-hover-text-color`
+- `--desktop-window-focused-close-hover-background-color`
 
 ## Notes
 
