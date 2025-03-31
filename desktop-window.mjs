@@ -490,19 +490,33 @@ export class DesktopWindow extends HTMLElement {
 
 		//-- control buttons
 
-		this.#shadowRoot.querySelector('.btn-minimize').addEventListener('click', () => {
+		const minimize = this.#shadowRoot.querySelector('.btn-minimize');
+		const maximize = this.#shadowRoot.querySelector('.btn-maximize');
+		const restore = this.#shadowRoot.querySelector('.btn-restore');
+		const close = this.#shadowRoot.querySelector('.btn-close');
+
+		minimize.addEventListener('click', () => {
 			this.#shadowRoot.dispatchEvent(new Event('minimize', { bubbles: true }));
+			restore.focus();
 		});
 
-		this.#shadowRoot.querySelector('.btn-maximize').addEventListener('click', () => {
+		maximize.addEventListener('click', () => {
 			this.#shadowRoot.dispatchEvent(new Event('maximize', { bubbles: true }));
+			restore.focus();
 		});
 
-		this.#shadowRoot.querySelector('.btn-restore').addEventListener('click', () => {
+		restore.addEventListener('click', () => {
+			const oldMinimized = this.minimized;
+			const oldMaximized = this.maximized;
 			this.#shadowRoot.dispatchEvent(new Event('restore', { bubbles: true }));
+			if (oldMaximized) {
+				maximize.focus();
+			} else if (oldMinimized) {
+				minimize.focus();
+			}
 		});
 
-		this.#shadowRoot.querySelector('.btn-close').addEventListener('click', () => {
+		close.addEventListener('click', () => {
 			this.#shadowRoot.dispatchEvent(new Event('close', { bubbles: true }));
 		});
 
@@ -511,6 +525,14 @@ export class DesktopWindow extends HTMLElement {
 				this.maximized = !this.maximized;
 			}
 		});
+
+		for (const btn of this.#shadowRoot.querySelectorAll('.control-btn')) {
+			btn.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter') {
+					btn.click();
+				}
+			})
+		}
 	}
 
 	#parseUnsigned(value) {
