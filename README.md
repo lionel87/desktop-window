@@ -151,7 +151,9 @@ fullscreenButton.addEventListener('click', (event) => {
 
 - `window`
 - `titlebar`
+- `titlebar-start`
 - `title-text`
+- `titlebar-end`
 - `minimize-button`
 - `restore-button`
 - `maximize-button`
