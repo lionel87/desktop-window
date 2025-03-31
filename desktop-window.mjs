@@ -274,9 +274,9 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-focused-titlebar-text-color);
 			}
 
-			.window:focus-within .btn-minimize:hover {
-				color: var(--desktop-window-focused-minimize-hover-text-color);
-				background-color: var(--desktop-window-focused-minimize-hover-background-color);
+			.window:focus-within .btn-minimize {
+				color: var(--desktop-window-focused-minimize-text-color);
+				background-color: var(--desktop-window-focused-minimize-background-color);
 			}
 			.window:focus-within .btn-minimize:hover {
 				color: var(--desktop-window-focused-minimize-hover-text-color);
