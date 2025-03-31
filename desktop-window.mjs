@@ -277,51 +277,51 @@ export class DesktopWindow extends HTMLElement {
 				user-select: text;
 			}
 
-			.window:focus-within {
+			:host(:focus-within) .window {
 				border-color: var(--desktop-window-focused-border-color);
 				box-shadow: 0 2px 15px rgba(0,0,0,0.25);
 			}
 
-			.window:focus-within .titlebar {
+			:host(:focus-within) .titlebar {
 				background-color: var(--desktop-window-focused-titlebar-background-color);
 			}
 
-			.window:focus-within .title-text {
+			:host(:focus-within) .title-text {
 				color: var(--desktop-window-focused-titlebar-text-color);
 			}
 
-			.window:focus-within .btn-minimize {
+			:host(:focus-within) .btn-minimize {
 				color: var(--desktop-window-focused-minimize-text-color);
 				background-color: var(--desktop-window-focused-minimize-background-color);
 			}
-			.window:focus-within .btn-minimize:hover {
+			:host(:focus-within) .btn-minimize:hover {
 				color: var(--desktop-window-focused-minimize-hover-text-color);
 				background-color: var(--desktop-window-focused-minimize-hover-background-color);
 			}
 
-			.window:focus-within .btn-maximize {
+			:host(:focus-within) .btn-maximize {
 				color: var(--desktop-window-focused-maximize-text-color);
 				background-color: var(--desktop-window-focused-maximize-background-color);
 			}
-			.window:focus-within .btn-maximize:hover {
+			:host(:focus-within) .btn-maximize:hover {
 				color: var(--desktop-window-focused-maximize-hover-text-color);
 				background-color: var(--desktop-window-focused-maximize-hover-background-color);
 			}
 
-			.window:focus-within .btn-restore {
+			:host(:focus-within) .btn-restore {
 				color: var(--desktop-window-focused-restore-text-color);
 				background-color: var(--desktop-window-focused-restore-background-color);
 			}
-			.window:focus-within .btn-restore:hover {
+			:host(:focus-within) .btn-restore:hover {
 				color: var(--desktop-window-focused-restore-hover-text-color);
 				background-color: var(--desktop-window-focused-restore-hover-background-color);
 			}
 
-			.window:focus-within .btn-close {
+			:host(:focus-within) .btn-close {
 				color: var(--desktop-window-focused-close-text-color);
 				background-color: var(--desktop-window-focused-close-background-color);
 			}
-			.window:focus-within .btn-close:hover {
+			:host(:focus-within) .btn-close:hover {
 				color: var(--desktop-window-focused-close-hover-text-color);
 				background-color: var(--desktop-window-focused-close-hover-background-color);
 			}
@@ -375,7 +375,10 @@ export class DesktopWindow extends HTMLElement {
 
 	constructor() {
 		super();
-		this.#shadowRoot = this.attachShadow({ mode: DesktopWindow.shadowMode });
+		this.#shadowRoot = this.attachShadow({
+			mode: DesktopWindow.shadowMode,
+			delegatesFocus: true,
+		});
 		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
 		this.#shadowRoot.innerHTML = `
 			<div class="window" part="window" role="dialog" tabindex="-1">
@@ -388,10 +391,10 @@ export class DesktopWindow extends HTMLElement {
 						<div class="titlebar-end" part="titlebar-end">
 							<slot name="titlebar-end"></slot>
 						</div>
-						<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
-						<div role="button" class="control-btn btn-restore" part="restore-button"></div>
-						<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
-						<div role="button" class="control-btn btn-close" part="close-button"></div>
+						<div role="button" tabindex="0" class="control-btn btn-minimize" part="minimize-button"></div>
+						<div role="button" tabindex="0" class="control-btn btn-restore" part="restore-button"></div>
+						<div role="button" tabindex="0" class="control-btn btn-maximize" part="maximize-button"></div>
+						<div role="button" tabindex="0" class="control-btn btn-close" part="close-button"></div>
 					</div>
 					<div class="client-area" part="client-area" role="document">
 						<slot></slot>
