@@ -43,7 +43,7 @@ Copy the `desktop-window.mjs` to your site scripts, then:
 When the custom element is defined, use the `<desktop-window>` tag (or what you registered) in HTML code.
 
 ```html
-<desktop-window name="Hello world!" movable resizable closable fullscreenable minimizable maximizable centered>
+<desktop-window name="Hello world!" movable resizable minimizable maximizable closable centered>
   The contents of the window are placed here.
   <button id="fullscreen">⛶ Toggle fullscreen</button>
 </desktop-window>
