@@ -1,6 +1,6 @@
 # desktop-window
 
-A Pure Web Components based `<desktop-window>` tag that creates a window that looks and feels like a regular window in a desktop environment.
+A lightweight Web Components-based custom element that replicates the look and feel of native desktop application windows — resizable, movable, and styled like a traditional OS window. No frameworks required.
 
 ## NOT READY FOR PRODUCTION
 
