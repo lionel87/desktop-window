@@ -57,7 +57,7 @@ export class DesktopWindow extends HTMLElement {
 				--desktop-window-buttons-height: var(--desktop-window-titlebar-height);
 				--desktop-window-buttons-margin: 0;
 				--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);
-				--desktop-window-buttons-background-color: transparent;
+				--desktop-window-buttons-background-color: rgba(110, 110, 110, 0);
 				--desktop-window-buttons-hover-text-color: #444;
 				--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);
 
