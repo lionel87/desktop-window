@@ -228,6 +228,13 @@ fullscreenButton.addEventListener('click', (event) => {
 
 - Appending to the `document.body` works, but don't forget to set the body height or have content that stretches the area!
 
+- When the script is asynchronously loaded and the HTML has windows, I recommend you this CSS:
+  ```css
+  desktop-window:not(:defined) { display: none; }
+  /* OR for a more general solution */
+  *:not(:defined) { display: none; }
+  ```
+
 ## Missing a feature?
 Create an issue describing your needs!
 If it fits the scope of the project I will implement it.
