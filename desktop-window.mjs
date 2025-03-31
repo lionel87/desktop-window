@@ -605,8 +605,11 @@ export class DesktopWindow extends HTMLElement {
 
 	get minimized() { return this.#getBooleanAttribute('minimized'); }
 	set minimized(value) {
+		const oldValue = this.minimized;
 		this.#setBooleanAttribute('minimized', value);
-		if (!value && this.minimized) {
+		if (oldValue && !value) {
+			this.dispatchEvent(new Event('restored', { bubbles: true }));
+		} else if (!oldValue && value) {
 			this.dispatchEvent(new Event('minimized', { bubbles: true }));
 		}
 	}
@@ -616,8 +619,11 @@ export class DesktopWindow extends HTMLElement {
 
 	get maximized() { return this.#getBooleanAttribute('maximized'); }
 	set maximized(value) {
+		const oldValue = this.minimized;
 		this.#setBooleanAttribute('maximized', value);
-		if (!value && this.maximized) {
+		if (oldValue && !value) {
+			this.dispatchEvent(new Event('restored', { bubbles: true }));
+		} else if (!oldValue && value) {
 			this.dispatchEvent(new Event('maximized', { bubbles: true }));
 		}
 	}

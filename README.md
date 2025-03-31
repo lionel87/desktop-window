@@ -96,7 +96,7 @@ fullscreenButton.addEventListener('click', (event) => {
 - `'maximized'`
 - `'restore'`
 - `'restoring'`
-- `'resotred'`
+- `'restored'`
 - `'request-fullscreen'`
 - `'requesting-fullscreen'`
 - `'exit-fullscreen'`
