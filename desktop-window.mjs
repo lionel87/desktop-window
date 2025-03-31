@@ -27,6 +27,7 @@ export class DesktopWindow extends HTMLElement {
 			// 'contentWidth', 'contentHeight',
 			'minWidth', 'minHeight',
 			'maxWidth', 'maxHeight',
+			'autofocus',
 		];
 	}
 
@@ -39,10 +40,10 @@ export class DesktopWindow extends HTMLElement {
 				--desktop-window-background-color: #fff;
 
 				--desktop-window-border-width: 1px;
-				--desktop-window-border-color: #fff;
+				--desktop-window-border-color: #aaa;
 
 				--desktop-window-titlebar-height: 28px;
-				--desktop-window-titlebar-text-color: #444;
+				--desktop-window-titlebar-text-color: #999;
 				--desktop-window-titlebar-background-color: #fff;
 				--desktop-window-titlebar-font-family: sans-serif;
 				--desktop-window-titlebar-font-size: 14px;
@@ -57,7 +58,7 @@ export class DesktopWindow extends HTMLElement {
 				--desktop-window-buttons-margin: 0;
 				--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);
 				--desktop-window-buttons-background-color: transparent;
-				--desktop-window-buttons-hover-text-color: var(--desktop-window-titlebar-text-color);
+				--desktop-window-buttons-hover-text-color: #444;
 				--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);
 
 				--desktop-window-minimize-text-color: var(--desktop-window-buttons-text-color);
@@ -79,20 +80,53 @@ export class DesktopWindow extends HTMLElement {
 				--desktop-window-close-background-color: var(--desktop-window-buttons-background-color);
 				--desktop-window-close-hover-text-color: #fff;
 				--desktop-window-close-hover-background-color: #e50000;
+
+				--desktop-window-focused-background-color: var(--desktop-window-background-color);
+				--desktop-window-focused-border-color: #fff;
+
+				--desktop-window-focused-titlebar-text-color: #444;
+				--desktop-window-focused-titlebar-background-color: var(--desktop-window-titlebar-background-color);
+
+				--desktop-window-focused-buttons-text-color: var(--desktop-window-focused-titlebar-text-color);
+				--desktop-window-focused-buttons-background-color: var(--desktop-window-buttons-background-color);
+				--desktop-window-focused-buttons-hover-text-color: var(--desktop-window-focused-titlebar-text-color);
+				--desktop-window-focused-buttons-hover-background-color: var(--desktop-window-buttons-hover-background-color);
+
+				--desktop-window-focused-minimize-text-color: var(--desktop-window-focused-buttons-text-color);
+				--desktop-window-focused-minimize-background-color: var(--desktop-window-focused-buttons-background-color);
+				--desktop-window-focused-minimize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+				--desktop-window-focused-minimize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+				--desktop-window-focused-maximize-text-color: var(--desktop-window-focused-buttons-text-color);
+				--desktop-window-focused-maximize-background-color: var(--desktop-window-focused-buttons-background-color);
+				--desktop-window-focused-maximize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+				--desktop-window-focused-maximize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+				--desktop-window-focused-restore-text-color: var(--desktop-window-focused-buttons-text-color);
+				--desktop-window-focused-restore-background-color: var(--desktop-window-focused-buttons-background-color);
+				--desktop-window-focused-restore-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+				--desktop-window-focused-restore-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+				--desktop-window-focused-close-text-color: var(--desktop-window-focused-buttons-text-color);
+				--desktop-window-focused-close-background-color: var(--desktop-window-focused-buttons-background-color);
+				--desktop-window-focused-close-hover-text-color: var(--desktop-window-close-hover-text-color);
+				--desktop-window-focused-close-hover-background-color: var(--desktop-window-close-hover-background-color);
 			}
 
 			.window {
 				transform: translate3d(0, 0, 0); /* forces GPU layer to stabilize subpixel text/image rendering */
+				transition: box-shadow linear .1s, border-color linear .1s, background-color linear .1s;
 				position: absolute;
 				border: var(--desktop-window-border-width) solid var(--desktop-window-border-color);
 				background-color: var(--desktop-window-background-color);
-				box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+				box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 				box-sizing: border-box;
 				user-select: none;
 				-webkit-user-select: none;
 				display: flex;
 				flex-direction: column;
 				flex-wrap: nowrap;
+				outline: none;
 			}
 
 			.resize-handle { display: none; position: absolute; z-index: 10; }
@@ -109,6 +143,7 @@ export class DesktopWindow extends HTMLElement {
 			.handle-w { left: -6px; cursor: ew-resize; }
 
 			.titlebar {
+				transition: background-color linear .1s;
 				position: relative;
 				z-index: 20;
 				background-color: var(--desktop-window-titlebar-background-color);
@@ -119,6 +154,7 @@ export class DesktopWindow extends HTMLElement {
 			}
 
 			.title-text {
+				transition: color linear .1s;
 				font-family: var(--desktop-window-titlebar-font-family);
 				font-size: var(--desktop-window-titlebar-font-size);
 				color: var(--desktop-window-titlebar-text-color);
@@ -164,13 +200,13 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-minimize-text-color);
 				background-color: var(--desktop-window-minimize-background-color);
 			}
-			.btn-minimize::before {
-				-webkit-mask-image: var(--desktop-window-minimize-button-mask-image);
-				mask-image: var(--desktop-window-minimize-button-mask-image);
-			}
 			.btn-minimize:hover {
 				color: var(--desktop-window-minimize-hover-text-color);
 				background-color: var(--desktop-window-minimize-hover-background-color);
+			}
+			.btn-minimize::before {
+				-webkit-mask-image: var(--desktop-window-minimize-button-mask-image);
+				mask-image: var(--desktop-window-minimize-button-mask-image);
 			}
 
 			.btn-maximize {
@@ -178,13 +214,13 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-maximize-text-color);
 				background-color: var(--desktop-window-maximize-background-color);
 			}
-			.btn-maximize::before {
-				-webkit-mask-image: var(--desktop-window-maximize-button-mask-image);
-				mask-image: var(--desktop-window-maximize-button-mask-image);
-			}
 			.btn-maximize:hover {
 				color: var(--desktop-window-maximize-hover-text-color);
 				background-color: var(--desktop-window-maximize-hover-background-color);
+			}
+			.btn-maximize::before {
+				-webkit-mask-image: var(--desktop-window-maximize-button-mask-image);
+				mask-image: var(--desktop-window-maximize-button-mask-image);
 			}
 
 			.btn-restore {
@@ -192,13 +228,13 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-restore-text-color);
 				background-color: var(--desktop-window-restore-background-color);
 			}
-			.btn-restore::before {
-				-webkit-mask-image: var(--desktop-window-restore-button-mask-image);
-				mask-image: var(--desktop-window-restore-button-mask-image);
-			}
 			.btn-restore:hover {
 				color: var(--desktop-window-restore-hover-text-color);
 				background-color: var(--desktop-window-restore-hover-background-color);
+			}
+			.btn-restore::before {
+				-webkit-mask-image: var(--desktop-window-restore-button-mask-image);
+				mask-image: var(--desktop-window-restore-button-mask-image);
 			}
 
 			.btn-close {
@@ -206,13 +242,13 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-close-text-color);
 				background-color: var(--desktop-window-close-background-color);
 			}
-			.btn-close::before {
-				-webkit-mask-image: var(--desktop-window-close-button-mask-image);
-				mask-image: var(--desktop-window-close-button-mask-image);
-			}
 			.btn-close:hover {
 				color: var(--desktop-window-close-hover-text-color);
 				background-color: var(--desktop-window-close-hover-background-color);
+			}
+			.btn-close::before {
+				-webkit-mask-image: var(--desktop-window-close-button-mask-image);
+				mask-image: var(--desktop-window-close-button-mask-image);
 			}
 
 			.client-area {
@@ -223,7 +259,60 @@ export class DesktopWindow extends HTMLElement {
 				height: calc(100% - var(--desktop-window-titlebar-height));
 				-webkit-user-select: text;
 				user-select: text;
+				outline: none;
 			}
+
+			.window:focus-within {
+				border-color: var(--desktop-window-focused-border-color);
+				box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+			}
+
+			.window:focus-within .titlebar {
+				background-color: var(--desktop-window-focused-titlebar-background-color);
+			}
+
+			.window:focus-within .title-text {
+				color: var(--desktop-window-focused-titlebar-text-color);
+			}
+
+			.window:focus-within .btn-minimize:hover {
+				color: var(--desktop-window-focused-minimize-hover-text-color);
+				background-color: var(--desktop-window-focused-minimize-hover-background-color);
+			}
+			.window:focus-within .btn-minimize:hover {
+				color: var(--desktop-window-focused-minimize-hover-text-color);
+				background-color: var(--desktop-window-focused-minimize-hover-background-color);
+			}
+
+			.window:focus-within .btn-maximize {
+				color: var(--desktop-window-focused-maximize-text-color);
+				background-color: var(--desktop-window-focused-maximize-background-color);
+			}
+			.window:focus-within .btn-maximize:hover {
+				color: var(--desktop-window-focused-maximize-hover-text-color);
+				background-color: var(--desktop-window-focused-maximize-hover-background-color);
+			}
+
+			.window:focus-within .btn-restore {
+				color: var(--desktop-window-focused-restore-text-color);
+				background-color: var(--desktop-window-focused-restore-background-color);
+			}
+			.window:focus-within .btn-restore:hover {
+				color: var(--desktop-window-focused-restore-hover-text-color);
+				background-color: var(--desktop-window-focused-restore-hover-background-color);
+			}
+
+			.window:focus-within .btn-close {
+				color: var(--desktop-window-focused-close-text-color);
+				background-color: var(--desktop-window-focused-close-background-color);
+			}
+			.window:focus-within .btn-close:hover {
+				color: var(--desktop-window-focused-close-hover-text-color);
+				background-color: var(--desktop-window-focused-close-hover-background-color);
+			}
+
+
+
 
 			:host([movable]) .titlebar { cursor: move; }
 
@@ -277,7 +366,7 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot = this.attachShadow({ mode: DesktopWindow.shadowMode });
 		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
 		this.#shadowRoot.innerHTML = `
-			<div class="window" part="window">
+			<div class="window" part="window" role="dialog" tabindex="0">
 				<div class="titlebar" part="titlebar">
 					<slot name="titlebar-start"></slot>
 					<div class="title-text" part="title-text"></div>
@@ -287,7 +376,7 @@ export class DesktopWindow extends HTMLElement {
 					<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
 					<div role="button" class="control-btn btn-close" part="close-button"></div>
 				</div>
-				<div class="client-area" part="client-area">
+				<div class="client-area" part="client-area" role="document" tabindex="0">
 					<slot></slot>
 				</div>
 				<div class="resize-handle handle-n" data-direction="n"></div>
@@ -511,6 +600,18 @@ export class DesktopWindow extends HTMLElement {
 	get closable() { return this.#getBooleanAttribute('closable'); }
 	set closable(value) { this.#setBooleanAttribute('closable', value); }
 
+	get autofocus() { return this.#getBooleanAttribute('autofocus'); }
+	set autofocus(value) { this.#setBooleanAttribute('autofocus', value); }
+
+	focus() {
+		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
+		this.#window.focus();
+	}
+
+	blur() {
+		this.#window.blur();
+	}
+
 	close() {
 		const closing = new Event('closing', { bubbles: true, cancelable: true });
 		this.dispatchEvent(closing);
@@ -692,6 +793,11 @@ export class DesktopWindow extends HTMLElement {
 				const maxHeight = this.#parseUnsigned(newValue);
 				if (this.height > maxHeight) {
 					this.height = maxHeight;
+				}
+				break;
+			case 'autofocus':
+				if (newValue !== null) {
+					this.focus();
 				}
 				break;
 		}
