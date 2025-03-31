@@ -451,7 +451,7 @@ export class DesktopWindow extends HTMLElement {
 		//-- zindex
 
 		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
-		this.#window.addEventListener('pointerdown', (e) => {
+		this.#window.addEventListener('pointerdown', () => {
 			this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		});
 
@@ -490,7 +490,7 @@ export class DesktopWindow extends HTMLElement {
 			this.#shadowRoot.dispatchEvent(new Event('close', { bubbles: true }));
 		});
 
-		this.#window.querySelector('.titlebar').addEventListener('dblclick', (event) => {
+		this.#window.querySelector('.titlebar').addEventListener('dblclick', () => {
 			if (this.maximizable) {
 				this.maximized = !this.maximized;
 			}
@@ -730,7 +730,9 @@ export class DesktopWindow extends HTMLElement {
 		this.#setupResizing();
 
 		if (this.autofocus) {
-			this.focus();
+			requestAnimationFrame(() => {
+				this.focus();
+			});
 		}
 	}
 
