@@ -153,6 +153,11 @@ export class DesktopWindow extends HTMLElement {
 				height: var(--desktop-window-titlebar-height);
 			}
 
+			.titlebar-start,
+			.titlebar-end {
+				cursor: default;
+			}
+
 			.title-text {
 				transition: color linear .1s;
 				font-family: var(--desktop-window-titlebar-font-family);
@@ -310,9 +315,6 @@ export class DesktopWindow extends HTMLElement {
 				background-color: var(--desktop-window-focused-close-hover-background-color);
 			}
 
-
-
-
 			:host([movable]) .titlebar { cursor: move; }
 
 			:host([resizable]) .resize-handle { display: block; }
@@ -367,9 +369,9 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot.innerHTML = `
 			<div class="window" part="window" role="dialog" tabindex="-1">
 				<div class="titlebar" part="titlebar">
-					<slot name="titlebar-start"></slot>
+					<slot name="titlebar-start" class="titlebar-start"></slot>
 					<div class="title-text" part="title-text"></div>
-					<slot name="titlebar-end"></slot>
+					<slot name="titlebar-end" class="titlebar-end"></slot>
 					<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
 					<div role="button" class="control-btn btn-restore" part="restore-button"></div>
 					<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
@@ -391,6 +393,16 @@ export class DesktopWindow extends HTMLElement {
 
 		this.#window = this.#shadowRoot.querySelector('.window');
 		this.#clientArea = this.#window.querySelector('.client-area');
+
+		//--
+
+		this.#window.querySelector('.titlebar-start').addEventListener('pointerdown', (event) => {
+			event.stopPropagation();
+		});
+
+		this.#window.querySelector('.titlebar-end').addEventListener('pointerdown', (event) => {
+			event.stopPropagation();
+		});
 
 		//--
 
