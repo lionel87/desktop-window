@@ -121,11 +121,8 @@ export class DesktopWindow extends HTMLElement {
 				background-color: var(--desktop-window-background-color);
 				box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 				box-sizing: border-box;
-				user-select: none;
 				-webkit-user-select: none;
-				display: flex;
-				flex-direction: column;
-				flex-wrap: nowrap;
+				user-select: none;
 				outline: none;
 			}
 
@@ -142,15 +139,26 @@ export class DesktopWindow extends HTMLElement {
 			.handle-e { right: -6px; cursor: ew-resize; }
 			.handle-w { left: -6px; cursor: ew-resize; }
 
-			.titlebar {
-				transition: background-color linear .1s;
+			.bounds {
 				position: relative;
 				z-index: 20;
-				background-color: var(--desktop-window-titlebar-background-color);
+				width: 100%;
+				height: 100%;
 				display: flex;
+				flex-direction: column;
+				flex-wrap: nowrap;
+			}
+
+			.titlebar {
+				transition: background-color linear .1s;
+				flex-grow: 0;
+				flex-shrink: 0;
+				height: var(--desktop-window-titlebar-height);
+				display: flex;
+				flex-direction: row;
 				flex-wrap: nowrap;
 				align-items: center;
-				height: var(--desktop-window-titlebar-height);
+				background-color: var(--desktop-window-titlebar-background-color);
 			}
 
 			.title-text {
@@ -262,8 +270,6 @@ export class DesktopWindow extends HTMLElement {
 			}
 
 			.client-area {
-				position: relative;
-				z-index: 30;
 				flex-grow: 1;
 				flex-shrink: 1;
 				height: calc(100% - var(--desktop-window-titlebar-height));
@@ -373,21 +379,23 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
 		this.#shadowRoot.innerHTML = `
 			<div class="window" part="window" role="dialog" tabindex="-1">
-				<div class="titlebar" part="titlebar">
-					<div class="titlebar-start" part="titlebar-start">
-						<slot name="titlebar-start"></slot>
+				<div class="bounds">
+					<div class="titlebar" part="titlebar">
+						<div class="titlebar-start" part="titlebar-start">
+							<slot name="titlebar-start"></slot>
+						</div>
+						<div class="title-text" part="title-text"></div>
+						<div class="titlebar-end" part="titlebar-end">
+							<slot name="titlebar-end"></slot>
+						</div>
+						<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
+						<div role="button" class="control-btn btn-restore" part="restore-button"></div>
+						<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
+						<div role="button" class="control-btn btn-close" part="close-button"></div>
 					</div>
-					<div class="title-text" part="title-text"></div>
-					<div class="titlebar-end" part="titlebar-end">
-						<slot name="titlebar-end"></slot>
+					<div class="client-area" part="client-area" role="document">
+						<slot></slot>
 					</div>
-					<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
-					<div role="button" class="control-btn btn-restore" part="restore-button"></div>
-					<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
-					<div role="button" class="control-btn btn-close" part="close-button"></div>
-				</div>
-				<div class="client-area" part="client-area" role="document">
-					<slot></slot>
 				</div>
 				<div class="resize-handle handle-n" data-direction="n"></div>
 				<div class="resize-handle handle-s" data-direction="s"></div>
