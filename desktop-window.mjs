@@ -494,6 +494,13 @@ export class DesktopWindow extends HTMLElement {
 		closeButton.addEventListener('click', (e) => {
 			closeButton.dispatchEvent(new Event('close', { bubbles: true }));
 		});
+
+		//-- titlebar doubleclick
+		this.#window.querySelector('.titlebar').addEventListener('dblclick', (event) => {
+			if (this.maximizable) {
+				this.maximized = !this.maximized;
+			}
+		});
 	}
 
 	#parseUnsigned(value) {
