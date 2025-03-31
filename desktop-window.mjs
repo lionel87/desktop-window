@@ -21,13 +21,12 @@ export class DesktopWindow extends HTMLElement {
 	static get observedAttributes() {
 		return [
 			'name',
-			'movable', 'x', 'y', 'centered',
-			'resizable', 'width', 'height', //'contentWidth', 'contentHeight',
-			'minWidth', 'maxWidth', 'minHeight', 'maxHeight',
-			'minimizable', 'minimized',
-			'maximizable', 'maximized',
-			'closable',
-			'fullscreenable', 'fullscreen',
+			'centered',
+			'x', 'y',
+			'width', 'height',
+			// 'contentWidth', 'contentHeight',
+			'minWidth', 'minHeight',
+			'maxWidth', 'maxHeight',
 		];
 	}
 
@@ -37,22 +36,29 @@ export class DesktopWindow extends HTMLElement {
 		const style = new CSSStyleSheet();
 		style.replaceSync(`
 			:host {
+				--desktop-window-background-color: #fff;
+
 				--desktop-window-border-width: 1px;
 				--desktop-window-border-color: #fff;
 
-				--desktop-window-background-color: #fff;
-
 				--desktop-window-titlebar-height: 28px;
+				--desktop-window-titlebar-text-color: #444;
 				--desktop-window-titlebar-background-color: #fff;
 				--desktop-window-titlebar-font-family: sans-serif;
 				--desktop-window-titlebar-font-size: 14px;
-				--desktop-window-titlebar-text-color: #444;
 
-				--desktop-window-buttons-width: 43px;
+				--desktop-window-minimize-button-mask-image: url(${minimizeIcon});
+				--desktop-window-maximize-button-mask-image: url(${maximizeIcon});
+				--desktop-window-restore-button-mask-image: url(${restoreIcon});
+				--desktop-window-close-button-mask-image: url(${closeIcon});
+
+				--desktop-window-buttons-width: 42px;
+				--desktop-window-buttons-height: var(--desktop-window-titlebar-height);
+				--desktop-window-buttons-margin: 0;
 				--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);
-				--desktop-window-buttons-background-color: var(--desktop-window-titlebar-background-color);
+				--desktop-window-buttons-background-color: transparent;
 				--desktop-window-buttons-hover-text-color: var(--desktop-window-titlebar-text-color);
-				--desktop-window-buttons-hover-background-color: #e5e5e5;
+				--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);
 
 				--desktop-window-minimize-text-color: var(--desktop-window-buttons-text-color);
 				--desktop-window-minimize-background-color: var(--desktop-window-buttons-background-color);
@@ -74,42 +80,21 @@ export class DesktopWindow extends HTMLElement {
 				--desktop-window-close-hover-text-color: #fff;
 				--desktop-window-close-hover-background-color: #e50000;
 			}
+
 			.window {
+				transform: translate3d(0, 0, 0); /* forces GPU layer to stabilize subpixel text/image rendering */
 				position: absolute;
 				border: var(--desktop-window-border-width) solid var(--desktop-window-border-color);
 				background-color: var(--desktop-window-background-color);
 				box-shadow: 0 2px 10px rgba(0,0,0,0.25);
 				box-sizing: border-box;
 				user-select: none;
+				-webkit-user-select: none;
 				display: flex;
 				flex-direction: column;
 				flex-wrap: nowrap;
-				transform: translate3d(0, 0, 0); /* forces GPU layer to stabilize subpixel text/image rendering */
 			}
-			.titlebar {
-				position: relative;
-				z-index: 20;
-				background-color: var(--desktop-window-titlebar-background-color);
-				display: flex;
-				min-height: var(--desktop-window-titlebar-height);
-				max-height: var(--desktop-window-titlebar-height);
-				flex-wrap: nowrap;
-				align-items: center;
-				overflow: hidden;
-			}
-			.title-text {
-				font-family: var(--desktop-window-titlebar-font-family);
-				font-size: var(--desktop-window-titlebar-font-size);
-				color: var(--desktop-window-titlebar-text-color);
-				line-height: var(--desktop-window-titlebar-height);
-				flex-grow: 1;
-				flex-shrink: 1;
-				padding: 0 8px;
-				display: inline-block;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
+
 			.resize-handle { display: none; position: absolute; z-index: 10; }
 			.handle-nw, .handle-ne, .handle-sw, .handle-se { width: 12px; height: 12px; }
 			.handle-e, .handle-w { width: 6px; top: 0; bottom: 0; }
@@ -123,26 +108,48 @@ export class DesktopWindow extends HTMLElement {
 			.handle-e { right: -6px; cursor: ew-resize; }
 			.handle-w { left: -6px; cursor: ew-resize; }
 
-			.control-btn {
-				min-height: var(--desktop-window-titlebar-height);
-				max-height: var(--desktop-window-titlebar-height);
-				min-width: var(--desktop-window-buttons-width);
-				max-width: var(--desktop-window-buttons-width);
-				transition: color linear .1s, background-color linear .1s;
-				border: none !important;
+			.titlebar {
+				position: relative;
+				z-index: 20;
+				background-color: var(--desktop-window-titlebar-background-color);
 				display: flex;
-				justify-content: center;
+				flex-wrap: nowrap;
 				align-items: center;
-				line-height: 0; /* fixes icon alignment */
+				height: var(--desktop-window-titlebar-height);
 			}
+
+			.title-text {
+				font-family: var(--desktop-window-titlebar-font-family);
+				font-size: var(--desktop-window-titlebar-font-size);
+				color: var(--desktop-window-titlebar-text-color);
+				line-height: var(--desktop-window-titlebar-height);
+				flex-grow: 1;
+				flex-shrink: 1;
+				padding: 0 6px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.control-btn {
+				cursor: default;
+				position: relative;
+				width: var(--desktop-window-buttons-width);
+				max-width: var(--desktop-window-buttons-width);
+				min-width: var(--desktop-window-buttons-width);
+				height: var(--desktop-window-buttons-height);
+				max-height: var(--desktop-window-buttons-height);
+				min-height: var(--desktop-window-buttons-height);
+				border: none;
+				transition: color linear .1s, background-color linear .1s;
+				margin: 0 var(--desktop-window-buttons-margin) 0 0;
+				padding: 0;
+			}
+
 			.control-btn::before {
-				pointer-events: none;
 				content: "";
-				display: inline-block;
-				width: 20px;
-				height: 20px;
-				-webkit-mask-image: var(--mask-image);
-				mask-image: var(--mask-image);
+				position: absolute;
+				inset: 0;
 				-webkit-mask-size: auto;
 				mask-size: auto;
 				-webkit-mask-position: center center;
@@ -157,7 +164,10 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-minimize-text-color);
 				background-color: var(--desktop-window-minimize-background-color);
 			}
-			.btn-minimize::before { --mask-image: url(${minimizeIcon}); }
+			.btn-minimize::before {
+				-webkit-mask-image: var(--desktop-window-minimize-button-mask-image);
+				mask-image: var(--desktop-window-minimize-button-mask-image);
+			}
 			.btn-minimize:hover {
 				color: var(--desktop-window-minimize-hover-text-color);
 				background-color: var(--desktop-window-minimize-hover-background-color);
@@ -168,7 +178,10 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-maximize-text-color);
 				background-color: var(--desktop-window-maximize-background-color);
 			}
-			.btn-maximize::before { --mask-image: url(${maximizeIcon}); }
+			.btn-maximize::before {
+				-webkit-mask-image: var(--desktop-window-maximize-button-mask-image);
+				mask-image: var(--desktop-window-maximize-button-mask-image);
+			}
 			.btn-maximize:hover {
 				color: var(--desktop-window-maximize-hover-text-color);
 				background-color: var(--desktop-window-maximize-hover-background-color);
@@ -179,7 +192,10 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-restore-text-color);
 				background-color: var(--desktop-window-restore-background-color);
 			}
-			.btn-restore::before { --mask-image: url(${restoreIcon}); }
+			.btn-restore::before {
+				-webkit-mask-image: var(--desktop-window-restore-button-mask-image);
+				mask-image: var(--desktop-window-restore-button-mask-image);
+			}
 			.btn-restore:hover {
 				color: var(--desktop-window-restore-hover-text-color);
 				background-color: var(--desktop-window-restore-hover-background-color);
@@ -190,7 +206,10 @@ export class DesktopWindow extends HTMLElement {
 				color: var(--desktop-window-close-text-color);
 				background-color: var(--desktop-window-close-background-color);
 			}
-			.btn-close::before { --mask-image: url(${closeIcon}); }
+			.btn-close::before {
+				-webkit-mask-image: var(--desktop-window-close-button-mask-image);
+				mask-image: var(--desktop-window-close-button-mask-image);
+			}
 			.btn-close:hover {
 				color: var(--desktop-window-close-hover-text-color);
 				background-color: var(--desktop-window-close-hover-background-color);
@@ -199,47 +218,42 @@ export class DesktopWindow extends HTMLElement {
 			.client-area {
 				position: relative;
 				z-index: 30;
-				overflow: visible;
 				flex-grow: 1;
 				flex-shrink: 1;
 				height: calc(100% - var(--desktop-window-titlebar-height));
+				-webkit-user-select: text;
+				user-select: text;
 			}
 
-			/* movable */
-			.movable .titlebar { cursor: move; }
+			:host([movable]) .titlebar { cursor: move; }
 
-			/* resizable */
-			.resizable .resize-handle { display: block; }
+			:host([resizable]) .resize-handle { display: block; }
+			:host([resizable][minimized]) .resize-handle { display: none; }
+			:host([resizable][maximized]) .resize-handle { display: none; }
 
-			/* minimizable */
-			.minimizable .btn-minimize { display: inline-block; }
-			.minimizable.minimized .btn-restore { display: inline-block; }
-			.minimizable.minimized .btn-minimize { display: none; }
-			.minimizable.minimized .resize-handle { display: none !important; }
-			.minimizable.minimized {
-				height: calc(2 * var(--desktop-window-border-width) + var(--desktop-window-titlebar-height)) !important;
+			:host([minimizable]) .btn-minimize { display: block; }
+			:host([maximizable]) .btn-maximize { display: block; }
+			:host([minimizable][minimized]) .btn-minimize { display: none; }
+			:host([minimizable][minimized]) .btn-restore { display: block; }
+			:host([maximizable][maximized]) .btn-maximize { display: none; }
+			:host([maximizable][maximized]) .btn-restore { display: block; }
+			:host([closable]) .btn-close { display: block; }
+
+			:host([minimized]) .window {
+				height: calc(round((2 * var(--desktop-window-border-width)) + var(--desktop-window-titlebar-height))) !important;
 			}
-			.minimizable.minimized .client-area { display: none; }
+			:host([minimized]) .client-area { display: none; }
 
-			/* maximizable */
-			.maximizable .btn-maximize { display: inline-block; }
-			.maximizable.maximized .btn-restore { display: inline-block; }
-			.maximizable.maximized .btn-maximize { display: none; }
-			.maximizable.maximized .resize-handle { display: none !important; }
-			.maximizable.maximized {
+			:host([maximized]) .window {
 				border: none;
 				inset: 0 !important;
 				width: auto !important;
 				height: auto !important;
 			}
 
-			/* closable */
-			.closable .btn-close { display: inline-block; }
-
-			/* fullscreenable */
-			.fullscreenable.fullscreen .resize-handle { display: none !important; }
-			.fullscreenable.fullscreen .titlebar { display: none; }
-			.fullscreenable.fullscreen {
+			:host([fullscreen]) .resize-handle { display: none !important; }
+			:host([fullscreen]) .titlebar { display: none; }
+			:host([fullscreen]) .window {
 				border: none;
 				inset: 0 !important;
 				width: auto !important;
@@ -249,25 +263,32 @@ export class DesktopWindow extends HTMLElement {
 		return style;
 	})();
 
+	/** @type {HTMLElement | null} */
 	#shadowRoot = null;
 	#window = null;
-	#dragMouseMove = null;
-	#dragMouseUp = null;
-	#resizeMouseMove = null;
-	#resizeMouseUp = null;
+	#clientArea = null;
+	#dragPointerMove = null;
+	#dragPointerUp = null;
+	#resizePointerMove = null;
+	#resizePointerUp = null;
 
 	constructor() {
 		super();
 		this.#shadowRoot = this.attachShadow({ mode: DesktopWindow.shadowMode });
 		this.#shadowRoot.adoptedStyleSheets = [DesktopWindow.#stylesheet];
 		this.#shadowRoot.innerHTML = `
-			<div class="window">
-				<div class="titlebar">
-					<span class="title-text"></span>
-					<button class="control-btn btn-minimize"></button>
-					<button class="control-btn btn-restore"></button>
-					<button class="control-btn btn-maximize"></button>
-					<button class="control-btn btn-close"></button>
+			<div class="window" part="window">
+				<div class="titlebar" part="titlebar">
+					<slot name="titlebar-start"></slot>
+					<div class="title-text" part="title-text"></div>
+					<slot name="titlebar-end"></slot>
+					<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
+					<div role="button" class="control-btn btn-restore" part="restore-button"></div>
+					<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
+					<div role="button" class="control-btn btn-close" part="close-button"></div>
+				</div>
+				<div class="client-area" part="client-area">
+					<slot></slot>
 				</div>
 				<div class="resize-handle handle-n" data-direction="n"></div>
 				<div class="resize-handle handle-s" data-direction="s"></div>
@@ -277,11 +298,13 @@ export class DesktopWindow extends HTMLElement {
 				<div class="resize-handle handle-ne" data-direction="ne"></div>
 				<div class="resize-handle handle-sw" data-direction="sw"></div>
 				<div class="resize-handle handle-se" data-direction="se"></div>
-				<div class="client-area">
-					<slot></slot>
-				</div>
 			</div>
 		`;
+
+		this.#window = this.#shadowRoot.querySelector('.window');
+		this.#clientArea = this.#window.querySelector('.client-area');
+
+		//--
 
 		this.#shadowRoot.addEventListener('minimize', (event) => {
 			event.stopPropagation(); // stops composed events to escape
@@ -335,42 +358,41 @@ export class DesktopWindow extends HTMLElement {
 			}
 		});
 
-		//--
+		//-- zindex
 
-		this.#window = this.#shadowRoot.querySelector('.window');
-		this.#window.addEventListener('mousedown', (e) => {
+		this.#window.addEventListener('pointerdown', (e) => {
 			this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		});
 		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 
 		const controlButtons = this.#shadowRoot.querySelectorAll('.control-btn');
 		for (const controlButton of controlButtons) {
-			controlButton.addEventListener('mousedown', (e) => {
+			controlButton.addEventListener('pointerdown', (e) => {
 				e.stopPropagation();
 				this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 			});
 		}
 
-		//--
-
-		const closeButton = this.#shadowRoot.querySelector('.btn-close');
-		closeButton.addEventListener('click', (e) => {
-			closeButton.dispatchEvent(new Event('close', { bubbles: true, cancelable: true }));
-		});
+		//-- control buttons
 
 		const minimizeButton = this.#shadowRoot.querySelector('.btn-minimize');
 		minimizeButton.addEventListener('click', (e) => {
-			minimizeButton.dispatchEvent(new Event('minimize', { bubbles: true, cancelable: true }));
-		});
-
-		const restoreButton = this.#shadowRoot.querySelector('.btn-restore');
-		restoreButton.addEventListener('click', (e) => {
-			restoreButton.dispatchEvent(new Event('restore', { bubbles: true, cancelable: true }));
+			minimizeButton.dispatchEvent(new Event('minimize', { bubbles: true }));
 		});
 
 		const maximizeButton = this.#shadowRoot.querySelector('.btn-maximize');
 		maximizeButton.addEventListener('click', (e) => {
-			maximizeButton.dispatchEvent(new Event('maximize', { bubbles: true, cancelable: true }));
+			maximizeButton.dispatchEvent(new Event('maximize', { bubbles: true }));
+		});
+
+		const restoreButton = this.#shadowRoot.querySelector('.btn-restore');
+		restoreButton.addEventListener('click', (e) => {
+			restoreButton.dispatchEvent(new Event('restore', { bubbles: true }));
+		});
+
+		const closeButton = this.#shadowRoot.querySelector('.btn-close');
+		closeButton.addEventListener('click', (e) => {
+			closeButton.dispatchEvent(new Event('close', { bubbles: true }));
 		});
 	}
 
@@ -382,6 +404,22 @@ export class DesktopWindow extends HTMLElement {
 	#parseInteger(value) {
 		const intVal = Number.parseInt(value);
 		return Number.isNaN(intVal) ? null : intVal;
+	}
+
+	#getUnsignedAttribute(name) {
+		return this.#parseUnsigned(this.getAttribute(name));
+	}
+
+	#setUnsignedAttribute(name, value) {
+		this.setAttribute(name, String(Math.round(Math.max(0, value))));
+	}
+
+	#getIntegerAttribute(name) {
+		return this.#parseInteger(this.getAttribute(name));
+	}
+
+	#setIntegerAttribute(name, value) {
+		this.setAttribute(name, String(Math.round(value)));
 	}
 
 	#getBooleanAttribute(name) {
@@ -397,18 +435,6 @@ export class DesktopWindow extends HTMLElement {
 		}
 	}
 
-	#getUnsignedAttribute(name) { return this.#parseUnsigned(this.getAttribute(name)); }
-
-	#setUnsignedAttribute(name, value) {
-		this.setAttribute(name, String(Math.round(Math.max(0, value))));
-	}
-
-	#getIntegerAttribute(name) { return this.#parseInteger(this.getAttribute(name)); }
-
-	#setIntegerAttribute(name, value) {
-		this.setAttribute(name, String(Math.round(value)));
-	}
-
 	get name() { return this.getAttribute('name'); }
 	set name(value) {
 		if (value) {
@@ -421,10 +447,10 @@ export class DesktopWindow extends HTMLElement {
 	get movable() { return this.#getBooleanAttribute('movable'); }
 	set movable(value) { this.#setBooleanAttribute('movable', value); }
 
-	get x() { return this.#getIntegerAttribute('x') ?? 50; }
+	get x() { return this.#getIntegerAttribute('x') ?? DesktopWindow.defaultX; }
 	set x(value) { this.#setIntegerAttribute('x', value); }
 
-	get y() { return this.#getIntegerAttribute('y') ?? 50; }
+	get y() { return this.#getIntegerAttribute('y') ?? DesktopWindow.defaultY; }
 	set y(value) { this.#setIntegerAttribute('y', value); }
 
 	get centered() { return this.#getBooleanAttribute('centered'); }
@@ -435,6 +461,12 @@ export class DesktopWindow extends HTMLElement {
 
 	get height() { return this.#getUnsignedAttribute('height') ?? DesktopWindow.defaultHeight; }
 	set height(value) { this.#setUnsignedAttribute('height', value); }
+
+	get contentWidth() { return this.#getUnsignedAttribute('contentWidth'); }
+	set contentWidth(value) { this.#setUnsignedAttribute('contentWidth', value); }
+
+	get contentHeight() { return this.#getUnsignedAttribute('contentHeight'); }
+	set contentHeight(value) { this.#setUnsignedAttribute('contentHeight', value); }
 
 	get minWidth() { return this.#getUnsignedAttribute('minWidth') ?? DesktopWindow.defaultMinWidth; }
 	set minWidth(value) { this.#setUnsignedAttribute('minWidth', value); }
@@ -450,9 +482,6 @@ export class DesktopWindow extends HTMLElement {
 
 	get resizable() { return this.#getBooleanAttribute('resizable'); }
 	set resizable(value) { this.#setBooleanAttribute('resizable', value); }
-
-	get fullscreenable() { return this.#getBooleanAttribute('fullscreenable'); }
-	set fullscreenable(value) { this.#setBooleanAttribute('fullscreenable', value); }
 
 	get fullscreen() { return this.#getBooleanAttribute('fullscreen'); }
 	set fullscreen(value) { this.#setBooleanAttribute('fullscreen', value); }
@@ -547,7 +576,8 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	getContentSize() {
-		throw new Error('Not implemented yet.');
+		const clientBounds = this.#clientArea.getBoundingClientRect();
+		return [clientBounds.width, clientBounds.height];
 	}
 
 	setContentSize(width, height) {
@@ -555,7 +585,14 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	getContentBounds() {
-		throw new Error('Not implemented yet.');
+		const parentBounds = this.parentElement.getBoundingClientRect();
+		const clientBounds = this.#clientArea.getBoundingClientRect();
+		return {
+			x: clientBounds.x - parentBounds.x,
+			y: clientBounds.y - parentBounds.y,
+			width: clientBounds.width,
+			height: clientBounds.height,
+		};
 	}
 
 	setContentBounds(bounds) {
@@ -584,33 +621,38 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot = null;
 		this.#window = null;
 
-		if (this.#dragMouseMove) {
-			window.removeEventListener('mousemove', this.#dragMouseMove);
-			this.#dragMouseMove = null;
+		if (this.#dragPointerMove) {
+			window.removeEventListener('pointermove', this.#dragPointerMove);
+			this.#dragPointerMove = null;
 		}
-		if (this.#dragMouseUp) {
-			window.removeEventListener('mouseup', this.#dragMouseUp);
-			this.#dragMouseUp = null;
+		if (this.#dragPointerUp) {
+			window.removeEventListener('pointerup', this.#dragPointerUp);
+			this.#dragPointerUp = null;
 		}
-		if (this.#resizeMouseMove) {
-			window.removeEventListener('mousemove', this.#resizeMouseMove);
-			this.#resizeMouseMove = null;
+		if (this.#resizePointerMove) {
+			window.removeEventListener('pointermove', this.#resizePointerMove);
+			this.#resizePointerMove = null;
 		}
-		if (this.#resizeMouseUp) {
-			window.removeEventListener('mouseup', this.#resizeMouseUp);
-			this.#resizeMouseUp = null;
+		if (this.#resizePointerUp) {
+			window.removeEventListener('pointerup', this.#resizePointerUp);
+			this.#resizePointerUp = null;
 		}
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (oldValue === newValue) return;
-		const boolValue = newValue === '' || newValue === 'true' || newValue === name;
 		switch (name) {
 			case 'name':
 				this.#shadowRoot.querySelector('.title-text').textContent = newValue;
 				break;
-			case 'movable':
-				this.#window.classList.toggle('movable', boolValue);
+			case 'centered':
+				if (newValue !== null) {
+					this.#window.style.left = Math.round((this.parentElement.offsetWidth - this.width) / 2) + 'px';
+					this.#window.style.top = Math.round((this.parentElement.offsetHeight - this.height) / 2) + 'px';
+				} else {
+					this.#window.style.left = this.x + 'px';
+					this.#window.style.top = this.y + 'px';
+				}
 				break;
 			case 'x':
 				if (!this.centered) {
@@ -622,18 +664,6 @@ export class DesktopWindow extends HTMLElement {
 					this.#window.style.top = this.#parseInteger(newValue) + 'px';
 				}
 				break;
-			case 'centered':
-				if (boolValue) {
-					this.#window.style.left = Math.round((this.parentElement.offsetWidth - this.width) / 2) + 'px';
-					this.#window.style.top = Math.round((this.parentElement.offsetHeight - this.height) / 2) + 'px';
-				} else {
-					this.#window.style.left = this.x + 'px';
-					this.#window.style.top = this.y + 'px';
-				}
-				break;
-			case 'resizable':
-				this.#window.classList.toggle('resizable', boolValue);
-				break;
 			case 'width':
 				this.#window.style.width = this.#parseUnsigned(newValue) + 'px';
 				break;
@@ -641,140 +671,128 @@ export class DesktopWindow extends HTMLElement {
 				this.#window.style.height = this.#parseUnsigned(newValue) + 'px';
 				break;
 			case 'minWidth':
-				this.width = Math.max(this.#parseUnsigned(newValue), this.width);
+				const minWidth = this.#parseUnsigned(newValue);
+				if (this.width < minWidth) {
+					this.width = minWidth;
+				}
 				break;
 			case 'minHeight':
-				this.height = Math.max(this.#parseUnsigned(newValue), this.height);
+				const minHeight = this.#parseUnsigned(newValue);
+				if (this.height < minHeight) {
+					this.height = minHeight;
+				}
 				break;
 			case 'maxWidth':
-				this.width = Math.min(this.width, this.#parseUnsigned(newValue));
+				const maxWidth = this.#parseUnsigned(newValue);
+				if (this.width > maxWidth) {
+					this.width = maxWidth;
+				}
 				break;
 			case 'maxHeight':
-				this.height = Math.min(this.height, this.#parseUnsigned(newValue));
-				break;
-			case 'minimizable':
-				this.#window.classList.toggle('minimizable', boolValue);
-				break;
-			case 'minimized':
-				if (boolValue && this.maximized) this.maximized = false;
-				this.#window.classList.toggle('minimized', boolValue);
-				break;
-			case 'maximizable':
-				this.#window.classList.toggle('maximizable', boolValue);
-				break;
-			case 'maximized':
-				if (boolValue && this.minimized) this.minimized = false;
-				this.#window.classList.toggle('maximized', boolValue);
-				break;
-			case 'closable':
-				this.#window.classList.toggle('closable', boolValue);
-				break;
-			case 'fullscreenable':
-				this.#window.classList.toggle('fullscreenable', boolValue);
-				break;
-			case 'fullscreen':
-				this.#window.classList.toggle('fullscreen', boolValue);
-				break;
-			default:
-				throw new Error(`Handling of observed attribute '${name}' is not implemented.`);
+				const maxHeight = this.#parseUnsigned(newValue);
+				if (this.height > maxHeight) {
+					this.height = maxHeight;
+				}
 				break;
 		}
 	}
 
 	#setupDragging() {
-		let parentRect = { left: 0, right: 0, bottom: 0, top: 0 };
-		let startX = 0;
-		let startY = 0;
-		let windowX = 0;
-		let windowY = 0;
+		let startClientX, startClientY;
+		let start;
+		let parentRect;
 
-		this.#dragMouseMove = (e) => {
-			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startX;
-			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startY;
-			this.#window.style.left = `${Math.round(windowX + dx)}px`;
-			this.#window.style.top = `${Math.round(windowY + dy)}px`;
+		this.#dragPointerMove = (e) => {
+			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startClientX;
+			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startClientY;
+			this.#window.style.left = `${Math.round(start.x + dx)}px`;
+			this.#window.style.top = `${Math.round(start.y + dy)}px`;
 		};
 
-		this.#dragMouseUp = () => {
-			window.removeEventListener('mousemove', this.#dragMouseMove);
-			window.removeEventListener('mouseup', this.#dragMouseUp);
+		this.#dragPointerUp = () => {
+			window.removeEventListener('pointermove', this.#dragPointerMove);
+			window.removeEventListener('pointerup', this.#dragPointerUp);
 			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
 			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
-			this.centered = false;
 		};
 
-		this.#shadowRoot.querySelector('.titlebar')?.addEventListener('mousedown', (e) => {
+
+		const titlebar = this.#shadowRoot.querySelector('.titlebar');
+		titlebar.addEventListener('pointerdown', (e) => {
 			if (!this.movable) return;
-			windowX = this.#window.offsetLeft;
-			windowY = this.#window.offsetTop;
-			startX = e.clientX;
-			startY = e.clientY;
+			startClientX = e.clientX;
+			startClientY = e.clientY;
+			start = this.#window.getBoundingClientRect();
 			parentRect = this.parentElement.getBoundingClientRect();
-			window.addEventListener('mousemove', this.#dragMouseMove);
-			window.addEventListener('mouseup', this.#dragMouseUp);
+			window.addEventListener('pointermove', this.#dragPointerMove);
+			window.addEventListener('pointerup', this.#dragPointerUp);
+			if (this.centered) {
+				this.x = start.x;
+				this.y = start.y;
+				this.centered = false;
+			}
 		});
 	}
 
 	#setupResizing() {
-		let parentRect = { left: 0, right: 0, bottom: 0, top: 0, width: 0, height: 0 };
-		let startMouseX, startMouseY;
-		let startWindowX, startWindowY
-		let startWindowWidth, startWindowHeight;
 		let direction;
+		let startClientX, startClientY;
+		let start;
+		let parentRect;
 		let minWidth, minHeight, maxWidth, maxHeight;
 
-		this.#resizeMouseMove = (e) => {
-			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startMouseX;
-			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startMouseY;
+		this.#resizePointerMove = (e) => {
+			const dx = Math.max(parentRect.left, Math.min(e.clientX, parentRect.right)) - startClientX;
+			const dy = Math.max(parentRect.top, Math.min(e.clientY, parentRect.bottom)) - startClientY;
 
 			if (direction.includes('e')) {
-				const w = Math.max(minWidth, Math.min(startWindowWidth + dx, maxWidth));
+				const w = Math.max(minWidth, Math.min(start.width + dx, maxWidth));
 				this.#window.style.width = `${Math.round(w)}px`;
 			} else if (direction.includes('w')) {
-				const w = Math.max(minWidth, Math.min(startWindowWidth - dx, maxWidth));
+				const w = Math.max(minWidth, Math.min(start.width - dx, maxWidth));
 				this.#window.style.width = `${Math.round(w)}px`;
-				this.#window.style.left = `${Math.round(startWindowX + startWindowWidth - w)}px`;
+				this.#window.style.left = `${Math.round(start.right - w)}px`;
 			}
 			if (direction.includes('n')) {
-				const h = Math.max(minHeight, Math.min(startWindowHeight - dy, maxHeight));
+				const h = Math.max(minHeight, Math.min(start.height - dy, maxHeight));
 				this.#window.style.height = `${Math.round(h)}px`;
-				this.#window.style.top = `${Math.round(startWindowY + startWindowHeight - h)}px`;
+				this.#window.style.top = `${Math.round(start.bottom - h)}px`;
 			} else if (direction.includes('s')) {
-				const h = Math.max(minHeight, Math.min(startWindowHeight + dy, maxHeight));
+				const h = Math.max(minHeight, Math.min(start.height + dy, maxHeight));
 				this.#window.style.height = `${Math.round(h)}px`;
 			}
 		};
 
-		this.#resizeMouseUp = () => {
-			window.removeEventListener('mousemove', this.#resizeMouseMove);
-			window.removeEventListener('mouseup', this.#resizeMouseUp);
+		this.#resizePointerUp = () => {
+			window.removeEventListener('pointermove', this.#resizePointerMove);
+			window.removeEventListener('pointerup', this.#resizePointerUp);
 			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
 			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
 			this.width = Number.parseInt(this.#window.style.width.replace('px', ''));
 			this.height = Number.parseInt(this.#window.style.height.replace('px', ''));
-			this.centered = false;
 		};
 
 		/** @type {HTMLElement[]} */
 		const handles = this.#shadowRoot.querySelectorAll('.resize-handle');
 		for (const handle of handles) {
-			handle.addEventListener('mousedown', (e) => {
+			handle.addEventListener('pointerdown', (e) => {
 				if (!this.resizable) return;
-				parentRect = this.parentElement.getBoundingClientRect();
-				startMouseX = e.clientX;
-				startMouseY = e.clientY;
-				const rect = this.#window.getBoundingClientRect();
-				startWindowX = rect.left - parentRect.left;
-				startWindowY = rect.top - parentRect.top;
-				startWindowWidth = rect.width;
-				startWindowHeight = rect.height;
 				direction = handle.dataset.direction;
+				startClientX = e.clientX;
+				startClientY = e.clientY;
+				start = this.#window.getBoundingClientRect();
+				parentRect = this.parentElement.getBoundingClientRect();
 				minWidth = this.minWidth;
 				minHeight = this.minHeight;
 				maxWidth = this.maxWidth;
 				maxHeight = this.maxHeight;
-				window.addEventListener('mousemove', this.#resizeMouseMove);
-				window.addEventListener('mouseup', this.#resizeMouseUp);
+				window.addEventListener('pointermove', this.#resizePointerMove);
+				window.addEventListener('pointerup', this.#resizePointerUp);
+				if (this.centered) {
+					this.x = start.x;
+					this.y = start.y;
+					this.centered = false;
+				}
 			});
 		}
 	}
