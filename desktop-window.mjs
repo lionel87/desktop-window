@@ -396,16 +396,6 @@ export class DesktopWindow extends HTMLElement {
 
 		//--
 
-		this.#window.querySelector('.titlebar-start').addEventListener('pointerdown', (event) => {
-			event.stopPropagation();
-		});
-
-		this.#window.querySelector('.titlebar-end').addEventListener('pointerdown', (event) => {
-			event.stopPropagation();
-		});
-
-		//--
-
 		this.#shadowRoot.addEventListener('minimize', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const minimizing = new Event('minimizing', { bubbles: true, cancelable: true });
@@ -460,42 +450,46 @@ export class DesktopWindow extends HTMLElement {
 
 		//-- zindex
 
+		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		this.#window.addEventListener('pointerdown', (e) => {
 			this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		});
-		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 
-		const controlButtons = this.#shadowRoot.querySelectorAll('.control-btn');
-		for (const controlButton of controlButtons) {
-			controlButton.addEventListener('pointerdown', (e) => {
+		//-- titlebar controls should not bubble titlebar only events
+
+		const controls = [
+			this.#window.querySelector('.titlebar-start'),
+			this.#window.querySelector('.titlebar-end'),
+			...this.#shadowRoot.querySelectorAll('.control-btn'),
+		];
+		for (const control of controls) {
+			control.addEventListener('pointerdown', (e) => {
 				e.stopPropagation();
 				this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
+			});
+			control.addEventListener('dblclick', (e) => {
+				e.stopPropagation();
 			});
 		}
 
 		//-- control buttons
 
-		const minimizeButton = this.#shadowRoot.querySelector('.btn-minimize');
-		minimizeButton.addEventListener('click', (e) => {
-			minimizeButton.dispatchEvent(new Event('minimize', { bubbles: true }));
+		this.#shadowRoot.querySelector('.btn-minimize').addEventListener('click', () => {
+			this.#shadowRoot.dispatchEvent(new Event('minimize', { bubbles: true }));
 		});
 
-		const maximizeButton = this.#shadowRoot.querySelector('.btn-maximize');
-		maximizeButton.addEventListener('click', (e) => {
-			maximizeButton.dispatchEvent(new Event('maximize', { bubbles: true }));
+		this.#shadowRoot.querySelector('.btn-maximize').addEventListener('click', () => {
+			this.#shadowRoot.dispatchEvent(new Event('maximize', { bubbles: true }));
 		});
 
-		const restoreButton = this.#shadowRoot.querySelector('.btn-restore');
-		restoreButton.addEventListener('click', (e) => {
-			restoreButton.dispatchEvent(new Event('restore', { bubbles: true }));
+		this.#shadowRoot.querySelector('.btn-restore').addEventListener('click', () => {
+			this.#shadowRoot.dispatchEvent(new Event('restore', { bubbles: true }));
 		});
 
-		const closeButton = this.#shadowRoot.querySelector('.btn-close');
-		closeButton.addEventListener('click', (e) => {
-			closeButton.dispatchEvent(new Event('close', { bubbles: true }));
+		this.#shadowRoot.querySelector('.btn-close').addEventListener('click', () => {
+			this.#shadowRoot.dispatchEvent(new Event('close', { bubbles: true }));
 		});
 
-		//-- titlebar doubleclick
 		this.#window.querySelector('.titlebar').addEventListener('dblclick', (event) => {
 			if (this.maximizable) {
 				this.maximized = !this.maximized;
