@@ -153,11 +153,6 @@ export class DesktopWindow extends HTMLElement {
 				height: var(--desktop-window-titlebar-height);
 			}
 
-			.titlebar-start,
-			.titlebar-end {
-				cursor: default;
-			}
-
 			.title-text {
 				transition: color linear .1s;
 				font-family: var(--desktop-window-titlebar-font-family);
@@ -172,19 +167,29 @@ export class DesktopWindow extends HTMLElement {
 				text-overflow: ellipsis;
 			}
 
+			.titlebar-start,
+			.titlebar-end {
+				cursor: default;
+				flex-grow: 0;
+				flex-shrink: 0;
+				height: 100%;
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				align-items: center;
+			}
+
 			.control-btn {
 				cursor: default;
 				position: relative;
 				width: var(--desktop-window-buttons-width);
-				max-width: var(--desktop-window-buttons-width);
-				min-width: var(--desktop-window-buttons-width);
 				height: var(--desktop-window-buttons-height);
-				max-height: var(--desktop-window-buttons-height);
-				min-height: var(--desktop-window-buttons-height);
 				border: none;
 				transition: color linear .1s, background-color linear .1s;
 				margin: 0 var(--desktop-window-buttons-margin) 0 0;
 				padding: 0;
+				flex-grow: 0;
+				flex-shrink: 0;
 			}
 
 			.control-btn::before {
@@ -369,9 +374,13 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot.innerHTML = `
 			<div class="window" part="window" role="dialog" tabindex="-1">
 				<div class="titlebar" part="titlebar">
-					<slot name="titlebar-start" class="titlebar-start"></slot>
+					<div class="titlebar-start" part="titlebar-start">
+						<slot name="titlebar-start"></slot>
+					</div>
 					<div class="title-text" part="title-text"></div>
-					<slot name="titlebar-end" class="titlebar-end"></slot>
+					<div class="titlebar-end" part="titlebar-end">
+						<slot name="titlebar-end"></slot>
+					</div>
 					<div role="button" class="control-btn btn-minimize" part="minimize-button"></div>
 					<div role="button" class="control-btn btn-restore" part="restore-button"></div>
 					<div role="button" class="control-btn btn-maximize" part="maximize-button"></div>
@@ -457,11 +466,7 @@ export class DesktopWindow extends HTMLElement {
 
 		//-- titlebar controls should not bubble titlebar only events
 
-		const controls = [
-			this.#window.querySelector('.titlebar-start'),
-			this.#window.querySelector('.titlebar-end'),
-			...this.#shadowRoot.querySelectorAll('.control-btn'),
-		];
+		const controls = this.#shadowRoot.querySelectorAll('.titlebar-start, .titlebar-end, .control-btn');
 		for (const control of controls) {
 			control.addEventListener('pointerdown', (e) => {
 				e.stopPropagation();
