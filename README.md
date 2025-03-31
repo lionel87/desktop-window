@@ -43,17 +43,23 @@ Copy the `desktop-window.mjs` to your site scripts, then:
 When the custom element is defined, use the `<desktop-window>` tag (or what you registered) in HTML code.
 
 ```html
-<desktop-window name="Hello world!" movable resizable minimizable maximizable closable centered>
-  The contents of the window are placed here.
-  <button id="fullscreen">⛶ Toggle fullscreen</button>
-</desktop-window>
-
+<style>
+  desktop-window[fullscreen] #enter-fullscreen { display: none; }
+  desktop-window:not([fullscreen]) #exit-fullscreen { display: none; }
+</style>
+<div style="position: relative; width: 100vw; height: 100vh;">
+  <desktop-window name="Hello world!" movable resizable minimizable maximizable closable centered>
+    The contents of the window are placed here.
+    <button id="enter-fullscreen">⛶ Enter fullscreen</button>
+    <button id="exit-fullscreen">⛶ Exit fullscreen</button>
+  </desktop-window>
+</div>
 <script>
-const fullscreenButton = document.getElementById('fullscreen');
-let fs = false;
-fullscreenButton.addEventListener('click', (event) => {
-    fullscreenButton.dispatchEvent(new Event(fs ? 'exit-fullscreen' : 'request-fullscreen', { bubbles: true }));
-    fs = !fs;
+document.getElementById('enter-fullscreen').addEventListener('click', function (event) {
+    this.dispatchEvent(new Event('request-fullscreen', { bubbles: true }));
+});
+document.getElementById('exit-fullscreen').addEventListener('click', function (event) {
+    this.dispatchEvent(new Event('exit-fullscreen', { bubbles: true }));
 });
 </script>
 ```
