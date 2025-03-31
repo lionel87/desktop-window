@@ -716,6 +716,10 @@ export class DesktopWindow extends HTMLElement {
 
 		this.#setupDragging();
 		this.#setupResizing();
+
+		if (this.autofocus) {
+			this.focus();
+		}
 	}
 
 	disconnectedCallback() {
