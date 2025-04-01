@@ -36,6 +36,9 @@ export class DesktopWindow extends HTMLElement {
 		const style = new CSSStyleSheet();
 		style.replaceSync(`
 			:host {
+				/* this one updated internally on pointerdown */
+				--desktop-window-z-index: 10;
+
 				--desktop-window-background-color: #fff;
 
 				--desktop-window-border-width: 1px;
@@ -123,6 +126,7 @@ export class DesktopWindow extends HTMLElement {
 				-webkit-user-select: none;
 				user-select: none;
 				outline: none;
+				z-index: calc(2 * var(--desktop-window-z-index));
 			}
 
 			.resize-handle { display: none; position: absolute; z-index: 10; }
@@ -366,6 +370,26 @@ export class DesktopWindow extends HTMLElement {
 				box-shadow: none;
 				background-color: transparent;
 			}
+
+			:host(:not([modal])) .backdrop { display: none; }
+			:host([modal]) .backdrop {
+				position: absolute;
+				inset: 0;
+				z-index: calc(2 * var(--desktop-window-z-index) - 1);
+			}
+
+			@keyframes border-flash {
+				0%, 100%   { box-shadow: 0 0 0 0 #666; }
+				16.66%     { box-shadow: 0 0 10px 1px #666; }
+				33.33%     { box-shadow: 0 0 0 0 #666; }
+				50%        { box-shadow: 0 0 10px 1px #666; }
+				66.66%     { box-shadow: 0 0 0 0 #666; }
+				83.33%     { box-shadow: 0 0 10px 1px #666; }
+			}
+
+			.border-flash {
+				animation: border-flash 600ms ease-out;
+			}
 		`);
 		return style;
 	})();
@@ -415,6 +439,7 @@ export class DesktopWindow extends HTMLElement {
 				<div class="resize-handle handle-sw" data-direction="sw"></div>
 				<div class="resize-handle handle-se" data-direction="se"></div>
 			</div>
+			<div class="backdrop"></div>
 		`;
 
 		this.#window = this.#shadowRoot.querySelector('.window');
@@ -476,9 +501,14 @@ export class DesktopWindow extends HTMLElement {
 
 		//-- zindex
 
-		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
 		this.#window.addEventListener('pointerdown', () => {
-			this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
+			this.style.setProperty('--desktop-window-z-index', DesktopWindow.#nextZIndex++);
+		});
+
+		this.#shadowRoot.querySelector('.backdrop').addEventListener('click', () => {
+			this.#window.classList.remove('border-flash'); // reset if re-triggered
+			void this.#window.offsetWidth; // force reflow
+			this.#window.classList.add('border-flash');
 		});
 
 		//-- titlebar controls should not bubble titlebar only events
@@ -487,7 +517,7 @@ export class DesktopWindow extends HTMLElement {
 		for (const control of controls) {
 			control.addEventListener('pointerdown', (e) => {
 				e.stopPropagation();
-				this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
+				this.style.setProperty('--desktop-window-z-index', DesktopWindow.#nextZIndex++);
 			});
 			control.addEventListener('dblclick', (e) => {
 				e.stopPropagation();
@@ -689,8 +719,11 @@ export class DesktopWindow extends HTMLElement {
 	get frameless() { return this.#getBooleanAttribute('frameless'); }
 	set frameless(value) { this.#setBooleanAttribute('frameless', value); }
 
+	get modal() { return this.#getBooleanAttribute('modal'); }
+	set modal(value) { this.#setBooleanAttribute('modal', value); }
+
 	focus() {
-		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
+		this.style.setProperty('--desktop-window-z-index', DesktopWindow.#nextZIndex++);
 		this.#window.focus();
 	}
 

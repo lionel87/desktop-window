@@ -87,6 +87,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `hidden`
 - `autofocus`
 - `frameless`
+- `modal`
 
 ### Events emitted
 
@@ -141,6 +142,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `fullscreen`
 - `autofocus`
 - `frameless`
+- `modal`
 
 ### Methods
 
