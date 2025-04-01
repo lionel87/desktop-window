@@ -359,6 +359,13 @@ export class DesktopWindow extends HTMLElement {
 				width: auto !important;
 				height: auto !important;
 			}
+
+			:host([frameless]) .titlebar { display: none; }
+			:host([frameless]) .window {
+				border: none;
+				box-shadow: none;
+				background-color: transparent;
+			}
 		`);
 		return style;
 	})();
@@ -532,6 +539,29 @@ export class DesktopWindow extends HTMLElement {
 				}
 			})
 		}
+
+		// custom resize/move handler
+
+		this.#shadowRoot.addEventListener('move', (event) => {
+			event.stopPropagation(); // stops composed events to escape
+			if (event.detail && 'clientX' in event.detail && 'clientY' in event.detail) {
+				const { clientX, clientY } = event.detail;
+				this.#shadowRoot.querySelector('.titlebar')
+					.dispatchEvent(new PointerEvent('pointerdown', { clientX, clientY }));
+			}
+		});
+
+		const directions = ['n', 's', 'e', 'w', 'nw', 'ne', 'sw', 'se'];
+		for (const direction of directions) {
+			this.#shadowRoot.addEventListener('resize-' + direction, (event) => {
+				event.stopPropagation(); // stops composed events to escape
+				if (event.detail && 'clientX' in event.detail && 'clientY' in event.detail) {
+					const { clientX, clientY } = event.detail;
+					this.#shadowRoot.querySelector('.resize-handle.handle-' + direction)
+						.dispatchEvent(new PointerEvent('pointerdown', { clientX, clientY }));
+				}
+			});
+		}
 	}
 
 	#cssPixelToInteger(propertyValue) {
@@ -655,6 +685,9 @@ export class DesktopWindow extends HTMLElement {
 
 	get autofocus() { return this.#getBooleanAttribute('autofocus'); }
 	set autofocus(value) { this.#setBooleanAttribute('autofocus', value); }
+
+	get frameless() { return this.#getBooleanAttribute('frameless'); }
+	set frameless(value) { this.#setBooleanAttribute('frameless', value); }
 
 	focus() {
 		this.#window.style.zIndex = DesktopWindow.#nextZIndex++;
@@ -888,7 +921,6 @@ export class DesktopWindow extends HTMLElement {
 			this.x = this.#cssPixelToInteger(this.#window.style.left);
 			this.y = this.#cssPixelToInteger(this.#window.style.top);
 		};
-
 
 		const titlebar = this.#shadowRoot.querySelector('.titlebar');
 		titlebar.addEventListener('pointerdown', (e) => {

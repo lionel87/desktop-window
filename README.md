@@ -11,7 +11,6 @@ This package is in active development, and not yet reached the point where I can
 
 ### Roadmap
 
-- frameless flag
 - aspect ratio locking
 - full typescript + build tooling
 - window animations?
@@ -87,25 +86,38 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `fullscreen`
 - `hidden`
 - `autofocus`
+- `frameless`
 
-### Events
+### Events emitted
 
-- `'close'`
 - `'closing'`
 - `'closed'`
-- `'minimize'`
 - `'minimizing'`
 - `'minimized'`
-- `'maximize'`
 - `'maximizing'`
 - `'maximized'`
-- `'restore'`
 - `'restoring'`
 - `'restored'`
-- `'request-fullscreen'`
 - `'requesting-fullscreen'`
-- `'exit-fullscreen'`
 - `'exiting-fullscreen'`
+
+### Events listening for
+
+- `'close'`
+- `'minimize'`
+- `'maximize'`
+- `'restore'`
+- `'request-fullscreen'`
+- `'exit-fullscreen'`
+- `'move'`
+- `'resize-n'`
+- `'resize-e'`
+- `'resize-s'`
+- `'resize-w'`
+- `'resize-ne'`
+- `'resize-nw'`
+- `'resize-se'`
+- `'resize-sw'`
 
 ### Properties
 
@@ -128,6 +140,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `closable`
 - `fullscreen`
 - `autofocus`
+- `frameless`
 
 ### Methods
 
