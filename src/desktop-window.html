@@ -1,0 +1,29 @@
+<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="title-text">
+	<div class="bounds">
+		<div class="titlebar" part="titlebar">
+			<div class="titlebar-start" part="titlebar-start">
+				<slot name="titlebar-start"></slot>
+			</div>
+			<div id="title-text" class="title-text" part="title-text"></div>
+			<div class="titlebar-end" part="titlebar-end">
+				<slot name="titlebar-end"></slot>
+			</div>
+			<div role="button" tabindex="0" class="control-btn btn-minimize" part="minimize-button"></div>
+			<div role="button" tabindex="0" class="control-btn btn-restore" part="restore-button"></div>
+			<div role="button" tabindex="0" class="control-btn btn-maximize" part="maximize-button"></div>
+			<div role="button" tabindex="0" class="control-btn btn-close" part="close-button"></div>
+		</div>
+		<div role="document" class="client-area" part="client-area">
+			<slot></slot>
+		</div>
+	</div>
+	<div class="resize-handle handle-n" data-direction="n"></div>
+	<div class="resize-handle handle-s" data-direction="s"></div>
+	<div class="resize-handle handle-e" data-direction="e"></div>
+	<div class="resize-handle handle-w" data-direction="w"></div>
+	<div class="resize-handle handle-nw" data-direction="nw"></div>
+	<div class="resize-handle handle-ne" data-direction="ne"></div>
+	<div class="resize-handle handle-sw" data-direction="sw"></div>
+	<div class="resize-handle handle-se" data-direction="se"></div>
+</div>
+<div class="backdrop"></div>

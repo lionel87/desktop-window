@@ -12,7 +12,6 @@ This package is in active development, and not yet reached the point where I can
 ### Roadmap
 
 - aspect ratio locking
-- full typescript + build tooling
 - window animations?
 - comprehensive documentation
 - a lot of examples incl. integration with a desktop environment

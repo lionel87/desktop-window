@@ -1,0 +1,355 @@
+:host {
+	--desktop-window-background-color: #fff;
+
+	--desktop-window-border-width: 1px;
+	--desktop-window-border-color: #aaa;
+
+	--desktop-window-titlebar-height: 28px;
+	--desktop-window-titlebar-text-color: #999;
+	--desktop-window-titlebar-background-color: #fff;
+	--desktop-window-titlebar-font-family: sans-serif;
+	--desktop-window-titlebar-font-size: 14px;
+
+	--desktop-window-minimize-button-mask-image: url('./icons/minimize.svg');
+	--desktop-window-maximize-button-mask-image: url('./icons/maximize.svg');
+	--desktop-window-restore-button-mask-image: url('./icons/restore.svg');
+	--desktop-window-close-button-mask-image: url('./icons/close.svg');
+
+	--desktop-window-buttons-width: 42px;
+	--desktop-window-buttons-height: var(--desktop-window-titlebar-height);
+	--desktop-window-buttons-margin: 0;
+	--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);
+	--desktop-window-buttons-background-color: rgba(110, 110, 110, 0);
+	--desktop-window-buttons-hover-text-color: #444;
+	--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);
+
+	--desktop-window-minimize-text-color: var(--desktop-window-buttons-text-color);
+	--desktop-window-minimize-background-color: var(--desktop-window-buttons-background-color);
+	--desktop-window-minimize-hover-text-color: var(--desktop-window-buttons-hover-text-color);
+	--desktop-window-minimize-hover-background-color: var(--desktop-window-buttons-hover-background-color);
+
+	--desktop-window-maximize-text-color: var(--desktop-window-buttons-text-color);
+	--desktop-window-maximize-background-color: var(--desktop-window-buttons-background-color);
+	--desktop-window-maximize-hover-text-color: var(--desktop-window-buttons-hover-text-color);
+	--desktop-window-maximize-hover-background-color: var(--desktop-window-buttons-hover-background-color);
+
+	--desktop-window-restore-text-color: var(--desktop-window-buttons-text-color);
+	--desktop-window-restore-background-color: var(--desktop-window-buttons-background-color);
+	--desktop-window-restore-hover-text-color: var(--desktop-window-buttons-hover-text-color);
+	--desktop-window-restore-hover-background-color: var(--desktop-window-buttons-hover-background-color);
+
+	--desktop-window-close-text-color: var(--desktop-window-buttons-text-color);
+	--desktop-window-close-background-color: var(--desktop-window-buttons-background-color);
+	--desktop-window-close-hover-text-color: #fff;
+	--desktop-window-close-hover-background-color: #e50000;
+
+	--desktop-window-focused-background-color: var(--desktop-window-background-color);
+	--desktop-window-focused-border-color: #fff;
+
+	--desktop-window-focused-titlebar-text-color: #444;
+	--desktop-window-focused-titlebar-background-color: var(--desktop-window-titlebar-background-color);
+
+	--desktop-window-focused-buttons-text-color: var(--desktop-window-focused-titlebar-text-color);
+	--desktop-window-focused-buttons-background-color: var(--desktop-window-buttons-background-color);
+	--desktop-window-focused-buttons-hover-text-color: var(--desktop-window-focused-titlebar-text-color);
+	--desktop-window-focused-buttons-hover-background-color: var(--desktop-window-buttons-hover-background-color);
+
+	--desktop-window-focused-minimize-text-color: var(--desktop-window-focused-buttons-text-color);
+	--desktop-window-focused-minimize-background-color: var(--desktop-window-focused-buttons-background-color);
+	--desktop-window-focused-minimize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+	--desktop-window-focused-minimize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+	--desktop-window-focused-maximize-text-color: var(--desktop-window-focused-buttons-text-color);
+	--desktop-window-focused-maximize-background-color: var(--desktop-window-focused-buttons-background-color);
+	--desktop-window-focused-maximize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+	--desktop-window-focused-maximize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+	--desktop-window-focused-restore-text-color: var(--desktop-window-focused-buttons-text-color);
+	--desktop-window-focused-restore-background-color: var(--desktop-window-focused-buttons-background-color);
+	--desktop-window-focused-restore-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);
+	--desktop-window-focused-restore-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);
+
+	--desktop-window-focused-close-text-color: var(--desktop-window-focused-buttons-text-color);
+	--desktop-window-focused-close-background-color: var(--desktop-window-focused-buttons-background-color);
+	--desktop-window-focused-close-hover-text-color: var(--desktop-window-close-hover-text-color);
+	--desktop-window-focused-close-hover-background-color: var(--desktop-window-close-hover-background-color);
+}
+
+.window {
+	/* this one updated internally on pointerdown */
+	--z-index: 10;
+
+	transform: translate3d(0, 0, 0); /* forces GPU layer to stabilize subpixel text/image rendering */
+	transition: box-shadow linear .1s, border-color linear .1s, background-color linear .1s;
+	position: absolute;
+	border: var(--desktop-window-border-width) solid var(--desktop-window-border-color);
+	background-color: var(--desktop-window-background-color);
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	-webkit-user-select: none;
+	user-select: none;
+	outline: none;
+	z-index: calc(2 * var(--z-index));
+}
+
+.resize-handle { display: none; position: absolute; z-index: 10; }
+.handle-nw, .handle-ne, .handle-sw, .handle-se { width: 12px; height: 12px; }
+.handle-e, .handle-w { width: 6px; top: 0; bottom: 0; }
+.handle-n, .handle-s { height: 6px; left: 0; right: 0; }
+.handle-ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.handle-nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.handle-se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.handle-sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.handle-n { top: -6px; cursor: ns-resize; }
+.handle-s { bottom: -6px; cursor: ns-resize; }
+.handle-e { right: -6px; cursor: ew-resize; }
+.handle-w { left: -6px; cursor: ew-resize; }
+
+.bounds {
+	position: relative;
+	z-index: 20;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+}
+
+.titlebar {
+	transition: background-color linear .1s;
+	flex-grow: 0;
+	flex-shrink: 0;
+	height: var(--desktop-window-titlebar-height);
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	background-color: var(--desktop-window-titlebar-background-color);
+}
+
+.title-text {
+	transition: color linear .1s;
+	font-family: var(--desktop-window-titlebar-font-family);
+	font-size: var(--desktop-window-titlebar-font-size);
+	color: var(--desktop-window-titlebar-text-color);
+	line-height: var(--desktop-window-titlebar-height);
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding: 0 6px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.titlebar-start,
+.titlebar-end {
+	cursor: default;
+	flex-grow: 0;
+	flex-shrink: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+}
+
+.control-btn {
+	cursor: default;
+	position: relative;
+	width: var(--desktop-window-buttons-width);
+	height: var(--desktop-window-buttons-height);
+	border: none;
+	transition: color linear .1s, background-color linear .1s;
+	margin: 0 var(--desktop-window-buttons-margin) 0 0;
+	padding: 0;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.control-btn::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	-webkit-mask-size: auto;
+	mask-size: auto;
+	-webkit-mask-position: center center;
+	mask-position: center center;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	background-color: currentColor;
+}
+
+.btn-minimize {
+	display: none;
+	color: var(--desktop-window-minimize-text-color);
+	background-color: var(--desktop-window-minimize-background-color);
+}
+.btn-minimize:hover {
+	color: var(--desktop-window-minimize-hover-text-color);
+	background-color: var(--desktop-window-minimize-hover-background-color);
+}
+.btn-minimize::before {
+	-webkit-mask-image: var(--desktop-window-minimize-button-mask-image);
+	mask-image: var(--desktop-window-minimize-button-mask-image);
+}
+
+.btn-maximize {
+	display: none;
+	color: var(--desktop-window-maximize-text-color);
+	background-color: var(--desktop-window-maximize-background-color);
+}
+.btn-maximize:hover {
+	color: var(--desktop-window-maximize-hover-text-color);
+	background-color: var(--desktop-window-maximize-hover-background-color);
+}
+.btn-maximize::before {
+	-webkit-mask-image: var(--desktop-window-maximize-button-mask-image);
+	mask-image: var(--desktop-window-maximize-button-mask-image);
+}
+
+.btn-restore {
+	display: none;
+	color: var(--desktop-window-restore-text-color);
+	background-color: var(--desktop-window-restore-background-color);
+}
+.btn-restore:hover {
+	color: var(--desktop-window-restore-hover-text-color);
+	background-color: var(--desktop-window-restore-hover-background-color);
+}
+.btn-restore::before {
+	-webkit-mask-image: var(--desktop-window-restore-button-mask-image);
+	mask-image: var(--desktop-window-restore-button-mask-image);
+}
+
+.btn-close {
+	display: none;
+	color: var(--desktop-window-close-text-color);
+	background-color: var(--desktop-window-close-background-color);
+}
+.btn-close:hover {
+	color: var(--desktop-window-close-hover-text-color);
+	background-color: var(--desktop-window-close-hover-background-color);
+}
+.btn-close::before {
+	-webkit-mask-image: var(--desktop-window-close-button-mask-image);
+	mask-image: var(--desktop-window-close-button-mask-image);
+}
+
+.client-area {
+	flex-grow: 1;
+	flex-shrink: 1;
+	height: calc(100% - var(--desktop-window-titlebar-height));
+	-webkit-user-select: text;
+	user-select: text;
+}
+
+:host(:focus-within) .window {
+	border-color: var(--desktop-window-focused-border-color);
+	box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+}
+
+:host(:focus-within) .titlebar {
+	background-color: var(--desktop-window-focused-titlebar-background-color);
+}
+
+:host(:focus-within) .title-text {
+	color: var(--desktop-window-focused-titlebar-text-color);
+}
+
+:host(:focus-within) .btn-minimize {
+	color: var(--desktop-window-focused-minimize-text-color);
+	background-color: var(--desktop-window-focused-minimize-background-color);
+}
+:host(:focus-within) .btn-minimize:hover {
+	color: var(--desktop-window-focused-minimize-hover-text-color);
+	background-color: var(--desktop-window-focused-minimize-hover-background-color);
+}
+
+:host(:focus-within) .btn-maximize {
+	color: var(--desktop-window-focused-maximize-text-color);
+	background-color: var(--desktop-window-focused-maximize-background-color);
+}
+:host(:focus-within) .btn-maximize:hover {
+	color: var(--desktop-window-focused-maximize-hover-text-color);
+	background-color: var(--desktop-window-focused-maximize-hover-background-color);
+}
+
+:host(:focus-within) .btn-restore {
+	color: var(--desktop-window-focused-restore-text-color);
+	background-color: var(--desktop-window-focused-restore-background-color);
+}
+:host(:focus-within) .btn-restore:hover {
+	color: var(--desktop-window-focused-restore-hover-text-color);
+	background-color: var(--desktop-window-focused-restore-hover-background-color);
+}
+
+:host(:focus-within) .btn-close {
+	color: var(--desktop-window-focused-close-text-color);
+	background-color: var(--desktop-window-focused-close-background-color);
+}
+:host(:focus-within) .btn-close:hover {
+	color: var(--desktop-window-focused-close-hover-text-color);
+	background-color: var(--desktop-window-focused-close-hover-background-color);
+}
+
+:host([movable]) .titlebar { cursor: move; }
+
+:host([resizable]) .resize-handle { display: block; }
+:host([resizable][minimized]) .resize-handle { display: none; }
+:host([resizable][maximized]) .resize-handle { display: none; }
+
+:host([minimizable]) .btn-minimize { display: block; }
+:host([maximizable]) .btn-maximize { display: block; }
+:host([minimizable][minimized]) .btn-minimize { display: none; }
+:host([minimizable][minimized]) .btn-restore { display: block; }
+:host([maximizable][maximized]) .btn-maximize { display: none; }
+:host([maximizable][maximized]) .btn-restore { display: block; }
+:host([closable]) .btn-close { display: block; }
+
+:host([minimized]) .window {
+	height: calc(round((2 * var(--desktop-window-border-width)) + var(--desktop-window-titlebar-height))) !important;
+}
+:host([minimized]) .client-area { display: none; }
+
+:host([maximized]) .window {
+	border: none;
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+}
+
+:host([fullscreen]) .resize-handle { display: none !important; }
+:host([fullscreen]) .titlebar { display: none; }
+:host([fullscreen]) .window {
+	border: none;
+	inset: 0 !important;
+	width: auto !important;
+	height: auto !important;
+}
+
+:host([frameless]) .titlebar { display: none; }
+:host([frameless]) .window {
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+}
+
+:host(:not([modal])) .backdrop { display: none; }
+:host([modal]) .backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: calc(2 * var(--z-index) - 1);
+}
+
+@keyframes border-flash {
+	0%, 100% { box-shadow: 0 0 0 0 #666; }
+	15%      { box-shadow: 0 0 10px 0 #666; }
+	30%      { box-shadow: 0 0 0 0 #666; }
+	50%      { box-shadow: 0 0 10px 0 #666; }
+	60%      { box-shadow: 0 0 0 0 #666; }
+	80%      { box-shadow: 0 0 10px 0 #666; }
+}
+
+.window.flashed {
+	animation: border-flash .75s ease-out;
+}

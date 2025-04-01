@@ -1,0 +1,102 @@
+interface Bounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+export declare class DesktopWindow extends HTMLElement {
+    #private;
+    static shadowMode: 'open' | 'closed';
+    static defaultX: number;
+    static defaultY: number;
+    static defaultWidth: number;
+    static defaultHeight: number;
+    static defaultMinWidth: number;
+    static defaultMinHeight: number;
+    static defaultMaxWidth: null;
+    static defaultMaxHeight: null;
+    static get observedAttributes(): string[];
+    constructor();
+    get name(): string | null;
+    set name(value: string | null);
+    get movable(): boolean;
+    set movable(value: boolean);
+    get x(): number;
+    set x(value: number);
+    get y(): number;
+    set y(value: number);
+    get centered(): boolean;
+    set centered(value: boolean);
+    get width(): number;
+    set width(value: number);
+    get height(): number;
+    set height(value: number);
+    get minWidth(): number;
+    set minWidth(value: number);
+    get minHeight(): number;
+    set minHeight(value: number);
+    get maxWidth(): number;
+    set maxWidth(value: number);
+    get maxHeight(): number;
+    set maxHeight(value: number);
+    get resizable(): boolean;
+    set resizable(value: boolean);
+    get fullscreen(): boolean;
+    set fullscreen(value: boolean);
+    get minimizable(): boolean;
+    set minimizable(value: boolean);
+    get minimized(): boolean;
+    set minimized(value: boolean);
+    get maximizable(): boolean;
+    set maximizable(value: boolean);
+    get maximized(): boolean;
+    set maximized(value: boolean);
+    get closable(): boolean;
+    set closable(value: boolean);
+    get autofocus(): boolean;
+    set autofocus(value: boolean);
+    get frameless(): boolean;
+    set frameless(value: boolean);
+    get modal(): boolean;
+    set modal(value: boolean);
+    flash(): void;
+    focus(): void;
+    blur(): void;
+    close(): void;
+    destroy(): void;
+    getPosition(): number[];
+    setPosition(x: number, y: number): void;
+    getSize(): number[];
+    setSize(width: number, height: number): void;
+    getNormalBounds(): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    getBounds(): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    setBounds({ x, y, width, height }: Bounds): void;
+    getContentSize(): number[];
+    setContentSize(width: number, height: number): void;
+    getContentBounds(): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    setContentBounds({ x, y, width, height }: Bounds): void;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    attributeChangedCallback(name: string, oldValue: null | string, newValue: null | string): void;
+}
+interface RegisterOptions {
+    tag?: string;
+    shadowMode?: 'open' | 'closed';
+}
+export declare function register({ tag, shadowMode }?: RegisterOptions): void;
+export default DesktopWindow;

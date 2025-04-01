@@ -1,0 +1,6 @@
+/src
+/scripts
+/examples
+/tsconfig.json
+/*.tgz
+/*.log
