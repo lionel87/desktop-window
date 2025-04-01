@@ -11,7 +11,6 @@ This package is in active development, and not yet reached the point where I can
 
 ### Roadmap
 
-- content pos/size/bounds support
 - frameless flag
 - aspect ratio locking
 - full typescript + build tooling
@@ -122,12 +121,12 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `maxWidth`
 - `maxHeight`
 - `resizable`
-- `fullscreen`
 - `minimizable`
 - `minimized`
 - `maximizable`
 - `maximized`
 - `closable`
+- `fullscreen`
 - `autofocus`
 
 ### Methods

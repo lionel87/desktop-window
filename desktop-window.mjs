@@ -24,7 +24,6 @@ export class DesktopWindow extends HTMLElement {
 			'centered',
 			'x', 'y',
 			'width', 'height',
-			// 'contentWidth', 'contentHeight',
 			'minWidth', 'minHeight',
 			'maxWidth', 'maxHeight',
 			'autofocus',
@@ -535,6 +534,10 @@ export class DesktopWindow extends HTMLElement {
 		}
 	}
 
+	#cssPixelToInteger(propertyValue) {
+		return Number.parseInt(propertyValue.replace('px', ''));
+	}
+
 	#parseUnsigned(value) {
 		const intVal = Number.parseInt(value);
 		return Number.isNaN(intVal) || intVal < 0 ? null : intVal;
@@ -600,12 +603,6 @@ export class DesktopWindow extends HTMLElement {
 
 	get height() { return this.#getUnsignedAttribute('height') ?? DesktopWindow.defaultHeight; }
 	set height(value) { this.#setUnsignedAttribute('height', value); }
-
-	get contentWidth() { return this.#getUnsignedAttribute('contentWidth'); }
-	set contentWidth(value) { this.#setUnsignedAttribute('contentWidth', value); }
-
-	get contentHeight() { return this.#getUnsignedAttribute('contentHeight'); }
-	set contentHeight(value) { this.#setUnsignedAttribute('contentHeight', value); }
 
 	get minWidth() { return this.#getUnsignedAttribute('minWidth') ?? DesktopWindow.defaultMinWidth; }
 	set minWidth(value) { this.#setUnsignedAttribute('minWidth', value); }
@@ -695,7 +692,7 @@ export class DesktopWindow extends HTMLElement {
 
 	getSize() {
 		const windowBounds = this.#window.getBoundingClientRect();
-		return [windowBounds.width, windowBounds.height];
+		return [Math.round(windowBounds.width), Math.round(windowBounds.height)];
 	}
 
 	setSize(width, height) {
@@ -718,42 +715,50 @@ export class DesktopWindow extends HTMLElement {
 		const parentBounds = this.parentElement.getBoundingClientRect();
 		const windowBounds = this.#window.getBoundingClientRect();
 		return {
-			x: windowBounds.x - parentBounds.x,
-			y: windowBounds.y - parentBounds.y,
-			width: windowBounds.width,
-			height: windowBounds.height,
+			x: Math.floor(windowBounds.x) - Math.floor(parentBounds.x),
+			y: Math.floor(windowBounds.y) - Math.floor(parentBounds.y),
+			width: Math.floor(windowBounds.width),
+			height: Math.floor(windowBounds.height),
 		};
 	}
 
 	setBounds({ x, y, width, height }) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		if (undefined !== x) this.x = x;
+		if (undefined !== y) this.y = y;
+		if (undefined !== width) this.width = width;
+		if (undefined !== height) this.height = height;
 	}
 
 	getContentSize() {
 		const clientBounds = this.#clientArea.getBoundingClientRect();
-		return [clientBounds.width, clientBounds.height];
+		return [Math.floor(clientBounds.width), Math.floor(clientBounds.height)];
 	}
 
 	setContentSize(width, height) {
-		throw new Error('Not implemented yet.');
+		const [windowWidth, windowHeight] = this.getSize();
+		const [contentWidth, contentHeight] = this.getContentSize();
+		this.width = width - (windowWidth - contentWidth);
+		this.height = height - (windowHeight - contentHeight);
 	}
 
 	getContentBounds() {
 		const parentBounds = this.parentElement.getBoundingClientRect();
 		const clientBounds = this.#clientArea.getBoundingClientRect();
 		return {
-			x: clientBounds.x - parentBounds.x,
-			y: clientBounds.y - parentBounds.y,
-			width: clientBounds.width,
-			height: clientBounds.height,
+			x: Math.floor(clientBounds.x) - Math.floor(parentBounds.x),
+			y: Math.floor(clientBounds.y) - Math.floor(parentBounds.y),
+			width: Math.floor(clientBounds.width),
+			height: Math.floor(clientBounds.height),
 		};
 	}
 
-	setContentBounds(bounds) {
-		throw new Error('Not implemented yet.');
+	setContentBounds({ x, y, width, height }) {
+		const windowBounds = this.#window.getBoundingClientRect();
+		const clientBounds = this.#clientArea.getBoundingClientRect();
+		if (undefined !== x) this.x = x - (Math.floor(clientBounds.x) - Math.floor(windowBounds.x));
+		if (undefined !== y) this.y = y - (Math.floor(clientBounds.y) - Math.floor(windowBounds.y));
+		if (undefined !== width) this.width = width + (Math.floor(windowBounds.width) - Math.floor(clientBounds.width));
+		if (undefined !== height) this.height = height + (Math.floor(windowBounds.height) - Math.floor(clientBounds.height));
 	}
 
 	connectedCallback() {
@@ -880,8 +885,8 @@ export class DesktopWindow extends HTMLElement {
 		this.#dragPointerUp = () => {
 			window.removeEventListener('pointermove', this.#dragPointerMove);
 			window.removeEventListener('pointerup', this.#dragPointerUp);
-			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
-			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
+			this.x = this.#cssPixelToInteger(this.#window.style.left);
+			this.y = this.#cssPixelToInteger(this.#window.style.top);
 		};
 
 
@@ -934,10 +939,10 @@ export class DesktopWindow extends HTMLElement {
 		this.#resizePointerUp = () => {
 			window.removeEventListener('pointermove', this.#resizePointerMove);
 			window.removeEventListener('pointerup', this.#resizePointerUp);
-			this.x = Number.parseInt(this.#window.style.left.replace('px', ''));
-			this.y = Number.parseInt(this.#window.style.top.replace('px', ''));
-			this.width = Number.parseInt(this.#window.style.width.replace('px', ''));
-			this.height = Number.parseInt(this.#window.style.height.replace('px', ''));
+			this.x = this.#cssPixelToInteger(this.#window.style.left);
+			this.y = this.#cssPixelToInteger(this.#window.style.top);
+			this.width = this.#cssPixelToInteger(this.#window.style.width);
+			this.height = this.#cssPixelToInteger(this.#window.style.height);
 		};
 
 		/** @type {HTMLElement[]} */
