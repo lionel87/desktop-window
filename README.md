@@ -146,6 +146,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 
 ### Methods
 
+- `flash()`
 - `focus()`
 - `blur()`
 - `close()`

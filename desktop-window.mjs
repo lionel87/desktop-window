@@ -379,16 +379,16 @@ export class DesktopWindow extends HTMLElement {
 			}
 
 			@keyframes border-flash {
-				0%, 100%   { box-shadow: 0 0 0 0 #666; }
-				16.66%     { box-shadow: 0 0 10px 1px #666; }
-				33.33%     { box-shadow: 0 0 0 0 #666; }
-				50%        { box-shadow: 0 0 10px 1px #666; }
-				66.66%     { box-shadow: 0 0 0 0 #666; }
-				83.33%     { box-shadow: 0 0 10px 1px #666; }
+				0%, 100% { box-shadow: 0 0 0 0 #666; }
+				15%      { box-shadow: 0 0 10px 0 #666; }
+				30%      { box-shadow: 0 0 0 0 #666; }
+				50%      { box-shadow: 0 0 10px 0 #666; }
+				60%      { box-shadow: 0 0 0 0 #666; }
+				80%      { box-shadow: 0 0 10px 0 #666; }
 			}
 
-			.border-flash {
-				animation: border-flash 600ms ease-out;
+			.window.flashed {
+				animation: border-flash .75s ease-out;
 			}
 		`);
 		return style;
@@ -506,9 +506,7 @@ export class DesktopWindow extends HTMLElement {
 		});
 
 		this.#shadowRoot.querySelector('.backdrop').addEventListener('click', () => {
-			this.#window.classList.remove('border-flash'); // reset if re-triggered
-			void this.#window.offsetWidth; // force reflow
-			this.#window.classList.add('border-flash');
+			this.flash();
 		});
 
 		//-- titlebar controls should not bubble titlebar only events
@@ -721,6 +719,12 @@ export class DesktopWindow extends HTMLElement {
 
 	get modal() { return this.#getBooleanAttribute('modal'); }
 	set modal(value) { this.#setBooleanAttribute('modal', value); }
+
+	flash() {
+		this.#window.classList.remove('flashed');
+		void this.#window.offsetWidth;
+		this.#window.classList.add('flashed');
+	}
 
 	focus() {
 		this.style.setProperty('--desktop-window-z-index', DesktopWindow.#nextZIndex++);
