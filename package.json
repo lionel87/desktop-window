@@ -1,6 +1,6 @@
 {
   "name": "desktop-window",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A lightweight Web Components-based custom element that replicates the look and feel of native desktop application windows — resizable, movable, and styled like a traditional OS window.",
   "browser": "./desktop-window.js",
   "types": "./desktop-window.d.mts",
