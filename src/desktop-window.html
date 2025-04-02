@@ -1,10 +1,14 @@
-<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="title-text">
+<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="titlebar-text">
 	<div class="bounds">
 		<div class="titlebar" part="titlebar">
 			<div class="titlebar-start" part="titlebar-start">
 				<slot name="titlebar-start"></slot>
 			</div>
-			<div id="title-text" class="title-text" part="title-text"></div>
+			<div class="titlebar-center" part="titlebar-center">
+				<slot name="titlebar-center">
+					<div id="titlebar-text" class="titlebar-text" part="titlebar-text"></div>
+				</slot>
+			</div>
 			<div class="titlebar-end" part="titlebar-end">
 				<slot name="titlebar-end"></slot>
 			</div>

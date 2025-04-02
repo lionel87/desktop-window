@@ -165,6 +165,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 ### Slots
 
 - `titlebar-start`
+- `titlebar-center`
 - `titlebar-end`
 
 ### Parts
@@ -172,8 +173,9 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `window`
 - `titlebar`
 - `titlebar-start`
-- `title-text`
+- `titlebar-center`
 - `titlebar-end`
+- `titlebar-text`
 - `minimize-button`
 - `restore-button`
 - `maximize-button`

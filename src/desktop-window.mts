@@ -524,7 +524,7 @@ export class DesktopWindow extends HTMLElement {
 		if (oldValue === newValue) return;
 		switch (name) {
 			case 'name':
-				this.#shadowRoot.querySelector('.title-text')!.textContent = newValue;
+				this.#shadowRoot.querySelector('.titlebar-text')!.textContent = newValue;
 				break;
 			case 'centered':
 				if (newValue !== null) {

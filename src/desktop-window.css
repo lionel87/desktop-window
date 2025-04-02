@@ -130,20 +130,6 @@
 	background-color: var(--desktop-window-titlebar-background-color);
 }
 
-.title-text {
-	transition: color linear .1s;
-	font-family: var(--desktop-window-titlebar-font-family);
-	font-size: var(--desktop-window-titlebar-font-size);
-	color: var(--desktop-window-titlebar-text-color);
-	line-height: var(--desktop-window-titlebar-height);
-	flex-grow: 1;
-	flex-shrink: 1;
-	padding: 0 6px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .titlebar-start,
 .titlebar-end {
 	cursor: default;
@@ -154,6 +140,24 @@
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
+}
+
+.titlebar-center {
+	flex-grow: 1;
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.titlebar-text {
+	transition: color linear .1s;
+	font-family: var(--desktop-window-titlebar-font-family);
+	font-size: var(--desktop-window-titlebar-font-size);
+	color: var(--desktop-window-titlebar-text-color);
+	line-height: var(--desktop-window-titlebar-height);
+	padding: 0 6px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .control-btn {
@@ -255,7 +259,7 @@
 	background-color: var(--desktop-window-focused-titlebar-background-color);
 }
 
-:host(:focus-within) .title-text {
+:host(:focus-within) .titlebar-text {
 	color: var(--desktop-window-focused-titlebar-text-color);
 }
 
