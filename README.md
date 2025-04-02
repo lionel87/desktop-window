@@ -138,6 +138,7 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `maximized`
 - `closable`
 - `fullscreen`
+- `hidden`
 - `autofocus`
 - `frameless`
 - `modal`
