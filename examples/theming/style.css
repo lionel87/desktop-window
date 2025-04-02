@@ -1,0 +1,371 @@
+html,
+body {
+	margin: 0;
+	height: 100%;
+}
+
+#desktop {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #bde0fa;
+	background-size: cover;
+	background-image: url('../assets/wallpaper.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+#wrap {
+	height: 100%;
+	overflow: hidden;
+}
+
+#editor {
+	box-sizing: border-box;
+	height: 100%;
+	padding: 10px;
+	font-family: monospace;
+	white-space: pre-wrap;
+	overflow: auto;
+	outline: none;
+	background-color: #fff;
+}
+
+.open-window-shortcut {
+	cursor: pointer;
+	text-align: center;
+	display: inline-block;
+	width: 150px;
+	height: 85px;
+	margin: 40px 20px;
+	user-select: none;
+}
+
+.open-window-shortcut::before {
+	content: '📄';
+	font-size: 200%;
+	display: block;
+	margin-bottom: 5px;
+}
+
+.dark-theme #editor {
+	color: #aaa;
+	background-color: #333;
+}
+
+/* this wrap element cuts the #editor bottom corners into roundeed shape */
+/* (border-radius does not work on some scrollbars) */
+.telemetry-theme #wrap,
+.thermal-theme #wrap,
+.aeroplanex-theme #wrap {
+	border-bottom-left-radius: var(--border-radius);
+	border-bottom-right-radius: var(--border-radius);
+}
+
+/* ---------------------- */
+
+.dark-theme {
+	scrollbar-color: #555 #222;
+	scrollbar-width: thin;
+}
+
+.dark-theme::-webkit-scrollbar {
+	width: 8px;
+}
+
+.dark-theme::-webkit-scrollbar-thumb {
+	background-color: #555;
+	border-radius: 4px;
+}
+
+.dark-theme::-webkit-scrollbar-track {
+	background-color: #222;
+}
+
+.dark-theme desktop-window {
+	--desktop-window-background-color: #111;
+	--desktop-window-border-width: 1px;
+	--desktop-window-border-color: #aaa;
+	--desktop-window-titlebar-text-color: #777;
+	--desktop-window-titlebar-background-color: #111;
+	--desktop-window-buttons-hover-text-color: #fff;
+	--desktop-window-focused-border-color: #111;
+	--desktop-window-focused-titlebar-text-color: #ddd;
+}
+
+/* ---------------------- */
+
+.telemetry-theme {
+	--border-radius: 8px;
+}
+
+.telemetry-theme desktop-window::part(titlebar) {
+	background-color: #f7f7f7;
+}
+
+.telemetry-theme desktop-window:focus-within::part(titlebar) {
+	background-color: aliceblue;
+}
+
+.telemetry-theme desktop-window:not([maximized])::part(window) {
+	border-radius: var(--border-radius);
+}
+
+.telemetry-theme desktop-window:not([maximized])::part(titlebar) {
+	border-top-left-radius: var(--border-radius);
+	border-top-right-radius: var(--border-radius);
+}
+
+.telemetry-theme desktop-window[closable]::part(close-button) {
+	border-top-right-radius: var(--border-radius);
+}
+.telemetry-theme desktop-window[maximizable]:not([closable])::part(maximize-button) {
+	border-top-right-radius: var(--border-radius);
+}
+.telemetry-theme desktop-window[minimizable]:not([maximizable]):not([closable])::part(minimize-button) {
+	border-top-right-radius: var(--border-radius);
+}
+.telemetry-theme desktop-window[minimizable]:not([maximizable]):not([closable])::part(restore-button) {
+	border-top-right-radius: var(--border-radius);
+}
+
+/* ---------------------- */
+
+.thermal-theme desktop-window {
+	--border-radius: 10px;
+}
+
+.thermal-theme desktop-window::part(window) {
+	border: 1px solid #aaa !important;
+}
+
+.thermal-theme desktop-window::part(titlebar) {
+	background-color: #f7f7f7;
+}
+
+.thermal-theme desktop-window::part(titlebar-text) {
+	text-align: center;
+}
+
+.thermal-theme desktop-window:not([maximized])::part(window) {
+	border-radius: var(--border-radius);
+}
+
+.thermal-theme desktop-window:not([maximized])::part(titlebar) {
+	border-top-left-radius: var(--border-radius);
+	border-top-right-radius: var(--border-radius);
+}
+
+.thermal-theme desktop-window::part(close-button)::before {
+	display: none;
+}
+.thermal-theme desktop-window::part(close-button) {
+	margin-left: 4px;
+	order: -10;
+	width: 20px;
+	color: black;
+	background-color: transparent;
+	background-image: url('icons/thermal-close.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.thermal-theme desktop-window::part(close-button):hover {
+	background-image: url('icons/thermal-close-hover.svg');
+}
+
+.thermal-theme desktop-window::part(minimize-button)::before {
+	display: none;
+}
+.thermal-theme desktop-window::part(minimize-button) {
+	order: -9;
+	width: 20px;
+	color: black;
+	background-color: transparent;
+	background-image: url('icons/thermal-minimize.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.thermal-theme desktop-window::part(minimize-button):hover {
+	background-image: url('icons/thermal-minimize-hover.svg');
+}
+
+.thermal-theme desktop-window::part(maximize-button)::before {
+	display: none;
+}
+.thermal-theme desktop-window::part(maximize-button) {
+	order: -8;
+	width: 20px;
+	color: black;
+	background-color: transparent;
+	background-image: url('icons/thermal-maximize.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.thermal-theme desktop-window::part(maximize-button):hover {
+	background-image: url('icons/thermal-maximize-hover.svg');
+}
+
+
+.thermal-theme desktop-window::part(restore-button)::before {
+	display: none;
+}
+.thermal-theme desktop-window[minimized]::part(restore-button) {
+	order: -8;
+	width: 20px;
+	color: black;
+	background-color: transparent;
+	background-image: url('icons/thermal-restore-min.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.thermal-theme desktop-window[minimized]::part(restore-button):hover {
+	background-image: url('icons/thermal-restore-min-hover.svg');
+}
+
+.thermal-theme desktop-window[maximized]::part(restore-button) {
+	order: -8;
+	width: 20px;
+	color: black;
+	background-color: transparent;
+	background-image: url('icons/thermal-restore-max.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.thermal-theme desktop-window[maximized]::part(restore-button):hover {
+	background-image: url('icons/thermal-restore-max-hover.svg');
+}
+
+/* ---------------------- */
+
+.aeroplane-theme desktop-window {
+	--border-radius: 6px;
+	--desktop-window-background-color: rgba(255,255,255,.1);
+	--desktop-window-titlebar-background-color: transparent;
+	--desktop-window-border-width: 1px;
+	--desktop-window-border-color: rgba(255,255,255,.6);
+	--desktop-window-titlebar-text-color: #777;
+	--desktop-window-buttons-hover-background-color: rgba(255,255,255,.7);
+}
+
+.aeroplane-theme desktop-window::part(client-area) {
+	padding: 0 4px 4px 4px;
+}
+.aeroplane-theme desktop-window[maximized]::part(client-area) {
+	padding: 0;
+}
+
+.aeroplane-theme desktop-window::part(window) {
+	backdrop-filter: blur(3px);
+	box-shadow:
+		0 0 0 1px rgba(0,0,0,.3),
+		0 2px 10px rgba(0,0,0,0.4);
+}
+
+.aeroplane-theme desktop-window:focus-within::part(window) {
+	box-shadow:
+		0 0 0 1px rgba(0,0,0,.3),
+		0 5px 20px rgba(0,0,0,.5);
+}
+
+.aeroplane-theme desktop-window:not([maximized])::part(window) {
+	border-radius: var(--border-radius);
+}
+
+.aeroplane-theme desktop-window::part(titlebar) {
+	overflow: hidden;
+}
+
+.aeroplane-theme desktop-window::part(titlebar-text) {
+	text-shadow:
+		0 0 4px #fff,
+		0 0 4px #fff,
+		0 0 4px #fff,
+		0 0 4px #fff;
+}
+
+.aeroplane-theme desktop-window::part(close-button)::before {
+	display: none;
+}
+.aeroplane-theme desktop-window::part(close-button) {
+	border-bottom-right-radius: var(--border-radius);
+	margin: 0 7px 6px 3px;
+	width: 45px;
+	height: 20px;
+	box-shadow:
+		0 0 0 1px rgba(255,255,255,.7),
+		0 0 0 2px rgba(0,0,0,.25),
+		0 0 0 3px rgba(255,255,255,.7);
+	background-image: url('icons/aeroplane-close.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.aeroplane-theme desktop-window::part(maximize-button)::before {
+	display: none;
+}
+.aeroplane-theme desktop-window::part(maximize-button) {
+	margin-bottom: 5px;
+	margin: 0 0 6px 3px;
+	width: 33px;
+	height: 20px;
+	box-shadow:
+		0 0 0 1px rgba(255,255,255,.7),
+		0 0 0 2px rgba(0,0,0,.25),
+		0 0 0 3px rgba(255,255,255,.7);
+	background-image: url('icons/aeroplane-maximize.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.aeroplane-theme desktop-window::part(minimize-button)::before {
+	display: none;
+}
+.aeroplane-theme desktop-window::part(minimize-button) {
+	border-bottom-left-radius: var(--border-radius);
+	margin: 0 0 6px 3px;
+	width: 33px;
+	height: 20px;
+	box-shadow:
+		0 0 0 1px rgba(255,255,255,.7),
+		0 0 0 2px rgba(0,0,0,.25),
+		0 0 0 3px rgba(255,255,255,.7);
+		background-image: url('icons/aeroplane-minimize.svg');
+		background-position: center center;
+		background-repeat: no-repeat;
+		background-size: auto;
+}
+.aeroplane-theme desktop-window::part(restore-button)::before {
+	display: none;
+}
+.aeroplane-theme desktop-window::part(restore-button) {
+	margin: 0 0 6px 3px;
+	width: 33px;
+	height: 20px;
+	box-shadow:
+		0 0 0 1px rgba(255,255,255,.7),
+		0 0 0 2px rgba(0,0,0,.25),
+		0 0 0 3px rgba(255,255,255,.7);
+	background-image: url('icons/aeroplane-restore.svg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: auto;
+}
+.aeroplane-theme desktop-window[minimized]::part(restore-button) {
+	border-bottom-left-radius: var(--border-radius);
+}
+
+.aeroplane-theme desktop-window:not([minimizable])::part(maximize-button) {
+	border-bottom-left-radius: var(--border-radius);
+}
+.aeroplane-theme desktop-window:not([minimizable])::part(restore-button) {
+	border-bottom-left-radius: var(--border-radius);
+}
+
+.aeroplane-theme desktop-window:not([minimizable]):not([maximizable])::part(close-button) {
+	border-bottom-left-radius: var(--border-radius);
+}
