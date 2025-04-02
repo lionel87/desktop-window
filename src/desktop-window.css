@@ -75,6 +75,10 @@
 	--desktop-window-focused-close-hover-background-color: var(--desktop-window-close-hover-background-color);
 }
 
+* {
+	box-sizing: border-box;
+}
+
 .window {
 	/* this one updated internally on pointerdown */
 	--z-index: 10;
@@ -85,7 +89,6 @@
 	border: var(--desktop-window-border-width) solid var(--desktop-window-border-color);
 	background-color: var(--desktop-window-background-color);
 	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-	box-sizing: border-box;
 	-webkit-user-select: none;
 	user-select: none;
 	outline: none;
