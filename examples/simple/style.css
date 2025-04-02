@@ -12,6 +12,7 @@ html, body {
 	background-image: url('../assets/wallpaper.svg');
 	background-repeat: no-repeat;
 	background-position: center center;
+	overflow: hidden;
 }
 
 #wrap {
