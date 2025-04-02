@@ -27,7 +27,7 @@ document.querySelector('.open-window-shortcut').addEventListener('click', () => 
 	win.setAttribute('x', (idx % 10) * 40 + 100);
 	win.setAttribute('y', (idx % 10) * 40 + 100);
 
-	win.innerHTML = `<div id="editor" contenteditable autocorrect="off" autocapitalize="off" spellcheck="false">${lorem}</div>`;
+	win.innerHTML = `<div id="wrap"><div id="editor" contenteditable autocorrect="off" autocapitalize="off" spellcheck="false">${lorem}</div></div>`;
 
 	document.querySelector('#desktop').append(win);
 });
