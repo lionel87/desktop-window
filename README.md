@@ -12,7 +12,6 @@ This package is in active development, and not yet reached the point where I can
 ### Roadmap
 
 - aspect ratio locking
-- window animations?
 - comprehensive documentation
 - a lot of examples incl. integration with a desktop environment
 - accessibility
@@ -187,6 +186,8 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `--desktop-window-background-color`
 - `--desktop-window-border-width`
 - `--desktop-window-border-color`
+- `--desktop-window-minimize-duration`
+- `--desktop-window-maximize-duration`
 - `--desktop-window-titlebar-height`
 - `--desktop-window-titlebar-text-color`
 - `--desktop-window-titlebar-background-color`

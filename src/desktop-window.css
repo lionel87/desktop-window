@@ -4,6 +4,9 @@
 	--desktop-window-border-width: 1px;
 	--desktop-window-border-color: #aaa;
 
+	--desktop-window-minimize-duration: 0.1s;
+	--desktop-window-maximize-duration: 0.05s;
+
 	--desktop-window-titlebar-height: 28px;
 	--desktop-window-titlebar-text-color: #999;
 	--desktop-window-titlebar-background-color: #fff;
@@ -84,7 +87,10 @@
 	--z-index: 10;
 
 	transform: translate3d(0, 0, 0); /* forces GPU layer to stabilize subpixel text/image rendering */
-	transition: box-shadow linear .1s, border-color linear .1s, background-color linear .1s;
+	transition:
+		box-shadow linear .1s,
+		border-color linear .1s,
+		background-color linear .1s;
 	position: absolute;
 	border: var(--desktop-window-border-width) solid var(--desktop-window-border-color);
 	background-color: var(--desktop-window-background-color);
@@ -314,24 +320,46 @@
 :host([closable]) .btn-close { display: block; }
 
 :host([minimized]) .window {
-	height: calc(round((2 * var(--desktop-window-border-width)) + var(--desktop-window-titlebar-height))) !important;
+	height: calc(2 * var(--desktop-window-border-width) + var(--desktop-window-titlebar-height)) !important;
 }
-:host([minimized]) .client-area { display: none; }
+:host([minimized]) .client-area { height: 0; }
 
 :host([maximized]) .window {
 	border: none;
-	inset: 0 !important;
-	width: auto !important;
-	height: auto !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	:host([maximized]) .window {
+		transition:
+			box-shadow linear .1s,
+			border-color linear .1s,
+			background-color linear .1s,
+			top ease-out var(--desktop-window-maximize-duration),
+			left ease-out var(--desktop-window-maximize-duration),
+			width ease-out var(--desktop-window-maximize-duration),
+			height ease-out var(--desktop-window-maximize-duration) !important;
+	}
+	:host([minimized]:not([maximized])) .window {
+		transition:
+			box-shadow linear .1s,
+			border-color linear .1s,
+			background-color linear .1s,
+			height ease-out var(--desktop-window-minimize-duration) !important;
+	}
 }
 
 :host([fullscreen]) .resize-handle { display: none !important; }
 :host([fullscreen]) .titlebar { display: none; }
 :host([fullscreen]) .window {
 	border: none;
-	inset: 0 !important;
-	width: auto !important;
-	height: auto !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
 }
 
 :host([frameless]) .titlebar { display: none; }
@@ -349,12 +377,13 @@
 }
 
 @keyframes border-flash {
-	0%, 100% { box-shadow: 0 0 0 0 #666; }
-	15%      { box-shadow: 0 0 10px 0 #666; }
-	30%      { box-shadow: 0 0 0 0 #666; }
-	50%      { box-shadow: 0 0 10px 0 #666; }
-	60%      { box-shadow: 0 0 0 0 #666; }
-	80%      { box-shadow: 0 0 10px 0 #666; }
+	0%   { box-shadow: 0 0 0 0 #666; }
+	15%  { box-shadow: 0 0 10px 0 #666; }
+	30%  { box-shadow: 0 0 0 0 #666; }
+	50%  { box-shadow: 0 0 10px 0 #666; }
+	60%  { box-shadow: 0 0 0 0 #666; }
+	80%  { box-shadow: 0 0 10px 0 #666; }
+	100% { box-shadow: 0 0 0 0 #666; }
 }
 
 .window.flashed {
