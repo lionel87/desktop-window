@@ -1,0 +1,176 @@
+html,
+body {
+	margin: 0;
+	height: 100%;
+}
+
+#desktop {
+	user-select: none;
+	position: relative;
+	width: 100%;
+	height: calc(100% - 40px);
+	background-color: #bde0fa;
+	background-size: cover;
+	background-image: url('../assets/wallpaper.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	overflow: hidden;
+}
+
+#taskbar {
+	user-select: none;
+	height: 40px;
+	background-color: #222;
+}
+
+#taskbar button {
+	margin: 3px;
+	border-radius: 3px;
+	background-color: rgba(255, 255, 255, .1);
+	border: 2px outset rgba(255, 255, 255, .2);
+	color: #ccc;
+	width: 150px;
+	height: calc(100% - 6px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+#taskbar button:hover {
+	background-color: rgba(255, 255, 255, .3);
+}
+#taskbar button:active {
+	background-color: rgba(255, 255, 255, .1);
+	border: 2px inset rgba(255, 255, 255, .2);
+}
+
+#wrap {
+	height: 100%;
+	overflow: hidden; /* solves the tricky padding */
+}
+
+#editor {
+	box-sizing: border-box;
+	height: 100%;
+	padding: 10px; /* this padding is tricky, it pushes out content outside of client-area when minimized */
+	font-family: monospace;
+	white-space: pre-wrap;
+	overflow: auto;
+	outline: none;
+}
+
+.open-window-shortcut {
+	cursor: pointer;
+	text-align: center;
+	display: inline-block;
+	width: 150px;
+	height: 85px;
+	margin: 40px 20px;
+	user-select: none;
+}
+
+.open-window-shortcut::before {
+	content: '📄';
+	font-size: 200%;
+	display: block;
+	margin-bottom: 5px;
+}
+
+/* ---------------------- */
+/* common definitions */
+
+desktop-window.animating:not([maximized]) {
+	/* this enables 3d transforms on the window */
+	position: absolute;
+	left: 0;
+	top: 0;
+	/* this moves the animation centerpoint to screen center (sort of) */
+	/* and only perfect if the desktop 100% fills the screen */
+	transform-origin: 50vw 100vh;
+	/* slow down the minimize animation to allow the opacity and scale some showtime */
+	--desktop-window-minimize-duration: 2s;
+}
+desktop-window.animating {
+	z-index: 2147483647;
+}
+desktop-window[minimized]:not(.animating) {
+	display: none;
+}
+
+/* ----------------------- */
+
+/* restore from minimized, open */
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+		transform: scaleX(0.8) scaleY(0.5) translateY(20px);
+		display: none;
+	}
+	1% { display: block; }
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.fade-animations desktop-window.animating:not(.restoring-from-maximized,[maximized]) {
+	animation: fade-in 0.15s ease-out;
+	animation-fill-mode: forwards;
+}
+
+/* minimize, close */
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scaleX(0.8) scaleY(0.5) translateY(20px);
+		display: none;
+	}
+}
+
+.fade-animations desktop-window.animating:is(.closing,[minimized]) {
+	animation: fade-out 0.15s ease-out;
+	animation-fill-mode: forwards;
+}
+
+/* ----------------------- */
+
+/* restore from minimized, open */
+@keyframes a3d-in {
+	0% {
+		opacity: 0;
+		transform: perspective(2000px) rotateX(60deg) scale(0.7);
+		display: none;
+	}
+	1% { display: block; }
+	100% {
+		opacity: 1;
+		transform: perspective(2000px) rotateX(0) scale(1);
+	}
+}
+
+.a3d-animations desktop-window.animating:not(.restoring-from-maximized,[maximized]) {
+	animation: a3d-in 0.3s ease-out;
+	animation-fill-mode: forwards;
+}
+
+/* minimize, close */
+@keyframes a3d-out {
+	0% {
+		opacity: 1;
+		transform: perspective(2000px) rotateX(0) scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: perspective(2000px) rotateX(60deg) scale(0.7);
+		display: none;
+	}
+}
+
+.a3d-animations desktop-window.animating:is(.closing,[minimized]) {
+	animation: a3d-out 0.3s ease-out;
+	animation-fill-mode: forwards;
+}
