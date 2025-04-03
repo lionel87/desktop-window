@@ -95,6 +95,7 @@ desktop-window::part(titlebar-center) {
 	border-radius: 3px;
 	font-family: sans-serif;
 	width: 70%;
+	max-width: 300px;
 }
 
 desktop-window:focus-within .searchbar {
