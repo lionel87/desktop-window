@@ -2,6 +2,8 @@
 
 A lightweight Web Components-based custom element that replicates the look and feel of native desktop application windows — resizable, movable, and styled like a traditional OS window. No frameworks required.
 
+![demo](demo.png)
+
 ## NOT READY FOR PRODUCTION
 
 This package is in active development, and not yet reached the point where I can recommend using in production environment.
