@@ -60,6 +60,7 @@ export declare class DesktopWindow extends HTMLElement {
     get modal(): boolean;
     set modal(value: boolean);
     flash(): void;
+    isFocused(): boolean;
     focus(): void;
     blur(): void;
     close(): void;

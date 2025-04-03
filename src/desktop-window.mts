@@ -365,6 +365,10 @@ export class DesktopWindow extends HTMLElement {
 		this.#window.classList.add('flashed');
 	}
 
+	isFocused() {
+		return !!this.#shadowRoot.querySelector(':focus-within');
+	}
+
 	focus() {
 		this.#window.style.setProperty('--z-index', String(DesktopWindow.#nextZIndex++));
 		this.#window.focus();
