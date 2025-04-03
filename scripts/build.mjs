@@ -32,7 +32,7 @@ try {
 		entryPoints: ['src/desktop-window.mts'],
 		bundle: true,
 		format: 'esm',
-		minify: true,
+		minify: false,
 		outfile: './desktop-window.mjs',
 		sourcemap: false,
 	});
@@ -43,7 +43,7 @@ try {
 		entryPoints: ['src/desktop-window.mts'],
 		bundle: true,
 		format: 'cjs',
-		minify: true,
+		minify: false,
 		outfile: './desktop-window.cjs',
 		sourcemap: false,
 	});
