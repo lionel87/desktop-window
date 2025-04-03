@@ -95,6 +95,7 @@ const updateTaskbar = () => {
 				win.shadowRoot.dispatchEvent(new Event('restore'));
 			}
 			win.focus();
+			document.querySelector('#notice-me').style.display = 'none';
 		};
 		taskbar.appendChild(btn);
 	}
