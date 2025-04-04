@@ -4,8 +4,8 @@
   "description": "A lightweight Web Components-based custom element that replicates the look and feel of native desktop application windows — resizable, movable, and styled like a traditional OS window.",
   "browser": "./desktop-window.js",
   "types": "./desktop-window.d.mts",
-  "main": "./index.cjs",
-  "module": "./index.mjs",
+  "module": "./desktop-window.mjs",
+  "main": "./desktop-window.cjs",
   "exports": {
     ".": {
       "browser": "./desktop-window.js",
