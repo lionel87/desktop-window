@@ -50,6 +50,7 @@ export class DesktopWindow extends HTMLElement {
 	#dragPointerMove?: (event: PointerEvent) => void;
 	#dragPointerUp?: (event: PointerEvent) => void;
 	#resizePointerMove?: (event: PointerEvent) => void;
+	#resizePointerMoveAspect?: (event: PointerEvent) => void;
 	#resizePointerUp?: (event: PointerEvent) => void;
 
 	constructor() {
@@ -249,16 +250,24 @@ export class DesktopWindow extends HTMLElement {
 		return this.#parseUnsigned(this.getAttribute(name)!);
 	}
 
-	#setUnsignedAttribute(name: string, value: number) {
-		this.setAttribute(name, String(Math.round(Math.max(0, value))));
+	#setUnsignedAttribute(name: string, value: number | null) {
+		if (value === null) {
+			this.removeAttribute(name);
+		} else {
+			this.setAttribute(name, String(Math.round(Math.max(0, value))));
+		}
 	}
 
 	#getIntegerAttribute(name: string) {
 		return this.#parseInteger(this.getAttribute(name)!);
 	}
 
-	#setIntegerAttribute(name: string, value: number) {
-		this.setAttribute(name, String(Math.round(value)));
+	#setIntegerAttribute(name: string, value: number | null) {
+		if (value === null) {
+			this.removeAttribute(name);
+		} else {
+			this.setAttribute(name, String(Math.round(value)));
+		}
 	}
 
 	#getBooleanAttribute(name: string) {
@@ -358,6 +367,25 @@ export class DesktopWindow extends HTMLElement {
 
 	get modal() { return this.#getBooleanAttribute('modal'); }
 	set modal(value) { this.#setBooleanAttribute('modal', value); }
+
+	get aspectRatio() {
+		const value = Number.parseFloat(this.getAttribute('aspectRatio') ?? '0');
+		if (Number.isNaN(value)) return 0;
+		return Math.abs(value);
+	}
+	set aspectRatio(value) {
+		if (value === 0) {
+			this.removeAttribute('aspectRatio');
+		} else if (Number.isFinite(value)) {
+			this.setAttribute('aspectRatio', String(value));
+		}
+	}
+
+	get aspectRatioExtraWidth() { return this.#getUnsignedAttribute('aspectRatioExtraWidth') ?? 0; }
+	set aspectRatioExtraWidth(value) { this.#setUnsignedAttribute('aspectRatioExtraWidth', value); }
+
+	get aspectRatioExtraHeight() { return this.#getUnsignedAttribute('aspectRatioExtraHeight') ?? 0; }
+	set aspectRatioExtraHeight(value) { this.#setUnsignedAttribute('aspectRatioExtraHeight', value); }
 
 	flash() {
 		this.#window.classList.remove('flashed');
@@ -474,6 +502,16 @@ export class DesktopWindow extends HTMLElement {
 		if (undefined !== height) this.height = height + (Math.floor(windowBounds.height) - Math.floor(clientBounds.height));
 	}
 
+	setAspectRatio(ratio: number, extraSize?: { width?: number; height?: number; }) {
+		this.aspectRatio = ratio;
+		if (typeof extraSize?.width !== 'undefined') {
+			this.aspectRatioExtraWidth = extraSize?.width;
+		}
+		if (typeof extraSize?.height !== 'undefined') {
+			this.aspectRatioExtraHeight = extraSize?.height;
+		}
+	}
+
 	connectedCallback() {
 		if (this.centered) {
 			this.#window.style.left = Math.round((this.parentElement!.offsetWidth - this.width) / 2) + 'px';
@@ -517,6 +555,10 @@ export class DesktopWindow extends HTMLElement {
 		if (this.#resizePointerMove) {
 			window.removeEventListener('pointermove', this.#resizePointerMove);
 			this.#resizePointerMove = null as any;
+		}
+		if (this.#resizePointerMoveAspect) {
+			window.removeEventListener('pointermove', this.#resizePointerMoveAspect);
+			this.#resizePointerMoveAspect = null as any;
 		}
 		if (this.#resizePointerUp) {
 			window.removeEventListener('pointerup', this.#resizePointerUp);
@@ -636,18 +678,55 @@ export class DesktopWindow extends HTMLElement {
 		let parentRect: DOMRect;
 		let minWidth: number, minHeight: number, maxWidth: number, maxHeight: number;
 
+		let startClient: DOMRect;
+		let aspectRatio: number;
+		let aspectExtraW: number;
+		let aspectExtraH: number;
+		let aspectDominantAxis: 'w' | 'h';
+
+		this.#resizePointerMoveAspect = (event) => {
+			const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
+			const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
+
+			let newX = start.left;
+			let newY = start.top;
+			let newW = start.width;
+			let newH = start.height;
+
+			const extraW = start.width - startClient.width + aspectExtraW;
+			const extraH = start.height - startClient.height + aspectExtraH;
+
+			const dirN = direction.includes('n');
+			const dirS = direction.includes('s');
+			const dirE = direction.includes('e');
+			const dirW = direction.includes('w');
+
+			if (aspectDominantAxis === 'w') {
+				newW += dirE ? dx : dirW ? -dx : 0;
+				newW = Math.max(minWidth, Math.min(newW, maxWidth));
+				newH = (newW - extraW) / aspectRatio + extraH;
+				newH = Math.max(minHeight, Math.min(newH, maxHeight));
+				if (dirN) newY = start.bottom - newH;
+				if (dirW) newX = start.right - newW;
+			} else {
+				newH += dirS ? dy : dirN ? -dy : 0;
+				newH = Math.max(minHeight, Math.min(newH, maxHeight));
+				newW = (newH - extraH) * aspectRatio + extraW;
+				newW = Math.max(minWidth, Math.min(newW, maxWidth));
+				if (dirN) newY = start.bottom - newH;
+				if (dirW) newX = start.right - newW;
+			}
+
+			this.#window.style.width = `${Math.round(newW)}px`;
+			this.#window.style.height = `${Math.round(newH)}px`;
+			if (dirW || dirE) this.#window.style.left = `${Math.round(newX)}px`;
+			if (dirN || dirS) this.#window.style.top = `${Math.round(newY)}px`;
+		};
+
 		this.#resizePointerMove = (event) => {
 			const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
 			const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
 
-			if (direction.includes('e')) {
-				const w = Math.max(minWidth, Math.min(start.width + dx, maxWidth));
-				this.#window.style.width = `${Math.round(w)}px`;
-			} else if (direction.includes('w')) {
-				const w = Math.max(minWidth, Math.min(start.width - dx, maxWidth));
-				this.#window.style.width = `${Math.round(w)}px`;
-				this.#window.style.left = `${Math.round(start.right - w)}px`;
-			}
 			if (direction.includes('n')) {
 				const h = Math.max(minHeight, Math.min(start.height - dy, maxHeight));
 				this.#window.style.height = `${Math.round(h)}px`;
@@ -656,10 +735,19 @@ export class DesktopWindow extends HTMLElement {
 				const h = Math.max(minHeight, Math.min(start.height + dy, maxHeight));
 				this.#window.style.height = `${Math.round(h)}px`;
 			}
+			if (direction.includes('e')) {
+				const w = Math.max(minWidth, Math.min(start.width + dx, maxWidth));
+				this.#window.style.width = `${Math.round(w)}px`;
+			} else if (direction.includes('w')) {
+				const w = Math.max(minWidth, Math.min(start.width - dx, maxWidth));
+				this.#window.style.width = `${Math.round(w)}px`;
+				this.#window.style.left = `${Math.round(start.right - w)}px`;
+			}
 		};
 
 		this.#resizePointerUp = () => {
 			window.removeEventListener('pointermove', this.#resizePointerMove!);
+			window.removeEventListener('pointermove', this.#resizePointerMoveAspect!);
 			window.removeEventListener('pointerup', this.#resizePointerUp!);
 			this.x = this.#cssPixelToInteger(this.#window.style.left);
 			this.y = this.#cssPixelToInteger(this.#window.style.top);
@@ -676,12 +764,22 @@ export class DesktopWindow extends HTMLElement {
 				startClientX = event.clientX;
 				startClientY = event.clientY;
 				start = this.#window.getBoundingClientRect();
+				startClient = this.#clientArea.getBoundingClientRect();
 				parentRect = this.parentElement!.getBoundingClientRect();
 				minWidth = this.minWidth;
 				minHeight = this.minHeight;
 				maxWidth = this.maxWidth;
 				maxHeight = this.maxHeight;
-				window.addEventListener('pointermove', this.#resizePointerMove!);
+				aspectRatio = this.aspectRatio;
+				aspectExtraW = this.aspectRatioExtraWidth;
+				aspectExtraH = this.aspectRatioExtraHeight;
+				if (direction.includes('w') || direction.includes('e')) aspectDominantAxis = 'w';
+				else aspectDominantAxis = 'h';
+				if (aspectRatio > 0) {
+					window.addEventListener('pointermove', this.#resizePointerMoveAspect!);
+				} else {
+					window.addEventListener('pointermove', this.#resizePointerMove!);
+				}
 				window.addEventListener('pointerup', this.#resizePointerUp!);
 				if (this.centered) {
 					this.x = start.x;

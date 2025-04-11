@@ -59,6 +59,12 @@ export declare class DesktopWindow extends HTMLElement {
     set frameless(value: boolean);
     get modal(): boolean;
     set modal(value: boolean);
+    get aspectRatio(): number;
+    set aspectRatio(value: number);
+    get aspectRatioExtraWidth(): number;
+    set aspectRatioExtraWidth(value: number);
+    get aspectRatioExtraHeight(): number;
+    set aspectRatioExtraHeight(value: number);
     flash(): void;
     isFocused(): boolean;
     focus(): void;
@@ -91,6 +97,10 @@ export declare class DesktopWindow extends HTMLElement {
         height: number;
     };
     setContentBounds({ x, y, width, height }: Bounds): void;
+    setAspectRatio(ratio: number, extraSize?: {
+        width?: number;
+        height?: number;
+    }): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: null | string, newValue: null | string): void;

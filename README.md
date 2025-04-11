@@ -13,7 +13,6 @@ This package is in active development, and not yet reached the point where I can
 
 ### Roadmap
 
-- aspect ratio locking
 - comprehensive documentation
 - a lot of examples incl. integration with a desktop environment
 - accessibility
@@ -88,6 +87,9 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `autofocus`
 - `frameless`
 - `modal`
+- `aspectRatio`
+- `aspectRatioExtraWidth`
+- `aspectRatioExtraHeight`
 
 ### Events emitted
 
@@ -144,6 +146,9 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `autofocus`
 - `frameless`
 - `modal`
+- `aspectRatio`
+- `aspectRatioExtraWidth`
+- `aspectRatioExtraHeight`
 
 ### Methods
 
@@ -163,7 +168,8 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `getContentSize()`
 - `setContentSize(width, height)`
 - `getContentBounds()`
-- `setContentBounds(bounds)`
+- `setContentBounds({ x, y, width, height })`
+- `setAspectRatio(ratio, { width, height })`
 
 ### Slots
 
