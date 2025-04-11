@@ -32,13 +32,13 @@ customElements.define('desktop-window', DesktopWindow);
 
 Or without a build tool:
 
-Copy the `desktop-window.mjs` to your site scripts, then:
+Manually copy the `desktop-window.autoload.js` to your site, then:
 
 ```html
-<script>import('./desktop-window.mjs').then(mod => mod.register());</script>
+<script src="desktop-window.autload.js"></script>
 ```
 
-When the custom element is defined, use the `<desktop-window>` tag (or what you registered) in HTML code.
+Use the `<desktop-window>` tag in HTML code.
 
 ```html
 <style>
@@ -251,13 +251,15 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 
 ## Notes
 
-- Don't forget to set `display: relative` or `display: absolute` on the **immediate parent container**, or the window may behave unexpectedly. Only exception is when the parent is the `document.body`, because that does not need a special `display` value.
+- Always set `position: relative` or `position: absolute` on the **immediate parent container**, or the window may behave unexpectedly. Only exception is when the parent is `document.body`.
+
+- Setting `overflow: hidden` on the container element is recommended to hide windows moved partially outside of the area and prevent an appearing scrollbar.
 
 - The window works only when there is a valid `parentElement`, so appending eg. to a shadow root directly will not work.
 
 - Appending to the `document.body` works, but don't forget to set the body height or have content that stretches the area!
 
-- When the script is asynchronously loaded and the HTML has windows, I recommend you this CSS:
+- When the script is asynchronously loaded and the HTML has windows, I recommend you this CSS to prevent jumping content:
   ```css
   desktop-window:not(:defined) { display: none; }
   /* OR for a more general solution */
