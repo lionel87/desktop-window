@@ -26,7 +26,6 @@ try {
 
 	// create the ESM bundle
 	execSync('tsc', { stdio: 'inherit' });
-	fs.copyFileSync('desktop-window.d.mts', 'desktop-window.d.cts');
 	await esbuild.build({
 		logLevel: 'info',
 		entryPoints: ['src/desktop-window.mts'],
@@ -38,6 +37,7 @@ try {
 	});
 
 	// create the CJS bundle
+	fs.copyFileSync('desktop-window.d.mts', 'desktop-window.d.cts');
 	await esbuild.build({
 		logLevel: 'info',
 		entryPoints: ['src/desktop-window.mts'],
