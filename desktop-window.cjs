@@ -51,10 +51,10 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
       "y",
       "width",
       "height",
-      "minWidth",
-      "minHeight",
-      "maxWidth",
-      "maxHeight",
+      "minwidth",
+      "minheight",
+      "maxwidth",
+      "maxheight",
       "centered",
       "autofocus"
     ];
@@ -300,28 +300,28 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     this.#setUnsignedAttribute("height", value);
   }
   get minWidth() {
-    return this.#getUnsignedAttribute("minWidth") ?? _DesktopWindow.defaultMinWidth;
+    return this.#getUnsignedAttribute("minwidth") ?? _DesktopWindow.defaultMinWidth;
   }
   set minWidth(value) {
-    this.#setUnsignedAttribute("minWidth", value);
+    this.#setUnsignedAttribute("minwidth", value);
   }
   get minHeight() {
-    return this.#getUnsignedAttribute("minHeight") ?? _DesktopWindow.defaultMinHeight;
+    return this.#getUnsignedAttribute("minheight") ?? _DesktopWindow.defaultMinHeight;
   }
   set minHeight(value) {
-    this.#setUnsignedAttribute("minHeight", value);
+    this.#setUnsignedAttribute("minheight", value);
   }
   get maxWidth() {
-    return this.#getUnsignedAttribute("maxWidth") ?? _DesktopWindow.defaultMaxWidth ?? this.parentElement.offsetWidth;
+    return this.#getUnsignedAttribute("maxwidth") ?? _DesktopWindow.defaultMaxWidth ?? this.parentElement.offsetWidth;
   }
   set maxWidth(value) {
-    this.#setUnsignedAttribute("maxWidth", value);
+    this.#setUnsignedAttribute("maxwidth", value);
   }
   get maxHeight() {
-    return this.#getUnsignedAttribute("maxHeight") ?? _DesktopWindow.defaultMaxHeight ?? this.parentElement.offsetHeight;
+    return this.#getUnsignedAttribute("maxheight") ?? _DesktopWindow.defaultMaxHeight ?? this.parentElement.offsetHeight;
   }
   set maxHeight(value) {
-    this.#setUnsignedAttribute("maxHeight", value);
+    this.#setUnsignedAttribute("maxheight", value);
   }
   get resizable() {
     return this.#getBooleanAttribute("resizable");
@@ -396,28 +396,28 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     this.#setBooleanAttribute("modal", value);
   }
   get aspectRatio() {
-    const value = Number.parseFloat(this.getAttribute("aspectRatio") ?? "0");
+    const value = Number.parseFloat(this.getAttribute("aspectratio") ?? "0");
     if (Number.isNaN(value)) return 0;
     return Math.abs(value);
   }
   set aspectRatio(value) {
     if (value === 0) {
-      this.removeAttribute("aspectRatio");
+      this.removeAttribute("aspectratio");
     } else if (Number.isFinite(value)) {
-      this.setAttribute("aspectRatio", String(value));
+      this.setAttribute("aspectratio", String(value));
     }
   }
   get aspectRatioExtraWidth() {
-    return this.#getUnsignedAttribute("aspectRatioExtraWidth") ?? 0;
+    return this.#getUnsignedAttribute("aspectratioextrawidth") ?? 0;
   }
   set aspectRatioExtraWidth(value) {
-    this.#setUnsignedAttribute("aspectRatioExtraWidth", value);
+    this.#setUnsignedAttribute("aspectratioextrawidth", value);
   }
   get aspectRatioExtraHeight() {
-    return this.#getUnsignedAttribute("aspectRatioExtraHeight") ?? 0;
+    return this.#getUnsignedAttribute("aspectratioextraheight") ?? 0;
   }
   set aspectRatioExtraHeight(value) {
-    this.#setUnsignedAttribute("aspectRatioExtraHeight", value);
+    this.#setUnsignedAttribute("aspectratioextraheight", value);
   }
   flash() {
     this.#window.classList.remove("flashed");
@@ -610,25 +610,25 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
         const height = this.#parseInteger(newValue) ?? _DesktopWindow.defaultHeight;
         this.#window.style.height = height + "px";
         break;
-      case "minWidth":
+      case "minwidth":
         const minWidth = this.#parseUnsigned(newValue) ?? _DesktopWindow.defaultMinWidth;
         if (this.width < minWidth) {
           this.width = minWidth;
         }
         break;
-      case "minHeight":
+      case "minheight":
         const minHeight = this.#parseUnsigned(newValue) ?? _DesktopWindow.defaultMinHeight;
         if (this.height < minHeight) {
           this.height = minHeight;
         }
         break;
-      case "maxWidth":
+      case "maxwidth":
         const maxWidth = this.#parseUnsigned(newValue) ?? _DesktopWindow.defaultMaxWidth ?? this.parentElement.offsetWidth;
         if (this.width > maxWidth) {
           this.width = maxWidth;
         }
         break;
-      case "maxHeight":
+      case "maxheight":
         const maxHeight = this.#parseUnsigned(newValue) ?? _DesktopWindow.defaultMaxHeight ?? this.parentElement.offsetHeight;
         if (this.height > maxHeight) {
           this.height = maxHeight;

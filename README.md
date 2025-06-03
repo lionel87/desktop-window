@@ -73,10 +73,10 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `resizable`
 - `width`
 - `height`
-- `minWidth`
-- `maxWidth`
-- `minHeight`
-- `maxHeigh`
+- `minwidth`
+- `maxwidth`
+- `minheight`
+- `maxheigh`
 - `minimizable`
 - `minimized`
 - `maximizable`
@@ -87,9 +87,9 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 - `autofocus`
 - `frameless`
 - `modal`
-- `aspectRatio`
-- `aspectRatioExtraWidth`
-- `aspectRatioExtraHeight`
+- `aspectratio`
+- `aspectratioextrawidth`
+- `aspectratioextraheight`
 
 ### Events emitted
 
