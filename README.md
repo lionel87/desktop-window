@@ -34,7 +34,7 @@ Or without a build tool:
 Manually copy the `desktop-window.autoload.js` to your site, then:
 
 ```html
-<script src="desktop-window.autload.js"></script>
+<script src="desktop-window.autoload.js"></script>
 ```
 
 Use the `<desktop-window>` tag in HTML code.
