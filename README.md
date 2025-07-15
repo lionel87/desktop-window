@@ -6,15 +6,15 @@ A lightweight Web Components-based custom element that replicates the look and f
 
 ## NOT READY FOR PRODUCTION
 
-This package is in active development, and not yet reached the point where I can recommend using in production environment.
+This package is in active development, and not yet reached the point where I can recommend using in production environment:
 
 - Its tested to some degree, but not well tested or battle proven.
-- Expect some API and behaviour changes.
+- Documentation is still in the making (and will probably arrive in a month).
+- The API may still change. It's getting more stable, but changes are still possible.
 
 ### Roadmap
 
 - comprehensive documentation
-- a lot of examples incl. integration with a desktop environment
 - accessibility
 - test cases / unit tests?
 
@@ -61,35 +61,291 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 </script>
 ```
 
+## Examples
+
+For examples see the [Github project `examples` folder](https://github.com/lionel87/desktop-window/tree/master/examples).
+
+1. Clone repository or [download zip](https://github.com/lionel87/desktop-window/archive/refs/heads/master.zip).
+2. Open `examples/index.html` in your browser.
+
+
 ## Documentation
+
+**Contents**
+- [Attributes](#attributes)
+- [Events emitted](#events-emitted)
+- [Events listening for](#events-listening-for)
+- [Properties](#properties)
+- [Methods](#methods)
+- [Slots](#slots)
+- [Parts](#parts)
+- [CSS Variables](#css-variables)
+
 
 ### Attributes
 
-- `name`
-- `movable`
-- `x`
-- `y`
-- `centered`
-- `resizable`
-- `width`
-- `height`
-- `minwidth`
-- `maxwidth`
-- `minheight`
-- `maxheigh`
-- `minimizable`
-- `minimized`
-- `maximizable`
-- `maximized`
-- `closable`
-- `fullscreen`
-- `hidden`
-- `autofocus`
-- `frameless`
-- `modal`
-- `aspectratio`
-- `aspectratioextrawidth`
-- `aspectratioextraheight`
+All boolean attributes on `<desktop-window>` follow this rule:
+
+- If the attribute is **present**, its value is considered `true`, regardless of whether the value is empty, `"true"`, or equals the attribute name.
+- If the attribute is **not present**, the value is `false`.
+
+**Truthy examples (evaluated as `true`):**
+```html
+<desktop-window centered>
+<desktop-window centered="true">
+<desktop-window centered="centered">
+<desktop-window centered="1">
+<desktop-window centered="">
+````
+
+**Falsy example (evaluated as `false`):**
+
+```html
+<desktop-window>
+```
+
+There is **no way to explicitly pass `false`** via the attribute. Omitting the attribute entirely is the only way to make it false.
+
+If dynamic control of booleans is needed, use JavaScript to set/remove attributes:
+
+```js
+element.removeAttribute('centered'); // false
+element.setAttribute('centered', ''); // true
+```
+
+
+#### `name`
+Type: `string`  
+Specifies the title displayed in the window's title bar.  
+Example:
+```html
+<desktop-window name="My Window">
+```
+
+
+#### `movable`
+Type: `boolean`  
+If present, the window can be dragged. If omitted, the window is fixed in place.  
+Example:
+```html
+<desktop-window movable>
+```
+
+
+#### `x`
+Type: `number`  
+Initial horizontal coordinate of the window (in pixels, omit the `px` unit). Ignored if `centered` is set.  
+Example:
+```html
+<desktop-window x="100">
+```
+
+
+#### `y`
+Type: `number`  
+Initial vertical coordinate of the window (in pixels, omit `px` unit). Ignored if `centered` is set.  
+Example:
+```html
+<desktop-window y="100">
+```
+
+
+#### `centered`
+Type: `boolean`  
+If present, the window is centered. Overrides `x` and `y`.  
+Example:
+```html
+<desktop-window centered>
+```
+
+
+#### `resizable`
+Type: `boolean`  
+If present, the window can be resized.
+Omitting it disables resizing.  
+Example:
+```html
+<desktop-window resizable>
+```
+
+
+#### `width`
+Type: `number`  
+Default: `350`.  
+Initial width in pixels.  
+Example:
+```html
+<desktop-window width="800">
+```
+
+
+#### `height`
+Type: `number`  
+Default: `350`.  
+Initial height in pixels.  
+Example:
+```html
+<desktop-window height="600">
+```
+
+
+#### `minwidth`
+Type: `number`  
+Default: `150`.  
+Minimum width allowed during resizing.  
+Example:
+```html
+<desktop-window minwidth="200">
+```
+
+
+#### `maxwidth`
+Type: `number`
+Maximum width allowed during resizing.  
+Example:
+```html
+<desktop-window maxwidth="1000">
+```
+
+
+#### `minheight`
+Type: `number`  
+Default: `150`.  
+Minimum height allowed during resizing.  
+Example:
+```html
+<desktop-window minheight="200">
+```
+
+
+#### `maxheigh`
+Type: `number`  
+Maximum height allowed during resizing.  
+Example:
+```html
+<desktop-window maxheigh="700">
+```
+
+
+#### `minimizable`
+Type: `boolean`  
+If present, the window shows a minimize button and allows minimizing.  
+Example:
+```html
+<desktop-window minimizable>
+```
+
+
+#### `minimized`
+Type: `boolean`  
+If present, the window is minimized.  
+Example:
+```html
+<desktop-window minimized>
+```
+
+
+#### `maximizable`
+Type: `boolean`  
+If present, the window shows a maximize button and allows maximizing.  
+Example:
+```html
+<desktop-window maximizable>
+```
+
+
+#### `maximized`
+Type: `boolean`  
+If present, the window is maximized.  
+Example:
+```html
+<desktop-window maximized>
+```
+
+
+#### `closable`
+Type: `boolean`  
+If present, the window can be closed via an UI button. Omit to disable closing from the UI.  
+Closing via JS API is still possible when this is disabled.  
+Example:
+```html
+<desktop-window closable>
+```
+
+
+#### `fullscreen`
+Type: `boolean`  
+If present, the window is displayed in fullscreen mode.  
+In fullscreen mode there is no borders around the window, but the titlebar is still visible with the minimize, restore, close controls.  
+Example:
+```html
+<desktop-window fullscreen>
+```
+
+
+#### `hidden`
+Type: `boolean`  
+If present, the window is not visible. Remove this attribute to show the window.  
+Example:
+```html
+<desktop-window hidden>
+```
+
+
+#### `autofocus`
+Type: `boolean`  
+If present, the window receives focus on creation.  
+Example:
+```html
+<desktop-window autofocus>
+```
+
+
+#### `frameless`
+Type: `boolean`
+If present, the window is rendered without borders or title bar.  
+Example:
+```html
+<desktop-window frameless>
+```
+
+
+#### `modal`
+Type: `boolean`  
+If present, the window becomes modal (blocks interaction with other sibling windows or the background).  
+Example:
+```html
+<desktop-window modal>
+```
+
+
+#### `aspectratio`
+Type: `number`  
+Enforces a fixed aspect ratio (`width / height`) when resizing.  
+Example:
+```html
+<desktop-window aspectratio="1.777">
+```
+
+
+#### `aspectratioextrawidth`
+Type: `number`  
+Extra width in pixels added to the actual content width when maintaining the aspect ratio.  
+Example:
+```html
+<desktop-window aspectratioextrawidth="50">
+```
+
+
+#### `aspectratioextraheight`
+Type: `number`  
+Extra height in pixels added to the content height for aspect ratio calculation.  
+Example:
+```html
+<desktop-window aspectratioextraheight="50">
+```
+
+
 
 ### Events emitted
 
@@ -267,9 +523,9 @@ document.getElementById('exit-fullscreen').addEventListener('click', function (e
 
 - When the script is asynchronously loaded and the HTML has windows, I recommend you this CSS to prevent jumping content:
   ```css
-  desktop-window:not(:defined) { display: none; }
-  /* OR for a more general solution */
-  *:not(:defined) { display: none; }
+  desktop-window:not(:defined) {
+    display: none;
+  }
   ```
 
 ## Missing a feature?
