@@ -411,8 +411,8 @@ export class DesktopWindow extends HTMLElement {
 		this.dispatchEvent(closing);
 		if (!closing.defaultPrevented) {
 			this.remove();
+			this.dispatchEvent(new Event('closed', { bubbles: true }));
 		}
-		this.dispatchEvent(new Event('closed', { bubbles: true }));
 	}
 
 	destroy() {
