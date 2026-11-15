@@ -34,6 +34,7 @@ function startBrowserSync() {
 		notify: false, // --no-notify
 		ghostMode: false, // --ghost-mode=false
 		startPath: 'examples/index.html',
+		ui: false,
 	}, () => {
 		console.log('BrowserSync started!');
 	});
