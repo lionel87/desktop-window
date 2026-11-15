@@ -337,7 +337,7 @@ Example:
 #### `fullscreen`
 Type: `boolean`  
 If present, the window is displayed in fullscreen mode.  
-In fullscreen mode there is no borders around the window, but the titlebar is still visible with the minimize, restore, close controls.  
+In fullscreen mode the window fills its parent and hides the borders and titlebar.  
 Example:
 ```html
 <desktop-window fullscreen>
