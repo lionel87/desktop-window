@@ -739,7 +739,7 @@ Useful as a persisted/restorable geometry snapshot.
 Returns the actual current bounds `{ x, y, width, height }` in pixels relative to the parent element, based on layout.
 
 - Unlike `getNormalBounds()`, it reflects real geometry when `centered`, `fullscreen`, `maximized`, `minimized` are active.
-- Values are floored to integers.
+- Position coordinates (`x`, `y`) are calculated first, then rounded to the nearest integer. Width and height are also rounded to the nearest integer.
 
 ```ts
 const bounds = win.getBounds();
@@ -756,7 +756,7 @@ win.setBounds({ width: 500 }); // partial update
 
 #### `getContentSize()`
 
-Returns `[width, height]` in pixels of the content area (`client-area`) based on actual layout.
+Returns `[width, height]` in pixels of the content area (`client-area`) based on actual layout, rounded to the nearest integers.
 
 This is the size of the default slot host region, not the outer window.
 
@@ -777,6 +777,8 @@ win.setContentSize(640, 480);
 #### `getContentBounds()`
 
 Returns the actual bounds `{ x, y, width, height }` of the content area relative to the parent element.
+
+Position coordinates (`x`, `y`) are calculated first, then rounded to the nearest integer. Width and height are also rounded to the nearest integer.
 
 ```ts
 const content = win.getContentBounds();

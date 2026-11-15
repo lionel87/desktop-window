@@ -423,7 +423,7 @@ export class DesktopWindow extends HTMLElement {
 	getPosition() {
 		const parentBounds = this.parentElement!.getBoundingClientRect();
 		const windowBounds = this.#window.getBoundingClientRect();
-		return [windowBounds.x - parentBounds.x, windowBounds.y - parentBounds.y];
+		return [windowBounds.x - parentBounds.x - this.parentElement!.clientLeft, windowBounds.y - parentBounds.y - this.parentElement!.clientTop];
 	}
 
 	setPosition(x: number, y: number) {
@@ -456,10 +456,10 @@ export class DesktopWindow extends HTMLElement {
 		const parentBounds = this.parentElement!.getBoundingClientRect();
 		const windowBounds = this.#window.getBoundingClientRect();
 		return {
-			x: Math.floor(windowBounds.x) - Math.floor(parentBounds.x),
-			y: Math.floor(windowBounds.y) - Math.floor(parentBounds.y),
-			width: Math.floor(windowBounds.width),
-			height: Math.floor(windowBounds.height),
+			x: Math.round(windowBounds.x - parentBounds.x - this.parentElement!.clientLeft),
+			y: Math.round(windowBounds.y - parentBounds.y - this.parentElement!.clientTop),
+			width: Math.round(windowBounds.width),
+			height: Math.round(windowBounds.height),
 		};
 	}
 
@@ -472,7 +472,7 @@ export class DesktopWindow extends HTMLElement {
 
 	getContentSize() {
 		const clientBounds = this.#clientArea.getBoundingClientRect();
-		return [Math.floor(clientBounds.width), Math.floor(clientBounds.height)];
+		return [Math.round(clientBounds.width), Math.round(clientBounds.height)];
 	}
 
 	setContentSize(width: number, height: number) {
@@ -486,10 +486,10 @@ export class DesktopWindow extends HTMLElement {
 		const parentBounds = this.parentElement!.getBoundingClientRect();
 		const clientBounds = this.#clientArea.getBoundingClientRect();
 		return {
-			x: Math.floor(clientBounds.x) - Math.floor(parentBounds.x),
-			y: Math.floor(clientBounds.y) - Math.floor(parentBounds.y),
-			width: Math.floor(clientBounds.width),
-			height: Math.floor(clientBounds.height),
+			x: Math.round(clientBounds.x - parentBounds.x - this.parentElement!.clientLeft),
+			y: Math.round(clientBounds.y - parentBounds.y - this.parentElement!.clientTop),
+			width: Math.round(clientBounds.width),
+			height: Math.round(clientBounds.height),
 		};
 	}
 
@@ -498,8 +498,8 @@ export class DesktopWindow extends HTMLElement {
 		const clientBounds = this.#clientArea.getBoundingClientRect();
 		if (undefined !== x) this.x = x - (Math.floor(clientBounds.x) - Math.floor(windowBounds.x));
 		if (undefined !== y) this.y = y - (Math.floor(clientBounds.y) - Math.floor(windowBounds.y));
-		if (undefined !== width) this.width = width + (Math.floor(windowBounds.width) - Math.floor(clientBounds.width));
-		if (undefined !== height) this.height = height + (Math.floor(windowBounds.height) - Math.floor(clientBounds.height));
+		if (undefined !== width) this.width = Math.round(width + windowBounds.width - clientBounds.width);
+		if (undefined !== height) this.height = Math.round(height + windowBounds.height - clientBounds.height);
 	}
 
 	setAspectRatio(ratio: number, extraSize?: { width?: number; height?: number; }) {
