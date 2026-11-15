@@ -64,6 +64,7 @@ export class DesktopWindow extends HTMLElement {
 
 		this.#window = this.#shadowRoot.querySelector('.window')!;
 		this.#clientArea = this.#window.querySelector('.client-area')!;
+		this.addEventListener('focusin', () => this.#bringToFront());
 
 		//--
 
@@ -122,7 +123,7 @@ export class DesktopWindow extends HTMLElement {
 		//-- zindex
 
 		this.#window.addEventListener('pointerdown', () => {
-			this.#window.style.setProperty('--z-index', String(DesktopWindow.#nextZIndex++));
+			this.#bringToFront();
 		});
 
 		this.#shadowRoot.querySelector('.backdrop')!.addEventListener('click', () => {
@@ -135,7 +136,7 @@ export class DesktopWindow extends HTMLElement {
 		for (const control of controls) {
 			control.addEventListener('pointerdown', (event) => {
 				event.stopPropagation();
-				this.#window.style.setProperty('--z-index', String(DesktopWindow.#nextZIndex++));
+				this.#bringToFront();
 			});
 			control.addEventListener('dblclick', (event) => {
 				event.stopPropagation();
@@ -396,8 +397,14 @@ export class DesktopWindow extends HTMLElement {
 		return !!this.#shadowRoot.querySelector(':focus-within');
 	}
 
+	#bringToFront() {
+		const zIndex = String(DesktopWindow.#nextZIndex++);
+		this.#window.style.setProperty('--z-index', zIndex);
+		this.#shadowRoot.querySelector<HTMLElement>('.backdrop')!.style.setProperty('--z-index', zIndex);
+	}
+
 	focus() {
-		this.#window.style.setProperty('--z-index', String(DesktopWindow.#nextZIndex++));
+		this.#bringToFront();
 		this.#window.focus();
 	}
 

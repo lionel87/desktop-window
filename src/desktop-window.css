@@ -371,6 +371,7 @@
 
 :host(:not([modal])) .backdrop { display: none; }
 :host([modal]) .backdrop {
+	--z-index: 10;
 	position: absolute;
 	inset: 0;
 	z-index: calc(2 * var(--z-index) - 1);
