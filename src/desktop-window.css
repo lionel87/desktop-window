@@ -394,3 +394,12 @@
 .window.flashed {
 	animation: border-flash .75s ease-out;
 }
+
+@media (prefers-reduced-motion: reduce) {
+	/* Keep the brief attention cue, using a steady outline instead of motion. */
+	.window.flashed { animation: border-notice .75s step-end; }
+}
+
+@keyframes border-notice {
+	from, to { outline: 2px solid currentColor; outline-offset: -2px; }
+}
