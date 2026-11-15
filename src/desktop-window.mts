@@ -385,7 +385,7 @@ export class DesktopWindow extends HTMLElement {
 
 	get maximized() { return this.#getBooleanAttribute('maximized'); }
 	set maximized(value) {
-		const oldValue = this.minimized;
+		const oldValue = this.maximized;
 		this.#setBooleanAttribute('maximized', value);
 		if (oldValue && !value) {
 			this.dispatchEvent(new Event('restored', { bubbles: true }));
