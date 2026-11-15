@@ -6,7 +6,7 @@
 			</div>
 			<div class="titlebar-center" part="titlebar-center">
 				<slot name="titlebar-center">
-					<div id="titlebar-text" class="titlebar-text" part="titlebar-text"></div>
+					<div id="titlebar-text" class="titlebar-text" part="titlebar-text" aria-hidden="true"></div>
 				</slot>
 			</div>
 			<div class="titlebar-end" part="titlebar-end">
@@ -21,6 +21,7 @@
 			<slot></slot>
 		</div>
 	</div>
+	<span id="window-description" hidden></span>
 	<div class="resize-handle handle-n" data-direction="n"></div>
 	<div class="resize-handle handle-s" data-direction="s"></div>
 	<div class="resize-handle handle-e" data-direction="e"></div>

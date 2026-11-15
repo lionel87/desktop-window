@@ -85,6 +85,48 @@ For examples see the [Github project `examples` folder](https://github.com/lione
   ```
 
 
+## Accessibility
+
+### Names and descriptions
+
+Give each window a meaningful `name`. A custom `titlebar-center` slot supplies the accessible name from its text instead. For titles containing controls rather than title text, supply `aria-label` explicitly.
+
+```html
+<p id="settings-description">Choose the settings for this document.</p>
+<desktop-window name="Document settings" aria-describedby="settings-description" closable>
+  ...
+</desktop-window>
+```
+
+`aria-label` and `aria-labelledby` on the custom element override the default name. `aria-describedby` supplies an optional short description. Referenced IDs are resolved in the custom element's document or shadow root; their text is copied into the internal dialog so references do not cross a shadow boundary. Text changes are observed. Use a short, plain-text description rather than the entire contents of a complex window.
+
+Frameless windows need a name too. The name remains available when the titlebar is hidden. Without a supplied name, the fallback is `Window`.
+
+### Translating built-in labels
+
+These class setters update **all existing instances**, including detached instances, and the defaults for future ones:
+
+```js
+DesktopWindow.minimizeButtonLabel = 'Minimize window';
+DesktopWindow.maximizeButtonLabel = 'Maximize window';
+DesktopWindow.restoreButtonLabel = 'Restore window';
+DesktopWindow.closeButtonLabel = 'Close window';
+```
+
+Use `labels` to update several labels. Its setter accepts a partial object; its getter returns a copy.
+
+```js
+DesktopWindow.labels = {
+  minimize: 'Minimize window',
+  maximize: 'Maximize window',
+  restore: 'Restore window',
+  close: 'Close window',
+  window: 'Application window',
+};
+```
+
+Assign labels with a setter rather than modifying a property on the returned copy.
+
 ## Documentation
 
 **Contents**

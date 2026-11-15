@@ -8,6 +8,14 @@ interface Bounds {
 	height: number;
 }
 
+export interface WindowLabels {
+	minimize: string;
+	maximize: string;
+	restore: string;
+	close: string;
+	window: string;
+}
+
 export class DesktopWindow extends HTMLElement {
 
 	static shadowMode: 'open' | 'closed' = 'open';
@@ -19,6 +27,35 @@ export class DesktopWindow extends HTMLElement {
 	static defaultMinHeight = 150;
 	static defaultMaxWidth = null;
 	static defaultMaxHeight = null;
+
+	static #instances = new Set<WeakRef<DesktopWindow>>();
+	static #collectedInstances = new FinalizationRegistry<WeakRef<DesktopWindow>>(reference => DesktopWindow.#instances.delete(reference));
+	static #labels: WindowLabels = {
+		minimize: 'Minimize',
+		maximize: 'Maximize',
+		restore: 'Restore',
+		close: 'Close',
+		window: 'Window',
+	};
+
+	static get labels() { return { ...DesktopWindow.#labels }; }
+	static set labels(value: Partial<WindowLabels>) {
+		Object.assign(DesktopWindow.#labels, value);
+		for (const reference of DesktopWindow.#instances) {
+			const instance = reference.deref();
+			if (instance) instance.#updateLabels();
+			else DesktopWindow.#instances.delete(reference);
+		}
+	}
+
+	static get minimizeButtonLabel() { return DesktopWindow.#labels.minimize; }
+	static set minimizeButtonLabel(value: string) { DesktopWindow.labels = { minimize: value }; }
+	static get maximizeButtonLabel() { return DesktopWindow.#labels.maximize; }
+	static set maximizeButtonLabel(value: string) { DesktopWindow.labels = { maximize: value }; }
+	static get restoreButtonLabel() { return DesktopWindow.#labels.restore; }
+	static set restoreButtonLabel(value: string) { DesktopWindow.labels = { restore: value }; }
+	static get closeButtonLabel() { return DesktopWindow.#labels.close; }
+	static set closeButtonLabel(value: string) { DesktopWindow.labels = { close: value }; }
 
 	static get observedAttributes() {
 		return [
@@ -33,6 +70,9 @@ export class DesktopWindow extends HTMLElement {
 			'maxheight',
 			'centered',
 			'autofocus',
+			'aria-label',
+			'aria-labelledby',
+			'aria-describedby',
 		];
 	}
 
@@ -47,6 +87,7 @@ export class DesktopWindow extends HTMLElement {
 	#shadowRoot: ShadowRoot;
 	#window: HTMLElement;
 	#clientArea: HTMLElement;
+	#labelObserver = new MutationObserver(() => this.#updateAccessibleName());
 	#dragPointerMove?: (event: PointerEvent) => void;
 	#dragPointerUp?: (event: PointerEvent) => void;
 	#resizePointerMove?: (event: PointerEvent) => void;
@@ -64,6 +105,11 @@ export class DesktopWindow extends HTMLElement {
 
 		this.#window = this.#shadowRoot.querySelector('.window')!;
 		this.#clientArea = this.#window.querySelector('.client-area')!;
+		const reference = new WeakRef(this);
+		DesktopWindow.#instances.add(reference);
+		DesktopWindow.#collectedInstances.register(this, reference);
+		this.#updateLabels();
+		this.#shadowRoot.addEventListener('slotchange', () => this.#updateAccessibleName());
 		this.addEventListener('focusin', () => this.#bringToFront());
 
 		//--
@@ -510,6 +556,8 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	connectedCallback() {
+		this.#updateLabels();
+		this.#observeLabels();
 		if (this.centered) {
 			this.#window.style.left = Math.round((this.parentElement!.offsetWidth - this.width) / 2) + 'px';
 			this.#window.style.top = Math.round((this.parentElement!.offsetHeight - this.height) / 2) + 'px';
@@ -538,6 +586,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	disconnectedCallback() {
+		this.#labelObserver.disconnect();
 		this.#shadowRoot = null as any;
 		this.#window = null as any;
 
@@ -568,6 +617,7 @@ export class DesktopWindow extends HTMLElement {
 		switch (name) {
 			case 'name':
 				this.#shadowRoot.querySelector('.titlebar-text')!.textContent = newValue;
+				this.#updateAccessibleName();
 				break;
 			case 'centered':
 				if (newValue !== null) {
@@ -624,12 +674,65 @@ export class DesktopWindow extends HTMLElement {
 					this.height = maxHeight;
 				}
 				break;
+			case 'aria-label':
+			case 'aria-labelledby':
+			case 'aria-describedby':
+				this.#observeLabels();
+				break;
 			case 'autofocus':
 				if (newValue !== null) {
 					this.focus();
 				}
 				break;
 		}
+	}
+
+	#updateLabels() {
+		const labels = DesktopWindow.#labels;
+		for (const name of ['minimize', 'maximize', 'restore', 'close'] as const) {
+			const button = this.#shadowRoot.querySelector<HTMLElement>('.btn-' + name)!;
+			button.setAttribute('aria-label', labels[name]);
+			button.title = labels[name];
+		}
+		this.#updateAccessibleName();
+	}
+
+	#referencedText(attribute: string) {
+		const root = this.getRootNode() as Document | ShadowRoot;
+		return (this.getAttribute(attribute) ?? '').split(/\s+/).filter(Boolean).map(id => {
+			const element = root.getElementById?.(id);
+			return element?.getAttribute('aria-label') || element?.textContent || '';
+		}).join(' ').trim();
+	}
+
+	#updateAccessibleName() {
+		const titleSlot = this.#shadowRoot.querySelector<HTMLSlotElement>('slot[name="titlebar-center"]')!;
+		const customTitle = titleSlot.assignedNodes().length ? titleSlot.assignedNodes({ flatten: true }).map(node => node.textContent).join(' ').trim() : '';
+		const label = this.#referencedText('aria-labelledby') || this.getAttribute('aria-label');
+		this.#window.removeAttribute('aria-labelledby');
+		if (label || customTitle || !this.name) {
+			this.#window.setAttribute('aria-label', label || customTitle || DesktopWindow.#labels.window);
+		} else {
+			this.#window.removeAttribute('aria-label');
+			this.#window.setAttribute('aria-labelledby', 'titlebar-text');
+		}
+		const description = this.#referencedText('aria-describedby');
+		this.#shadowRoot.querySelector('#window-description')!.textContent = description;
+		if (description) this.#window.setAttribute('aria-describedby', 'window-description');
+		else this.#window.removeAttribute('aria-describedby');
+	}
+
+	#observeLabels() {
+		this.#labelObserver.disconnect();
+		this.#labelObserver.observe(this, { childList: true, characterData: true, subtree: true });
+		const root = this.getRootNode() as Document | ShadowRoot;
+		for (const attribute of ['aria-labelledby', 'aria-describedby']) {
+			for (const id of (this.getAttribute(attribute) ?? '').split(/\s+/).filter(Boolean)) {
+				const element = root.getElementById?.(id);
+				if (element) this.#labelObserver.observe(element, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['aria-label'] });
+			}
+		}
+		this.#updateAccessibleName();
 	}
 
 	#setupDragging() {
