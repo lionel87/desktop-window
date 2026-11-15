@@ -181,14 +181,6 @@ export class DesktopWindow extends HTMLElement {
 			}
 		});
 
-		for (const btn of this.#shadowRoot.querySelectorAll<HTMLElement>('.control-btn')) {
-			btn.addEventListener('keydown', (event) => {
-				if (event.key === 'Enter') {
-					btn.click();
-				}
-			})
-		}
-
 		// custom resize/move handler
 
 		this.#shadowRoot.addEventListener('move', (event: Event) => {

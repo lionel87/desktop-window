@@ -167,6 +167,8 @@
 }
 
 .control-btn {
+	appearance: none;
+	font: inherit;
 	cursor: default;
 	position: relative;
 	width: var(--desktop-window-buttons-width);
