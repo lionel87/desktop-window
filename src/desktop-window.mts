@@ -221,9 +221,10 @@ export class DesktopWindow extends HTMLElement {
 			this.#shadowRoot!.dispatchEvent(new Event('close', { bubbles: true }));
 		});
 
-		this.#window.querySelector('.titlebar')!.addEventListener('dblclick', () => {
+		this.#window.querySelector('.titlebar')!.addEventListener('dblclick', (event) => {
+			if (event.composedPath().some(target => target instanceof HTMLElement && target.matches('button, input, select, textarea, a, [contenteditable]'))) return;
 			if (this.maximizable) {
-				this.maximized = !this.maximized;
+				this.#shadowRoot.dispatchEvent(new Event(this.maximized ? 'restore' : 'maximize'));
 			}
 		});
 
