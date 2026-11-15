@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prepack": "npm run build",
     "dev": "node scripts/dev.mjs"
   },
   "keywords": [
