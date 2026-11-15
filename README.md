@@ -102,6 +102,12 @@ Give each window a meaningful `name`. A custom `titlebar-center` slot supplies t
 
 Frameless windows need a name too. The name remains available when the titlebar is hidden. Without a supplied name, the fallback is `Window`.
 
+### Keyboard and focus
+
+- Tab and Shift+Tab reach the window, its visible controls, and its contents.
+- Closing or hiding a focused window returns focus to its opener when possible. Closing a background window does not take focus away from the current work.
+- Minimized content is collapsed to zero height and inert. Focus moves to a visible window control if its previous target disappears.
+
 ### Translating built-in labels
 
 These class setters update **all existing instances**, including detached instances, and the defaults for future ones:
@@ -610,7 +616,7 @@ Shows the minimize control and enables minimizing from the UI.
 
 #### `minimized: boolean`
 
-Minimized state. When set to `true`, the client area is collapsed to zero height.
+Minimized state. When set to `true`, the client area is collapsed to zero height and inert.
 
 #### `maximizable: boolean`
 

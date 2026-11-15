@@ -73,6 +73,17 @@ export class DesktopWindow extends HTMLElement {
 			'aria-label',
 			'aria-labelledby',
 			'aria-describedby',
+			'modal',
+			'hidden',
+			'minimized',
+			'maximized',
+			'fullscreen',
+			'frameless',
+			'movable',
+			'resizable',
+			'minimizable',
+			'maximizable',
+			'closable',
 		];
 	}
 
@@ -87,7 +98,13 @@ export class DesktopWindow extends HTMLElement {
 	#shadowRoot: ShadowRoot;
 	#window: HTMLElement;
 	#clientArea: HTMLElement;
+	#returnFocus: HTMLElement | null = null;
+	#contentFocus: HTMLElement | null = null;
+	#hadFocus = false;
 	#labelObserver = new MutationObserver(() => this.#updateAccessibleName());
+	#cancelPointer?: () => void;
+	#pointerId?: number;
+	#pointerStart?: { bounds: Bounds; centered: boolean };
 	#dragPointerMove?: (event: PointerEvent) => void;
 	#dragPointerUp?: (event: PointerEvent) => void;
 	#resizePointerMove?: (event: PointerEvent) => void;
@@ -109,8 +126,31 @@ export class DesktopWindow extends HTMLElement {
 		DesktopWindow.#instances.add(reference);
 		DesktopWindow.#collectedInstances.register(this, reference);
 		this.#updateLabels();
+		this.#setupDragging();
+		this.#setupResizing();
 		this.#shadowRoot.addEventListener('slotchange', () => this.#updateAccessibleName());
-		this.addEventListener('focusin', () => this.#bringToFront());
+		this.addEventListener('focusin', (event) => {
+			this.#hadFocus = true;
+			const target = event.composedPath()[0];
+			if (target instanceof HTMLElement) {
+				if (this.contains(target) && !target.closest('[slot^="titlebar-"]')) this.#contentFocus = target;
+			}
+			this.#bringToFront();
+		});
+		this.#shadowRoot.addEventListener('focusout', (event) => {
+			if (!this.isConnected) return;
+			const next = (event as FocusEvent).relatedTarget;
+			if (next instanceof Node) {
+				this.#hadFocus = this.contains(next) || this.#shadowRoot.contains(next);
+			} else {
+				// Removing a focused element can blur it before disconnectedCallback runs.
+				queueMicrotask(() => { if (this.isConnected) this.#hadFocus = this.isFocused(); });
+			}
+		});
+		this.#window.addEventListener('keydown', (event) => this.#onKeyDown(event));
+		this.#shadowRoot.querySelector('.backdrop')!.addEventListener('click', () => {
+			this.flash();
+		});
 
 		//--
 
@@ -180,10 +220,6 @@ export class DesktopWindow extends HTMLElement {
 			this.#bringToFront();
 		});
 
-		this.#shadowRoot.querySelector('.backdrop')!.addEventListener('click', () => {
-			this.flash();
-		});
-
 		//-- titlebar controls should not bubble titlebar only events
 
 		const controls = this.#shadowRoot.querySelectorAll('.titlebar-start, .titlebar-end, .control-btn');
@@ -206,23 +242,14 @@ export class DesktopWindow extends HTMLElement {
 
 		minimize.addEventListener('click', () => {
 			this.#shadowRoot!.dispatchEvent(new Event('minimize', { bubbles: true }));
-			restore.focus();
 		});
 
 		maximize.addEventListener('click', () => {
 			this.#shadowRoot!.dispatchEvent(new Event('maximize', { bubbles: true }));
-			restore.focus();
 		});
 
 		restore.addEventListener('click', () => {
-			const oldMinimized = this.minimized;
-			const oldMaximized = this.maximized;
 			this.#shadowRoot!.dispatchEvent(new Event('restore', { bubbles: true }));
-			if (oldMaximized) {
-				maximize.focus();
-			} else if (oldMinimized) {
-				minimize.focus();
-			}
 		});
 
 		close.addEventListener('click', () => {
@@ -276,10 +303,6 @@ export class DesktopWindow extends HTMLElement {
 				}
 			});
 		}
-	}
-
-	#cssPixelToInteger(propertyValue: string) {
-		return Number.parseInt(propertyValue.replace('px', ''));
 	}
 
 	#parseUnsigned(value: string | null) {
@@ -444,28 +467,10 @@ export class DesktopWindow extends HTMLElement {
 		return !!this.#shadowRoot.querySelector(':focus-within');
 	}
 
-	#bringToFront() {
-		const zIndex = String(DesktopWindow.#nextZIndex++);
-		this.#window.style.setProperty('--z-index', zIndex);
-		this.#shadowRoot.querySelector<HTMLElement>('.backdrop')!.style.setProperty('--z-index', zIndex);
-	}
-
 	focus(options?: FocusOptions) {
 		if (!this.isConnected || this.hidden) return;
 		this.#bringToFront();
 		this.#window.focus(options);
-	}
-
-	#activeElement(): HTMLElement | null {
-		const element = this.#shadowRoot.activeElement || (this.contains(this.ownerDocument.activeElement) ? this.ownerDocument.activeElement : null);
-		if (!(element instanceof HTMLElement)) return null;
-		let active = element;
-		while (active) {
-			const shadow = active instanceof DesktopWindow ? active.#shadowRoot : active.shadowRoot;
-			if (!(shadow?.activeElement instanceof HTMLElement)) break;
-			active = shadow.activeElement;
-		}
-		return active;
 	}
 
 	blur() {
@@ -481,6 +486,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	destroy() {
+		this.#hadFocus = this.isFocused();
 		this.remove();
 		this.dispatchEvent(new Event('closed', { bubbles: true }));
 	}
@@ -578,8 +584,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#updateLabels();
-		this.#observeLabels();
+		this.#returnFocus = this.#documentFocus();
 		if (this.centered) {
 			this.#window.style.left = Math.round((this.parentElement!.offsetWidth - this.width) / 2) + 'px';
 			this.#window.style.top = Math.round((this.parentElement!.offsetHeight - this.height) / 2) + 'px';
@@ -597,41 +602,22 @@ export class DesktopWindow extends HTMLElement {
 			this.#window.style.height = DesktopWindow.defaultHeight + 'px';
 		}
 
-		this.#setupDragging();
-		this.#setupResizing();
+		this.#updateLabels();
+		this.#observeLabels();
+		this.#syncState();
 
 		if (this.autofocus) {
 			requestAnimationFrame(() => {
-				this.focus();
+				if (this.isConnected && !this.hidden && this.autofocus) this.#focusInitial();
 			});
 		}
 	}
 
 	disconnectedCallback() {
+		this.#removePointerListeners();
 		this.#labelObserver.disconnect();
-		this.#shadowRoot = null as any;
-		this.#window = null as any;
-
-		if (this.#dragPointerMove) {
-			window.removeEventListener('pointermove', this.#dragPointerMove);
-			this.#dragPointerMove = null as any;
-		}
-		if (this.#dragPointerUp) {
-			window.removeEventListener('pointerup', this.#dragPointerUp);
-			this.#dragPointerUp = null as any;
-		}
-		if (this.#resizePointerMove) {
-			window.removeEventListener('pointermove', this.#resizePointerMove);
-			this.#resizePointerMove = null as any;
-		}
-		if (this.#resizePointerMoveAspect) {
-			window.removeEventListener('pointermove', this.#resizePointerMoveAspect);
-			this.#resizePointerMoveAspect = null as any;
-		}
-		if (this.#resizePointerUp) {
-			window.removeEventListener('pointerup', this.#resizePointerUp);
-			this.#resizePointerUp = null as any;
-		}
+		if (this.#hadFocus) this.#restoreFocus();
+		this.#hadFocus = false;
 	}
 
 	attributeChangedCallback(name: string, oldValue: null | string, newValue: null | string) {
@@ -696,16 +682,18 @@ export class DesktopWindow extends HTMLElement {
 					this.height = maxHeight;
 				}
 				break;
+			case 'autofocus':
+				if (newValue !== null && this.isConnected) {
+					this.#focusInitial();
+				}
+				break;
 			case 'aria-label':
 			case 'aria-labelledby':
 			case 'aria-describedby':
 				this.#observeLabels();
 				break;
-			case 'autofocus':
-				if (newValue !== null) {
-					this.focus();
-				}
-				break;
+			default:
+				if (this.isConnected) this.#syncState(name);
 		}
 	}
 
@@ -757,39 +745,112 @@ export class DesktopWindow extends HTMLElement {
 		this.#updateAccessibleName();
 	}
 
+	#documentFocus(): HTMLElement | null {
+		let element = this.ownerDocument.activeElement;
+		while (element) {
+			const shadow = element instanceof DesktopWindow ? element.#shadowRoot : element.shadowRoot;
+			if (!shadow?.activeElement) break;
+			element = shadow.activeElement;
+		}
+		return element instanceof HTMLElement ? element : null;
+	}
+
+	#activeElement(): HTMLElement | null {
+		const element = this.#shadowRoot.activeElement || (this.contains(this.ownerDocument.activeElement) ? this.ownerDocument.activeElement : null);
+		if (!(element instanceof HTMLElement)) return null;
+		let active = element;
+		while (active) {
+			const shadow = active instanceof DesktopWindow ? active.#shadowRoot : active.shadowRoot;
+			if (!(shadow?.activeElement instanceof HTMLElement)) break;
+			active = shadow.activeElement;
+		}
+		return active;
+	}
+
+	#bringToFront() {
+		const zIndex = String(DesktopWindow.#nextZIndex++);
+		this.#window.style.setProperty('--z-index', zIndex);
+		this.#shadowRoot.querySelector<HTMLElement>('.backdrop')!.style.setProperty('--z-index', zIndex);
+	}
+
+	#focusInitial() {
+		const target = this.querySelector<HTMLElement>('[autofocus]');
+		if (target && target.getClientRects().length && !this.minimized) {
+			target.focus();
+			if (target.matches(':focus-within')) return;
+		}
+		this.focus();
+	}
+
+	#restoreFocus() {
+		if (this.#returnFocus?.isConnected && !this.#returnFocus.closest('[inert], [hidden]')) {
+			this.#returnFocus.focus({ preventScroll: true });
+		}
+	}
+
+	#onKeyDown(event: KeyboardEvent) {
+		if (event.defaultPrevented) return;
+		if (event.key === 'Escape' && this.#cancelPointer) {
+			event.preventDefault();
+			this.#cancelPointer();
+		}
+	}
+
+	#syncState(changedAttribute?: string) {
+		if (this.#cancelPointer && ['minimized', 'maximized', 'fullscreen', 'hidden', 'movable', 'resizable'].includes(changedAttribute ?? '')) this.#cancelPointer();
+		const active = this.#activeElement();
+		const focused = this.isFocused() || (this.#hadFocus && this.ownerDocument.activeElement === this.ownerDocument.body);
+		this.#clientArea.inert = this.minimized;
+		if (this.hidden) {
+			if (focused) this.#restoreFocus();
+			this.#hadFocus = false;
+			return;
+		}
+		if (focused && changedAttribute === 'minimized' && !this.minimized && this.#contentFocus && this.contains(this.#contentFocus) && this.#contentFocus.getClientRects().length) {
+			this.#contentFocus.focus({ preventScroll: true });
+			if (this.#contentFocus.matches(':focus-within')) return;
+		}
+		if (focused && active && (!active.getClientRects().length || active.closest('[inert]') || (this.minimized && this.contains(active)))) {
+			const selector = this.minimized || this.maximized ? '.btn-restore' : changedAttribute === 'maximized' ? '.btn-maximize' : '.btn-minimize';
+			const controls = [...this.#shadowRoot.querySelectorAll<HTMLElement>(selector), ...this.#shadowRoot.querySelectorAll<HTMLElement>('.control-btn')];
+			const replacement = controls.find(element => element.getClientRects().length && getComputedStyle(element).visibility !== 'hidden');
+			if (replacement) replacement.focus({ preventScroll: true });
+			else this.focus({ preventScroll: true });
+		}
+	}
+
 	#setupDragging() {
 		let startClientX: number, startClientY: number;
 		let start: DOMRect;
 		let parentRect: DOMRect;
 
 		this.#dragPointerMove = (event: PointerEvent) => {
+			if (this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
 			const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
 			const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
 			this.#window.style.left = `${Math.round(start.x + dx)}px`;
 			this.#window.style.top = `${Math.round(start.y + dy)}px`;
 		};
 
-		this.#dragPointerUp = () => {
-			window.removeEventListener('pointermove', this.#dragPointerMove!);
-			window.removeEventListener('pointerup', this.#dragPointerUp!);
-			this.x = this.#cssPixelToInteger(this.#window.style.left);
-			this.y = this.#cssPixelToInteger(this.#window.style.top);
+		this.#dragPointerUp = (event) => {
+			if (this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
+			this.#finishPointer();
 		};
 
 		const titlebar = this.#shadowRoot.querySelector<HTMLElement>('.titlebar')!;
 		titlebar.addEventListener('pointerdown', (event: PointerEvent) => {
-			if (!this.movable) return;
+			if (!this.movable || this.maximized || this.fullscreen || event.button !== 0 || this.#cancelPointer) return;
+			if (event.composedPath().some(target => target instanceof HTMLElement && target.matches('button, input, select, textarea, a, [contenteditable]'))) return;
+			event.preventDefault();
+			this.focus({ preventScroll: true });
 			startClientX = event.clientX;
 			startClientY = event.clientY;
-			start = this.#window.getBoundingClientRect();
+			const bounds = this.getBounds();
+			start = new DOMRect(bounds.x, bounds.y, bounds.width, bounds.height);
 			parentRect = this.parentElement!.getBoundingClientRect();
+			this.#startPointer(event);
 			window.addEventListener('pointermove', this.#dragPointerMove!);
 			window.addEventListener('pointerup', this.#dragPointerUp!);
-			if (this.centered) {
-				this.x = start.x;
-				this.y = start.y;
-				this.centered = false;
-			}
 		});
 	}
 
@@ -807,6 +868,7 @@ export class DesktopWindow extends HTMLElement {
 		let aspectDominantAxis: 'w' | 'h';
 
 		this.#resizePointerMoveAspect = (event) => {
+			if (this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
 			const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
 			const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
 
@@ -846,6 +908,7 @@ export class DesktopWindow extends HTMLElement {
 		};
 
 		this.#resizePointerMove = (event) => {
+			if (this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
 			const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
 			const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
 
@@ -867,25 +930,23 @@ export class DesktopWindow extends HTMLElement {
 			}
 		};
 
-		this.#resizePointerUp = () => {
-			window.removeEventListener('pointermove', this.#resizePointerMove!);
-			window.removeEventListener('pointermove', this.#resizePointerMoveAspect!);
-			window.removeEventListener('pointerup', this.#resizePointerUp!);
-			this.x = this.#cssPixelToInteger(this.#window.style.left);
-			this.y = this.#cssPixelToInteger(this.#window.style.top);
-			this.width = this.#cssPixelToInteger(this.#window.style.width);
-			this.height = this.#cssPixelToInteger(this.#window.style.height);
+		this.#resizePointerUp = (event) => {
+			if (this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
+			this.#finishPointer(true);
 		};
 
 		/** @type {HTMLElement[]} */
 		const handles = this.#shadowRoot.querySelectorAll<HTMLElement>('.resize-handle');
 		for (const handle of handles) {
 			handle.addEventListener('pointerdown', (event) => {
-				if (!this.resizable) return;
+				if (!this.resizable || this.minimized || this.maximized || this.fullscreen || event.button !== 0 || this.#cancelPointer) return;
+				event.preventDefault();
+				this.focus({ preventScroll: true });
 				direction = handle.dataset.direction as typeof direction;
 				startClientX = event.clientX;
 				startClientY = event.clientY;
-				start = this.#window.getBoundingClientRect();
+				const bounds = this.getBounds();
+				start = new DOMRect(bounds.x, bounds.y, bounds.width, bounds.height);
 				startClient = this.#clientArea.getBoundingClientRect();
 				parentRect = this.parentElement!.getBoundingClientRect();
 				minWidth = this.minWidth;
@@ -895,6 +956,7 @@ export class DesktopWindow extends HTMLElement {
 				aspectRatio = this.aspectRatio;
 				aspectExtraW = this.aspectRatioExtraWidth;
 				aspectExtraH = this.aspectRatioExtraHeight;
+				this.#startPointer(event);
 				if (direction.includes('w') || direction.includes('e')) aspectDominantAxis = 'w';
 				else aspectDominantAxis = 'h';
 				if (aspectRatio > 0) {
@@ -903,13 +965,55 @@ export class DesktopWindow extends HTMLElement {
 					window.addEventListener('pointermove', this.#resizePointerMove!);
 				}
 				window.addEventListener('pointerup', this.#resizePointerUp!);
-				if (this.centered) {
-					this.x = start.x;
-					this.y = start.y;
-					this.centered = false;
-				}
 			});
 		}
+	}
+
+	#startPointer(event: PointerEvent) {
+		this.#pointerStart = { bounds: this.getNormalBounds(), centered: this.centered };
+		const bounds = this.getBounds();
+		this.centered = false;
+		this.setPosition(bounds.x, bounds.y);
+		this.#pointerId = event.pointerId || undefined;
+		this.#cancelPointer = () => {
+			const start = this.#pointerStart!;
+			this.#removePointerListeners();
+			this.setBounds(start.bounds);
+			this.centered = start.centered;
+			this.#window.style.width = start.bounds.width + 'px';
+			this.#window.style.height = start.bounds.height + 'px';
+			if (!start.centered) {
+				this.#window.style.left = start.bounds.x + 'px';
+				this.#window.style.top = start.bounds.y + 'px';
+			}
+		};
+		window.addEventListener('pointercancel', this.#onPointerCancel);
+		window.addEventListener('blur', this.#onPointerCancel);
+	}
+
+	#onPointerCancel = (event: Event) => {
+		if (event instanceof PointerEvent && this.#pointerId !== undefined && event.pointerId !== this.#pointerId) return;
+		this.#cancelPointer?.();
+	};
+
+	#finishPointer(resized = false) {
+		const bounds = this.getBounds();
+		this.#removePointerListeners();
+		if (resized) this.setSize(bounds.width, bounds.height);
+		this.setPosition(bounds.x, bounds.y);
+	}
+
+	#removePointerListeners() {
+		window.removeEventListener('pointermove', this.#dragPointerMove!);
+		window.removeEventListener('pointerup', this.#dragPointerUp!);
+		window.removeEventListener('pointermove', this.#resizePointerMove!);
+		window.removeEventListener('pointermove', this.#resizePointerMoveAspect!);
+		window.removeEventListener('pointerup', this.#resizePointerUp!);
+		window.removeEventListener('pointercancel', this.#onPointerCancel);
+		window.removeEventListener('blur', this.#onPointerCancel);
+		this.#cancelPointer = undefined;
+		this.#pointerId = undefined;
+		this.#pointerStart = undefined;
 	}
 }
 

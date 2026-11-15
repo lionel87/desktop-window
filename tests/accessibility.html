@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Accessibility checks</title>
+	<style>
+		#desktop { position: relative; width: min(600px, 100%); height: 450px; }
+		.pass { color: #17652c; }
+		.fail { color: #a00; }
+	</style>
+</head>
+<body>
+	<h1>Accessibility checks</h1>
+	<p>Serve the repository and open this page. These checks use the browser directly, without a test framework.</p>
+	<button id="opener" type="button">Open window</button>
+	<div id="desktop"></div>
+	<ol id="results"></ol>
+	<script type="module" src="accessibility.js"></script>
+</body>
+</html>
