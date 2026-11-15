@@ -455,8 +455,20 @@ export class DesktopWindow extends HTMLElement {
 		this.#window.focus();
 	}
 
+	#activeElement(): HTMLElement | null {
+		const element = this.#shadowRoot.activeElement || (this.contains(this.ownerDocument.activeElement) ? this.ownerDocument.activeElement : null);
+		if (!(element instanceof HTMLElement)) return null;
+		let active = element;
+		while (active) {
+			const shadow = active instanceof DesktopWindow ? active.#shadowRoot : active.shadowRoot;
+			if (!(shadow?.activeElement instanceof HTMLElement)) break;
+			active = shadow.activeElement;
+		}
+		return active;
+	}
+
 	blur() {
-		this.#window.blur();
+		this.#activeElement()?.blur();
 	}
 
 	close() {

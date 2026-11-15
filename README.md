@@ -695,7 +695,7 @@ win.focus();
 
 #### `blur()`
 
-Removes focus from the window (blurs the internal window element).
+Removes focus from the currently focused element inside the window.
 
 ```ts
 win.blur();
