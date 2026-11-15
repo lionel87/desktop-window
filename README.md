@@ -682,7 +682,7 @@ if (!win.isFocused()) {
 }
 ```
 
-#### `focus()`
+#### `focus(options?: FocusOptions)`
 
 Brings the window to front (bumps its internal z-index) and focuses it.
 

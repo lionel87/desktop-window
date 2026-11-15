@@ -450,9 +450,10 @@ export class DesktopWindow extends HTMLElement {
 		this.#shadowRoot.querySelector<HTMLElement>('.backdrop')!.style.setProperty('--z-index', zIndex);
 	}
 
-	focus() {
+	focus(options?: FocusOptions) {
+		if (!this.isConnected || this.hidden) return;
 		this.#bringToFront();
-		this.#window.focus();
+		this.#window.focus(options);
 	}
 
 	#activeElement(): HTMLElement | null {
