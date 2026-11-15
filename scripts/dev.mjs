@@ -4,7 +4,7 @@ import browserSync from 'browser-sync';
 
 let bs = null;
 let debounceChangesTimeout = null;
-watch(['src'], { ignoreInitial: false })
+watch(['src'], { ignoreInitial: false, ignored: /\.generated\.(css|html)\.txt$/ })
 	.addListener('all', () => {
 		if (debounceChangesTimeout) clearTimeout(debounceChangesTimeout);
 		debounceChangesTimeout = setTimeout(() => {
