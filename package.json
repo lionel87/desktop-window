@@ -1,16 +1,18 @@
 {
   "name": "desktop-window",
   "version": "0.4.8",
+  "type": "module",
   "description": "A lightweight Web Components-based custom element that replicates the look and feel of native desktop application windows — resizable, movable, and styled like a traditional OS window.",
   "types": "./desktop-window.d.mts",
   "module": "./desktop-window.mjs",
-  "main": "./desktop-window.cjs",
+  "main": "./desktop-window.mjs",
   "exports": {
     ".": {
       "types": "./desktop-window.d.mts",
       "import": "./desktop-window.mjs",
-      "require": "./desktop-window.cjs"
-    }
+      "default": "./desktop-window.mjs"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

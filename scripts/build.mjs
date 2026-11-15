@@ -36,19 +36,7 @@ try {
 		sourcemap: false,
 	});
 
-	// create the CJS bundle
-	fs.copyFileSync('desktop-window.d.mts', 'desktop-window.d.cts');
-	await esbuild.build({
-		logLevel: 'info',
-		entryPoints: ['src/desktop-window.mts'],
-		bundle: true,
-		format: 'cjs',
-		minify: false,
-		outfile: './desktop-window.cjs',
-		sourcemap: false,
-	});
-
-	// create the iife bundle (NO autoload)
+	// create the iife bundle
 	await esbuild.build({
 		logLevel: 'info',
 		entryPoints: ['src/desktop-window.mts'],
