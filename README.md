@@ -109,8 +109,11 @@ All boolean attributes on `<desktop-window>` follow this rule:
 ```html
 <desktop-window centered>
 <desktop-window centered="true">
+<desktop-window centered="false">
+<desktop-window centered="anything">
 <desktop-window centered="centered">
 <desktop-window centered="1">
+<desktop-window centered="0">
 <desktop-window centered="">
 ````
 

@@ -271,8 +271,7 @@ export class DesktopWindow extends HTMLElement {
 	}
 
 	#getBooleanAttribute(name: string) {
-		const value = this.getAttribute(name);
-		return value === '' || value === 'true';
+		return this.hasAttribute(name);
 	}
 
 	#setBooleanAttribute(name: string, value: boolean) {
