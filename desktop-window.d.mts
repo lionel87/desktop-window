@@ -4,6 +4,13 @@ interface Bounds {
     width: number;
     height: number;
 }
+export interface WindowLabels {
+    minimize: string;
+    maximize: string;
+    restore: string;
+    close: string;
+    window: string;
+}
 export declare class DesktopWindow extends HTMLElement {
     #private;
     static shadowMode: 'open' | 'closed';
@@ -15,6 +22,16 @@ export declare class DesktopWindow extends HTMLElement {
     static defaultMinHeight: number;
     static defaultMaxWidth: null;
     static defaultMaxHeight: null;
+    static get labels(): Partial<WindowLabels>;
+    static set labels(value: Partial<WindowLabels>);
+    static get minimizeButtonLabel(): string;
+    static set minimizeButtonLabel(value: string);
+    static get maximizeButtonLabel(): string;
+    static set maximizeButtonLabel(value: string);
+    static get restoreButtonLabel(): string;
+    static set restoreButtonLabel(value: string);
+    static get closeButtonLabel(): string;
+    static set closeButtonLabel(value: string);
     static get observedAttributes(): string[];
     constructor();
     get name(): string | null;
@@ -67,7 +84,7 @@ export declare class DesktopWindow extends HTMLElement {
     set aspectRatioExtraHeight(value: number);
     flash(): void;
     isFocused(): boolean;
-    focus(): void;
+    focus(options?: FocusOptions): void;
     blur(): void;
     close(): void;
     destroy(): void;

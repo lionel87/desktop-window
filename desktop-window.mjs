@@ -1,9 +1,9 @@
 // src/desktop-window.generated.css.txt
-var desktop_window_generated_css_default = `:host{--desktop-window-background-color: #fff;--desktop-window-border-width: 1px;--desktop-window-border-color: #aaa;--desktop-window-minimize-duration: .1s;--desktop-window-maximize-duration: .05s;--desktop-window-titlebar-height: 28px;--desktop-window-titlebar-text-color: #999;--desktop-window-titlebar-background-color: #fff;--desktop-window-titlebar-font-family: sans-serif;--desktop-window-titlebar-font-size: 14px;--desktop-window-minimize-button-mask-image: url('data:image/svg+xml,<svg width="14" height="1" viewBox="0 0 14 1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0D%0A%09<path d="M 14,1 H 0 V 0 h 14 z" />%0D%0A</svg>%0D%0A');--desktop-window-maximize-button-mask-image: url('data:image/svg+xml,<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0D%0A%09<path d="M 16,14 H 0 V 0 H 16 Z M 15,13 V 2 H 1 V 13 Z" />%0D%0A</svg>%0D%0A');--desktop-window-restore-button-mask-image: url('data:image/svg+xml,<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0D%0A%09<path d="M 16,9 H 12 V 14 H 0 V 5 H 4 V 0 H 16 Z M 15,8 V 2 H 5 V 5 H 12 V 8 Z M 11,13 V 7 H 1 v 6 z" />%0D%0A</svg>%0D%0A');--desktop-window-close-button-mask-image: url('data:image/svg+xml,<svg width="14" height="14" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0D%0A%09<path d="M 14,13.377792 13.377793,14 6.9826729,7.6048821 0.6222123,14 0,13.377792 6.3951189,7.0173289 0,0.6222073 0.6222123,0 6.9826729,6.3951177 13.377793,0 14,0.6222073 7.6048859,7.0173289 Z" />%0D%0A</svg>%0D%0A');--desktop-window-buttons-width: 42px;--desktop-window-buttons-height: var(--desktop-window-titlebar-height);--desktop-window-buttons-margin: 0;--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);--desktop-window-buttons-background-color: rgba(110, 110, 110, 0);--desktop-window-buttons-hover-text-color: #444;--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);--desktop-window-minimize-text-color: var(--desktop-window-buttons-text-color);--desktop-window-minimize-background-color: var(--desktop-window-buttons-background-color);--desktop-window-minimize-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-minimize-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-maximize-text-color: var(--desktop-window-buttons-text-color);--desktop-window-maximize-background-color: var(--desktop-window-buttons-background-color);--desktop-window-maximize-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-maximize-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-restore-text-color: var(--desktop-window-buttons-text-color);--desktop-window-restore-background-color: var(--desktop-window-buttons-background-color);--desktop-window-restore-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-restore-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-close-text-color: var(--desktop-window-buttons-text-color);--desktop-window-close-background-color: var(--desktop-window-buttons-background-color);--desktop-window-close-hover-text-color: #fff;--desktop-window-close-hover-background-color: #e50000;--desktop-window-focused-background-color: var(--desktop-window-background-color);--desktop-window-focused-border-color: #fff;--desktop-window-focused-titlebar-text-color: #444;--desktop-window-focused-titlebar-background-color: var(--desktop-window-titlebar-background-color);--desktop-window-focused-buttons-text-color: var(--desktop-window-focused-titlebar-text-color);--desktop-window-focused-buttons-background-color: var(--desktop-window-buttons-background-color);--desktop-window-focused-buttons-hover-text-color: var(--desktop-window-focused-titlebar-text-color);--desktop-window-focused-buttons-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-focused-minimize-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-minimize-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-minimize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-minimize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-maximize-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-maximize-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-maximize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-maximize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-restore-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-restore-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-restore-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-restore-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-close-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-close-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-close-hover-text-color: var(--desktop-window-close-hover-text-color);--desktop-window-focused-close-hover-background-color: var(--desktop-window-close-hover-background-color)}*{box-sizing:border-box}.window{--z-index: 10;transform:translateZ(0);transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s;position:absolute;border:var(--desktop-window-border-width) solid var(--desktop-window-border-color);background-color:var(--desktop-window-background-color);box-shadow:0 2px 10px #0000001a;-webkit-user-select:none;user-select:none;outline:none;z-index:calc(2 * var(--z-index))}.resize-handle{display:none;position:absolute;z-index:10}.handle-nw,.handle-ne,.handle-sw,.handle-se{width:12px;height:12px}.handle-e,.handle-w{width:6px;top:0;bottom:0}.handle-n,.handle-s{height:6px;left:0;right:0}.handle-ne{top:-6px;right:-6px;cursor:nesw-resize}.handle-nw{top:-6px;left:-6px;cursor:nwse-resize}.handle-se{bottom:-6px;right:-6px;cursor:nwse-resize}.handle-sw{bottom:-6px;left:-6px;cursor:nesw-resize}.handle-n{top:-6px;cursor:ns-resize}.handle-s{bottom:-6px;cursor:ns-resize}.handle-e{right:-6px;cursor:ew-resize}.handle-w{left:-6px;cursor:ew-resize}.bounds{position:relative;z-index:20;width:100%;height:100%;display:flex;flex-direction:column;flex-wrap:nowrap}.titlebar{transition:background-color linear .1s;flex-grow:0;flex-shrink:0;height:var(--desktop-window-titlebar-height);display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;background-color:var(--desktop-window-titlebar-background-color)}.titlebar-start,.titlebar-end{cursor:default;flex-grow:0;flex-shrink:0;height:100%;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center}.titlebar-center{flex-grow:1;flex-shrink:1;min-width:0}.titlebar-text{transition:color linear .1s;font-family:var(--desktop-window-titlebar-font-family);font-size:var(--desktop-window-titlebar-font-size);color:var(--desktop-window-titlebar-text-color);line-height:var(--desktop-window-titlebar-height);padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.control-btn{cursor:default;position:relative;width:var(--desktop-window-buttons-width);height:var(--desktop-window-buttons-height);border:none;transition:color linear .1s,background-color linear .1s;margin:0 var(--desktop-window-buttons-margin) 0 0;padding:0;flex-grow:0;flex-shrink:0}.control-btn:before{content:"";position:absolute;inset:0;-webkit-mask-size:auto;mask-size:auto;-webkit-mask-position:center center;mask-position:center center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;background-color:currentColor}.btn-minimize{display:none;color:var(--desktop-window-minimize-text-color);background-color:var(--desktop-window-minimize-background-color)}.btn-minimize:hover{color:var(--desktop-window-minimize-hover-text-color);background-color:var(--desktop-window-minimize-hover-background-color)}.btn-minimize:before{-webkit-mask-image:var(--desktop-window-minimize-button-mask-image);mask-image:var(--desktop-window-minimize-button-mask-image)}.btn-maximize{display:none;color:var(--desktop-window-maximize-text-color);background-color:var(--desktop-window-maximize-background-color)}.btn-maximize:hover{color:var(--desktop-window-maximize-hover-text-color);background-color:var(--desktop-window-maximize-hover-background-color)}.btn-maximize:before{-webkit-mask-image:var(--desktop-window-maximize-button-mask-image);mask-image:var(--desktop-window-maximize-button-mask-image)}.btn-restore{display:none;color:var(--desktop-window-restore-text-color);background-color:var(--desktop-window-restore-background-color)}.btn-restore:hover{color:var(--desktop-window-restore-hover-text-color);background-color:var(--desktop-window-restore-hover-background-color)}.btn-restore:before{-webkit-mask-image:var(--desktop-window-restore-button-mask-image);mask-image:var(--desktop-window-restore-button-mask-image)}.btn-close{display:none;color:var(--desktop-window-close-text-color);background-color:var(--desktop-window-close-background-color)}.btn-close:hover{color:var(--desktop-window-close-hover-text-color);background-color:var(--desktop-window-close-hover-background-color)}.btn-close:before{-webkit-mask-image:var(--desktop-window-close-button-mask-image);mask-image:var(--desktop-window-close-button-mask-image)}.client-area{flex-grow:1;flex-shrink:1;height:calc(100% - var(--desktop-window-titlebar-height));-webkit-user-select:text;user-select:text}:host(:focus-within) .window{border-color:var(--desktop-window-focused-border-color);box-shadow:0 2px 15px #00000040}:host(:focus-within) .titlebar{background-color:var(--desktop-window-focused-titlebar-background-color)}:host(:focus-within) .titlebar-text{color:var(--desktop-window-focused-titlebar-text-color)}:host(:focus-within) .btn-minimize{color:var(--desktop-window-focused-minimize-text-color);background-color:var(--desktop-window-focused-minimize-background-color)}:host(:focus-within) .btn-minimize:hover{color:var(--desktop-window-focused-minimize-hover-text-color);background-color:var(--desktop-window-focused-minimize-hover-background-color)}:host(:focus-within) .btn-maximize{color:var(--desktop-window-focused-maximize-text-color);background-color:var(--desktop-window-focused-maximize-background-color)}:host(:focus-within) .btn-maximize:hover{color:var(--desktop-window-focused-maximize-hover-text-color);background-color:var(--desktop-window-focused-maximize-hover-background-color)}:host(:focus-within) .btn-restore{color:var(--desktop-window-focused-restore-text-color);background-color:var(--desktop-window-focused-restore-background-color)}:host(:focus-within) .btn-restore:hover{color:var(--desktop-window-focused-restore-hover-text-color);background-color:var(--desktop-window-focused-restore-hover-background-color)}:host(:focus-within) .btn-close{color:var(--desktop-window-focused-close-text-color);background-color:var(--desktop-window-focused-close-background-color)}:host(:focus-within) .btn-close:hover{color:var(--desktop-window-focused-close-hover-text-color);background-color:var(--desktop-window-focused-close-hover-background-color)}:host([movable]) .titlebar{cursor:move}:host([resizable]) .resize-handle{display:block}:host([resizable][minimized]) .resize-handle{display:none}:host([resizable][maximized]) .resize-handle{display:none}:host([minimizable]) .btn-minimize{display:block}:host([maximizable]) .btn-maximize{display:block}:host([minimizable][minimized]) .btn-minimize{display:none}:host([minimizable][minimized]) .btn-restore{display:block}:host([maximizable][maximized]) .btn-maximize{display:none}:host([maximizable][maximized]) .btn-restore{display:block}:host([closable]) .btn-close{display:block}:host([minimized]) .window{height:calc(2 * var(--desktop-window-border-width) + var(--desktop-window-titlebar-height))!important}:host([minimized]) .client-area{height:0}:host([maximized]) .window{border:none;top:0!important;left:0!important;width:100%!important;height:100%!important}@media (prefers-reduced-motion: no-preference){:host([maximized]) .window{transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s,top ease-out var(--desktop-window-maximize-duration),left ease-out var(--desktop-window-maximize-duration),width ease-out var(--desktop-window-maximize-duration),height ease-out var(--desktop-window-maximize-duration)!important}:host([minimized]:not([maximized])) .window{transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s,height ease-out var(--desktop-window-minimize-duration)!important}}:host([fullscreen]) .resize-handle{display:none!important}:host([fullscreen]) .titlebar{display:none}:host([fullscreen]) .window{border:none;top:0!important;left:0!important;width:100%!important;height:100%!important}:host([frameless]) .titlebar{display:none}:host([frameless]) .window{border:none;box-shadow:none;background-color:transparent}:host(:not([modal])) .backdrop{display:none}:host([modal]) .backdrop{position:absolute;inset:0;z-index:calc(2 * var(--z-index) - 1)}@keyframes border-flash{0%{box-shadow:0 0 #666}15%{box-shadow:0 0 10px #666}30%{box-shadow:0 0 #666}50%{box-shadow:0 0 10px #666}60%{box-shadow:0 0 #666}80%{box-shadow:0 0 10px #666}to{box-shadow:0 0 #666}}.window.flashed{animation:border-flash .75s ease-out}
+var desktop_window_generated_css_default = `:host{--desktop-window-background-color: #fff;--desktop-window-border-width: 1px;--desktop-window-border-color: #aaa;--desktop-window-minimize-duration: .1s;--desktop-window-maximize-duration: .05s;--desktop-window-titlebar-height: 28px;--desktop-window-titlebar-text-color: #999;--desktop-window-titlebar-background-color: #fff;--desktop-window-titlebar-font-family: sans-serif;--desktop-window-titlebar-font-size: 14px;--desktop-window-minimize-button-mask-image: url('data:image/svg+xml,<svg width="14" height="1" viewBox="0 0 14 1" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0A%09<path d="M 14,1 H 0 V 0 h 14 z" />%0A</svg>%0A');--desktop-window-maximize-button-mask-image: url('data:image/svg+xml,<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0A%09<path d="M 16,14 H 0 V 0 H 16 Z M 15,13 V 2 H 1 V 13 Z" />%0A</svg>%0A');--desktop-window-restore-button-mask-image: url('data:image/svg+xml,<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0A%09<path d="M 16,9 H 12 V 14 H 0 V 5 H 4 V 0 H 16 Z M 15,8 V 2 H 5 V 5 H 12 V 8 Z M 11,13 V 7 H 1 v 6 z" />%0A</svg>%0A');--desktop-window-close-button-mask-image: url('data:image/svg+xml,<svg width="14" height="14" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">%0A%09<path d="M 14,13.377792 13.377793,14 6.9826729,7.6048821 0.6222123,14 0,13.377792 6.3951189,7.0173289 0,0.6222073 0.6222123,0 6.9826729,6.3951177 13.377793,0 14,0.6222073 7.6048859,7.0173289 Z" />%0A</svg>%0A');--desktop-window-buttons-width: 42px;--desktop-window-buttons-height: var(--desktop-window-titlebar-height);--desktop-window-buttons-margin: 0;--desktop-window-buttons-text-color: var(--desktop-window-titlebar-text-color);--desktop-window-buttons-background-color: rgba(110, 110, 110, 0);--desktop-window-buttons-hover-text-color: #444;--desktop-window-buttons-hover-background-color: rgba(110, 110, 110, .2);--desktop-window-minimize-text-color: var(--desktop-window-buttons-text-color);--desktop-window-minimize-background-color: var(--desktop-window-buttons-background-color);--desktop-window-minimize-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-minimize-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-maximize-text-color: var(--desktop-window-buttons-text-color);--desktop-window-maximize-background-color: var(--desktop-window-buttons-background-color);--desktop-window-maximize-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-maximize-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-restore-text-color: var(--desktop-window-buttons-text-color);--desktop-window-restore-background-color: var(--desktop-window-buttons-background-color);--desktop-window-restore-hover-text-color: var(--desktop-window-buttons-hover-text-color);--desktop-window-restore-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-close-text-color: var(--desktop-window-buttons-text-color);--desktop-window-close-background-color: var(--desktop-window-buttons-background-color);--desktop-window-close-hover-text-color: #fff;--desktop-window-close-hover-background-color: #e50000;--desktop-window-focused-background-color: var(--desktop-window-background-color);--desktop-window-focused-border-color: #fff;--desktop-window-focused-titlebar-text-color: #444;--desktop-window-focused-titlebar-background-color: var(--desktop-window-titlebar-background-color);--desktop-window-focused-buttons-text-color: var(--desktop-window-focused-titlebar-text-color);--desktop-window-focused-buttons-background-color: var(--desktop-window-buttons-background-color);--desktop-window-focused-buttons-hover-text-color: var(--desktop-window-focused-titlebar-text-color);--desktop-window-focused-buttons-hover-background-color: var(--desktop-window-buttons-hover-background-color);--desktop-window-focused-minimize-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-minimize-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-minimize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-minimize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-maximize-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-maximize-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-maximize-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-maximize-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-restore-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-restore-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-restore-hover-text-color: var(--desktop-window-focused-buttons-hover-text-color);--desktop-window-focused-restore-hover-background-color: var(--desktop-window-focused-buttons-hover-background-color);--desktop-window-focused-close-text-color: var(--desktop-window-focused-buttons-text-color);--desktop-window-focused-close-background-color: var(--desktop-window-focused-buttons-background-color);--desktop-window-focused-close-hover-text-color: var(--desktop-window-close-hover-text-color);--desktop-window-focused-close-hover-background-color: var(--desktop-window-close-hover-background-color)}*{box-sizing:border-box}.window{--z-index: 10;transform:translateZ(0);transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s;position:absolute;border:var(--desktop-window-border-width) solid var(--desktop-window-border-color);background-color:var(--desktop-window-background-color);box-shadow:0 2px 10px #0000001a;-webkit-user-select:none;user-select:none;outline:none;z-index:calc(2 * var(--z-index))}.resize-handle{display:none;position:absolute;z-index:10;touch-action:none}.handle-nw,.handle-ne,.handle-sw,.handle-se{width:12px;height:12px}.handle-e,.handle-w{width:6px;top:0;bottom:0}.handle-n,.handle-s{height:6px;left:0;right:0}.handle-ne{top:-6px;right:-6px;cursor:nesw-resize}.handle-nw{top:-6px;left:-6px;cursor:nwse-resize}.handle-se{bottom:-6px;right:-6px;cursor:nwse-resize}.handle-sw{bottom:-6px;left:-6px;cursor:nesw-resize}.handle-n{top:-6px;cursor:ns-resize}.handle-s{bottom:-6px;cursor:ns-resize}.handle-e{right:-6px;cursor:ew-resize}.handle-w{left:-6px;cursor:ew-resize}.bounds{position:relative;z-index:20;width:100%;height:100%;display:flex;flex-direction:column;flex-wrap:nowrap}.titlebar{touch-action:none;transition:background-color linear .1s;flex-grow:0;flex-shrink:0;height:var(--desktop-window-titlebar-height);display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;background-color:var(--desktop-window-titlebar-background-color)}.titlebar-start,.titlebar-end{cursor:default;flex-grow:0;flex-shrink:0;height:100%;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center}.titlebar-center{flex-grow:1;flex-shrink:1;min-width:0}.titlebar-text{transition:color linear .1s;font-family:var(--desktop-window-titlebar-font-family);font-size:var(--desktop-window-titlebar-font-size);color:var(--desktop-window-titlebar-text-color);line-height:var(--desktop-window-titlebar-height);padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.control-btn{appearance:none;font:inherit;cursor:default;position:relative;width:var(--desktop-window-buttons-width);height:var(--desktop-window-buttons-height);border:none;transition:color linear .1s,background-color linear .1s;margin:0 var(--desktop-window-buttons-margin) 0 0;padding:0;flex-grow:0;flex-shrink:0}.control-btn:before{content:"";position:absolute;inset:0;-webkit-mask-size:auto;mask-size:auto;-webkit-mask-position:center center;mask-position:center center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;background-color:currentColor}.btn-minimize{display:none;color:var(--desktop-window-minimize-text-color);background-color:var(--desktop-window-minimize-background-color)}.btn-minimize:hover{color:var(--desktop-window-minimize-hover-text-color);background-color:var(--desktop-window-minimize-hover-background-color)}.btn-minimize:before{-webkit-mask-image:var(--desktop-window-minimize-button-mask-image);mask-image:var(--desktop-window-minimize-button-mask-image)}.btn-maximize{display:none;color:var(--desktop-window-maximize-text-color);background-color:var(--desktop-window-maximize-background-color)}.btn-maximize:hover{color:var(--desktop-window-maximize-hover-text-color);background-color:var(--desktop-window-maximize-hover-background-color)}.btn-maximize:before{-webkit-mask-image:var(--desktop-window-maximize-button-mask-image);mask-image:var(--desktop-window-maximize-button-mask-image)}.btn-restore{display:none;color:var(--desktop-window-restore-text-color);background-color:var(--desktop-window-restore-background-color)}.btn-restore:hover{color:var(--desktop-window-restore-hover-text-color);background-color:var(--desktop-window-restore-hover-background-color)}.btn-restore:before{-webkit-mask-image:var(--desktop-window-restore-button-mask-image);mask-image:var(--desktop-window-restore-button-mask-image)}.btn-close{display:none;color:var(--desktop-window-close-text-color);background-color:var(--desktop-window-close-background-color)}.btn-close:hover{color:var(--desktop-window-close-hover-text-color);background-color:var(--desktop-window-close-hover-background-color)}.btn-close:before{-webkit-mask-image:var(--desktop-window-close-button-mask-image);mask-image:var(--desktop-window-close-button-mask-image)}.client-area{min-height:0;flex-grow:1;flex-shrink:1;height:calc(100% - var(--desktop-window-titlebar-height));-webkit-user-select:text;user-select:text}:host(:focus-within) .window{border-color:var(--desktop-window-focused-border-color);box-shadow:0 2px 15px #00000040}:host(:focus-within) .titlebar{background-color:var(--desktop-window-focused-titlebar-background-color)}:host(:focus-within) .titlebar-text{color:var(--desktop-window-focused-titlebar-text-color)}:host(:focus-within) .btn-minimize{color:var(--desktop-window-focused-minimize-text-color);background-color:var(--desktop-window-focused-minimize-background-color)}:host(:focus-within) .btn-minimize:hover{color:var(--desktop-window-focused-minimize-hover-text-color);background-color:var(--desktop-window-focused-minimize-hover-background-color)}:host(:focus-within) .btn-maximize{color:var(--desktop-window-focused-maximize-text-color);background-color:var(--desktop-window-focused-maximize-background-color)}:host(:focus-within) .btn-maximize:hover{color:var(--desktop-window-focused-maximize-hover-text-color);background-color:var(--desktop-window-focused-maximize-hover-background-color)}:host(:focus-within) .btn-restore{color:var(--desktop-window-focused-restore-text-color);background-color:var(--desktop-window-focused-restore-background-color)}:host(:focus-within) .btn-restore:hover{color:var(--desktop-window-focused-restore-hover-text-color);background-color:var(--desktop-window-focused-restore-hover-background-color)}:host(:focus-within) .btn-close{color:var(--desktop-window-focused-close-text-color);background-color:var(--desktop-window-focused-close-background-color)}:host(:focus-within) .btn-close:hover{color:var(--desktop-window-focused-close-hover-text-color);background-color:var(--desktop-window-focused-close-hover-background-color)}:host([movable]) .titlebar{cursor:move}:host([resizable]) .resize-handle{display:block}:host([resizable][minimized]) .resize-handle{display:none}:host([resizable][maximized]) .resize-handle{display:none}:host([minimizable]) .btn-minimize{display:block}:host([maximizable]) .btn-maximize{display:block}:host([minimizable][minimized]) .btn-minimize{display:none}:host([minimizable][minimized]) .btn-restore{display:block}:host([maximizable][maximized]) .btn-maximize{display:none}:host([maximizable][maximized]) .btn-restore{display:block}:host([closable]) .btn-close{display:block}:host([minimized]) .window{height:calc(2 * var(--desktop-window-border-width) + var(--desktop-window-titlebar-height))!important}:host([minimized]) .client-area{height:0}:host([maximized]) .window{border:none;top:0!important;left:0!important;width:100%!important;height:100%!important}@media (prefers-reduced-motion: no-preference){:host([maximized]) .window{transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s,top ease-out var(--desktop-window-maximize-duration),left ease-out var(--desktop-window-maximize-duration),width ease-out var(--desktop-window-maximize-duration),height ease-out var(--desktop-window-maximize-duration)!important}:host([minimized]:not([maximized])) .window{transition:box-shadow linear .1s,border-color linear .1s,background-color linear .1s,height ease-out var(--desktop-window-minimize-duration)!important}}:host([fullscreen]) .resize-handle{display:none!important}:host([fullscreen]) .titlebar{display:none}:host([fullscreen]) .window{border:none;top:0!important;left:0!important;width:100%!important;height:100%!important}:host([frameless]) .titlebar{display:none}:host([frameless]) .window{border:none;box-shadow:none;background-color:transparent}:host(:not([modal])) .backdrop{display:none}:host([modal]) .backdrop{--z-index: 10;position:absolute;inset:0;z-index:calc(2 * var(--z-index) - 1)}@keyframes border-flash{0%{box-shadow:0 0 #666}15%{box-shadow:0 0 10px #666}30%{box-shadow:0 0 #666}50%{box-shadow:0 0 10px #666}60%{box-shadow:0 0 #666}80%{box-shadow:0 0 10px #666}to{box-shadow:0 0 #666}}.window.flashed{animation:border-flash .75s ease-out}@media (prefers-reduced-motion: reduce){.window.flashed{animation:border-notice .75s step-end}}@keyframes border-notice{0%,to{outline:2px solid currentColor;outline-offset:-2px}}@media (forced-colors: active){.control-btn{background-image:none!important}.control-btn:before{display:block!important}.control-btn:before{background-color:ButtonText;forced-color-adjust:none}.window:focus-within{border-color:Highlight}.window:focus-visible,.control-btn:focus-visible{outline-color:Highlight}}
 `;
 
 // src/desktop-window.generated.html.txt
-var desktop_window_generated_html_default = '<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="titlebar-text"><div class="bounds"><div class="titlebar" part="titlebar"><div class="titlebar-start" part="titlebar-start"><slot name="titlebar-start"></slot></div><div class="titlebar-center" part="titlebar-center"><slot name="titlebar-center"><div id="titlebar-text" class="titlebar-text" part="titlebar-text"></div></slot></div><div class="titlebar-end" part="titlebar-end"><slot name="titlebar-end"></slot></div><div role="button" tabindex="0" class="control-btn btn-minimize" part="minimize-button"></div><div role="button" tabindex="0" class="control-btn btn-restore" part="restore-button"></div><div role="button" tabindex="0" class="control-btn btn-maximize" part="maximize-button"></div><div role="button" tabindex="0" class="control-btn btn-close" part="close-button"></div></div><div role="document" class="client-area" part="client-area"><slot></slot></div></div><div class="resize-handle handle-n" data-direction="n"></div><div class="resize-handle handle-s" data-direction="s"></div><div class="resize-handle handle-e" data-direction="e"></div><div class="resize-handle handle-w" data-direction="w"></div><div class="resize-handle handle-nw" data-direction="nw"></div><div class="resize-handle handle-ne" data-direction="ne"></div><div class="resize-handle handle-sw" data-direction="sw"></div><div class="resize-handle handle-se" data-direction="se"></div></div><div class="backdrop"></div>';
+var desktop_window_generated_html_default = '<div role="dialog" tabindex="-1" class="window" part="window" aria-labelledby="titlebar-text"><div class="bounds"><div class="titlebar" part="titlebar"><div class="titlebar-start" part="titlebar-start"><slot name="titlebar-start"></slot></div><div class="titlebar-center" part="titlebar-center"><slot name="titlebar-center"><div id="titlebar-text" class="titlebar-text" part="titlebar-text" aria-hidden="true"></div></slot></div><div class="titlebar-end" part="titlebar-end"><slot name="titlebar-end"></slot></div><button type="button" class="control-btn btn-minimize" part="minimize-button"></button> <button type="button" class="control-btn btn-restore" part="restore-button"></button> <button type="button" class="control-btn btn-maximize" part="maximize-button"></button> <button type="button" class="control-btn btn-close" part="close-button"></button></div><div role="document" class="client-area" part="client-area"><slot></slot></div></div><span id="window-description" hidden></span><div class="resize-handle handle-n" data-direction="n"></div><div class="resize-handle handle-s" data-direction="s"></div><div class="resize-handle handle-e" data-direction="e"></div><div class="resize-handle handle-w" data-direction="w"></div><div class="resize-handle handle-nw" data-direction="nw"></div><div class="resize-handle handle-ne" data-direction="ne"></div><div class="resize-handle handle-sw" data-direction="sw"></div><div class="resize-handle handle-se" data-direction="se"></div></div><div class="backdrop"></div>';
 
 // src/desktop-window.mts
 var DesktopWindow = class _DesktopWindow extends HTMLElement {
@@ -16,6 +16,50 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
   static defaultMinHeight = 150;
   static defaultMaxWidth = null;
   static defaultMaxHeight = null;
+  static #instances = /* @__PURE__ */ new Set();
+  static #collectedInstances = new FinalizationRegistry((reference) => _DesktopWindow.#instances.delete(reference));
+  static #labels = {
+    minimize: "Minimize",
+    maximize: "Maximize",
+    restore: "Restore",
+    close: "Close",
+    window: "Window"
+  };
+  static get labels() {
+    return { ..._DesktopWindow.#labels };
+  }
+  static set labels(value) {
+    Object.assign(_DesktopWindow.#labels, value);
+    for (const reference of _DesktopWindow.#instances) {
+      const instance = reference.deref();
+      if (instance) instance.#updateLabels();
+      else _DesktopWindow.#instances.delete(reference);
+    }
+  }
+  static get minimizeButtonLabel() {
+    return _DesktopWindow.#labels.minimize;
+  }
+  static set minimizeButtonLabel(value) {
+    _DesktopWindow.labels = { minimize: value };
+  }
+  static get maximizeButtonLabel() {
+    return _DesktopWindow.#labels.maximize;
+  }
+  static set maximizeButtonLabel(value) {
+    _DesktopWindow.labels = { maximize: value };
+  }
+  static get restoreButtonLabel() {
+    return _DesktopWindow.#labels.restore;
+  }
+  static set restoreButtonLabel(value) {
+    _DesktopWindow.labels = { restore: value };
+  }
+  static get closeButtonLabel() {
+    return _DesktopWindow.#labels.close;
+  }
+  static set closeButtonLabel(value) {
+    _DesktopWindow.labels = { close: value };
+  }
   static get observedAttributes() {
     return [
       "name",
@@ -28,7 +72,21 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
       "maxwidth",
       "maxheight",
       "centered",
-      "autofocus"
+      "autofocus",
+      "aria-label",
+      "aria-labelledby",
+      "aria-describedby",
+      "modal",
+      "hidden",
+      "minimized",
+      "maximized",
+      "fullscreen",
+      "frameless",
+      "movable",
+      "resizable",
+      "minimizable",
+      "maximizable",
+      "closable"
     ];
   }
   static #nextZIndex = 20;
@@ -40,6 +98,13 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
   #shadowRoot;
   #window;
   #clientArea;
+  #returnFocus = null;
+  #contentFocus = null;
+  #hadFocus = false;
+  #labelObserver = new MutationObserver(() => this.#updateAccessibleName());
+  #cancelPointer;
+  #pointerId;
+  #pointerStart;
   #dragPointerMove;
   #dragPointerUp;
   #resizePointerMove;
@@ -55,6 +120,42 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     this.#shadowRoot.innerHTML = desktop_window_generated_html_default;
     this.#window = this.#shadowRoot.querySelector(".window");
     this.#clientArea = this.#window.querySelector(".client-area");
+    const reference = new WeakRef(this);
+    _DesktopWindow.#instances.add(reference);
+    _DesktopWindow.#collectedInstances.register(this, reference);
+    this.#updateLabels();
+    this.#setupDragging();
+    this.#setupResizing();
+    this.#shadowRoot.addEventListener("slotchange", () => this.#updateAccessibleName());
+    this.addEventListener("focusin", (event) => {
+      this.#hadFocus = true;
+      const target = event.composedPath()[0];
+      if (target instanceof HTMLElement) {
+        if (this.contains(target) && !target.closest('[slot^="titlebar-"]')) this.#contentFocus = target;
+      }
+      this.#bringToFront();
+    });
+    this.#shadowRoot.addEventListener("focusout", (event) => {
+      if (!this.isConnected) return;
+      const next = event.relatedTarget;
+      if (next instanceof Node) {
+        this.#hadFocus = this.contains(next) || this.#shadowRoot.contains(next);
+      } else {
+        queueMicrotask(() => {
+          if (this.isConnected) this.#hadFocus = this.isFocused();
+        });
+      }
+    });
+    this.#window.addEventListener("keydown", (event) => this.#onKeyDown(event));
+    this.#shadowRoot.querySelector(".backdrop").addEventListener("click", () => {
+      this.flash();
+    });
+    for (const type of ["minimize", "maximize", "restore", "close", "request-fullscreen", "exit-fullscreen", "move", "resize-n", "resize-s", "resize-e", "resize-w", "resize-ne", "resize-nw", "resize-se", "resize-sw"]) {
+      this.addEventListener(type, (event) => {
+        if (event.target !== this) return;
+        this.#shadowRoot.dispatchEvent(event instanceof CustomEvent ? new CustomEvent(type, { detail: event.detail }) : new Event(type));
+      });
+    }
     this.#shadowRoot.addEventListener("minimize", (event) => {
       event.stopPropagation();
       const minimizing = new Event("minimizing", { bubbles: true, cancelable: true });
@@ -107,16 +208,13 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
       }
     });
     this.#window.addEventListener("pointerdown", () => {
-      this.#window.style.setProperty("--z-index", String(_DesktopWindow.#nextZIndex++));
-    });
-    this.#shadowRoot.querySelector(".backdrop").addEventListener("click", () => {
-      this.flash();
+      this.#bringToFront();
     });
     const controls = this.#shadowRoot.querySelectorAll(".titlebar-start, .titlebar-end, .control-btn");
     for (const control of controls) {
       control.addEventListener("pointerdown", (event) => {
         event.stopPropagation();
-        this.#window.style.setProperty("--z-index", String(_DesktopWindow.#nextZIndex++));
+        this.#bringToFront();
       });
       control.addEventListener("dblclick", (event) => {
         event.stopPropagation();
@@ -128,37 +226,22 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     const close = this.#shadowRoot.querySelector(".btn-close");
     minimize.addEventListener("click", () => {
       this.#shadowRoot.dispatchEvent(new Event("minimize", { bubbles: true }));
-      restore.focus();
     });
     maximize.addEventListener("click", () => {
       this.#shadowRoot.dispatchEvent(new Event("maximize", { bubbles: true }));
-      restore.focus();
     });
     restore.addEventListener("click", () => {
-      const oldMinimized = this.minimized;
-      const oldMaximized = this.maximized;
       this.#shadowRoot.dispatchEvent(new Event("restore", { bubbles: true }));
-      if (oldMaximized) {
-        maximize.focus();
-      } else if (oldMinimized) {
-        minimize.focus();
-      }
     });
     close.addEventListener("click", () => {
       this.#shadowRoot.dispatchEvent(new Event("close", { bubbles: true }));
     });
-    this.#window.querySelector(".titlebar").addEventListener("dblclick", () => {
+    this.#window.querySelector(".titlebar").addEventListener("dblclick", (event) => {
+      if (event.composedPath().some((target) => target instanceof HTMLElement && target.matches("button, input, select, textarea, a, [contenteditable]"))) return;
       if (this.maximizable) {
-        this.maximized = !this.maximized;
+        this.#shadowRoot.dispatchEvent(new Event(this.maximized ? "restore" : "maximize"));
       }
     });
-    for (const btn of this.#shadowRoot.querySelectorAll(".control-btn")) {
-      btn.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          btn.click();
-        }
-      });
-    }
     this.#shadowRoot.addEventListener("move", (event) => {
       event.stopPropagation();
       if ("detail" in event && event.detail && typeof event.detail === "object" && "clientX" in event.detail && "clientY" in event.detail && typeof event.detail.clientX === "number" && typeof event.detail.clientY === "number") {
@@ -180,9 +263,6 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
         }
       });
     }
-  }
-  #cssPixelToInteger(propertyValue) {
-    return Number.parseInt(propertyValue.replace("px", ""));
   }
   #parseUnsigned(value) {
     if (value === null) return null;
@@ -215,8 +295,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     }
   }
   #getBooleanAttribute(name) {
-    const value = this.getAttribute(name);
-    return value === "" || value === "true";
+    return this.hasAttribute(name);
   }
   #setBooleanAttribute(name, value) {
     if (value) {
@@ -335,7 +414,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     return this.#getBooleanAttribute("maximized");
   }
   set maximized(value) {
-    const oldValue = this.minimized;
+    const oldValue = this.maximized;
     this.#setBooleanAttribute("maximized", value);
     if (oldValue && !value) {
       this.dispatchEvent(new Event("restored", { bubbles: true }));
@@ -399,29 +478,30 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
   isFocused() {
     return !!this.#shadowRoot.querySelector(":focus-within");
   }
-  focus() {
-    this.#window.style.setProperty("--z-index", String(_DesktopWindow.#nextZIndex++));
-    this.#window.focus();
+  focus(options) {
+    if (!this.isConnected || this.hidden) return;
+    this.#bringToFront();
+    this.#window.focus(options);
   }
   blur() {
-    this.#window.blur();
+    this.#activeElement()?.blur();
   }
   close() {
     const closing = new Event("closing", { bubbles: true, cancelable: true });
     this.dispatchEvent(closing);
     if (!closing.defaultPrevented) {
-      this.remove();
-      this.dispatchEvent(new Event("closed", { bubbles: true }));
+      this.destroy();
     }
   }
   destroy() {
+    this.#hadFocus = this.isFocused();
     this.remove();
     this.dispatchEvent(new Event("closed", { bubbles: true }));
   }
   getPosition() {
     const parentBounds = this.parentElement.getBoundingClientRect();
     const windowBounds = this.#window.getBoundingClientRect();
-    return [windowBounds.x - parentBounds.x, windowBounds.y - parentBounds.y];
+    return [windowBounds.x - parentBounds.x - this.parentElement.clientLeft, windowBounds.y - parentBounds.y - this.parentElement.clientTop];
   }
   setPosition(x, y) {
     this.x = x;
@@ -447,10 +527,10 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     const parentBounds = this.parentElement.getBoundingClientRect();
     const windowBounds = this.#window.getBoundingClientRect();
     return {
-      x: Math.floor(windowBounds.x) - Math.floor(parentBounds.x),
-      y: Math.floor(windowBounds.y) - Math.floor(parentBounds.y),
-      width: Math.floor(windowBounds.width),
-      height: Math.floor(windowBounds.height)
+      x: Math.round(windowBounds.x - parentBounds.x - this.parentElement.clientLeft),
+      y: Math.round(windowBounds.y - parentBounds.y - this.parentElement.clientTop),
+      width: Math.round(windowBounds.width),
+      height: Math.round(windowBounds.height)
     };
   }
   setBounds({ x, y, width, height }) {
@@ -461,7 +541,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
   }
   getContentSize() {
     const clientBounds = this.#clientArea.getBoundingClientRect();
-    return [Math.floor(clientBounds.width), Math.floor(clientBounds.height)];
+    return [Math.round(clientBounds.width), Math.round(clientBounds.height)];
   }
   setContentSize(width, height) {
     const [windowWidth, windowHeight] = this.getSize();
@@ -473,10 +553,10 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     const parentBounds = this.parentElement.getBoundingClientRect();
     const clientBounds = this.#clientArea.getBoundingClientRect();
     return {
-      x: Math.floor(clientBounds.x) - Math.floor(parentBounds.x),
-      y: Math.floor(clientBounds.y) - Math.floor(parentBounds.y),
-      width: Math.floor(clientBounds.width),
-      height: Math.floor(clientBounds.height)
+      x: Math.round(clientBounds.x - parentBounds.x - this.parentElement.clientLeft),
+      y: Math.round(clientBounds.y - parentBounds.y - this.parentElement.clientTop),
+      width: Math.round(clientBounds.width),
+      height: Math.round(clientBounds.height)
     };
   }
   setContentBounds({ x, y, width, height }) {
@@ -484,8 +564,8 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     const clientBounds = this.#clientArea.getBoundingClientRect();
     if (void 0 !== x) this.x = x - (Math.floor(clientBounds.x) - Math.floor(windowBounds.x));
     if (void 0 !== y) this.y = y - (Math.floor(clientBounds.y) - Math.floor(windowBounds.y));
-    if (void 0 !== width) this.width = width + (Math.floor(windowBounds.width) - Math.floor(clientBounds.width));
-    if (void 0 !== height) this.height = height + (Math.floor(windowBounds.height) - Math.floor(clientBounds.height));
+    if (void 0 !== width) this.width = Math.round(width + windowBounds.width - clientBounds.width);
+    if (void 0 !== height) this.height = Math.round(height + windowBounds.height - clientBounds.height);
   }
   setAspectRatio(ratio, extraSize) {
     this.aspectRatio = ratio;
@@ -497,6 +577,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     }
   }
   connectedCallback() {
+    this.#returnFocus = this.#documentFocus();
     if (this.centered) {
       this.#window.style.left = Math.round((this.parentElement.offsetWidth - this.width) / 2) + "px";
       this.#window.style.top = Math.round((this.parentElement.offsetHeight - this.height) / 2) + "px";
@@ -513,43 +594,27 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     if (!this.#window.style.height) {
       this.#window.style.height = _DesktopWindow.defaultHeight + "px";
     }
-    this.#setupDragging();
-    this.#setupResizing();
+    this.#updateLabels();
+    this.#observeLabels();
+    this.#syncState();
     if (this.autofocus) {
       requestAnimationFrame(() => {
-        this.focus();
+        if (this.isConnected && !this.hidden && this.autofocus) this.#focusInitial();
       });
     }
   }
   disconnectedCallback() {
-    this.#shadowRoot = null;
-    this.#window = null;
-    if (this.#dragPointerMove) {
-      window.removeEventListener("pointermove", this.#dragPointerMove);
-      this.#dragPointerMove = null;
-    }
-    if (this.#dragPointerUp) {
-      window.removeEventListener("pointerup", this.#dragPointerUp);
-      this.#dragPointerUp = null;
-    }
-    if (this.#resizePointerMove) {
-      window.removeEventListener("pointermove", this.#resizePointerMove);
-      this.#resizePointerMove = null;
-    }
-    if (this.#resizePointerMoveAspect) {
-      window.removeEventListener("pointermove", this.#resizePointerMoveAspect);
-      this.#resizePointerMoveAspect = null;
-    }
-    if (this.#resizePointerUp) {
-      window.removeEventListener("pointerup", this.#resizePointerUp);
-      this.#resizePointerUp = null;
-    }
+    this.#removePointerListeners();
+    this.#labelObserver.disconnect();
+    if (this.#hadFocus) this.#restoreFocus();
+    this.#hadFocus = false;
   }
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
     switch (name) {
       case "name":
         this.#shadowRoot.querySelector(".titlebar-text").textContent = newValue;
+        this.#updateAccessibleName();
         break;
       case "centered":
         if (newValue !== null) {
@@ -607,10 +672,128 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
         }
         break;
       case "autofocus":
-        if (newValue !== null) {
-          this.focus();
+        if (newValue !== null && this.isConnected) {
+          this.#focusInitial();
         }
         break;
+      case "aria-label":
+      case "aria-labelledby":
+      case "aria-describedby":
+        this.#observeLabels();
+        break;
+      default:
+        if (this.isConnected) this.#syncState(name);
+    }
+  }
+  #updateLabels() {
+    const labels = _DesktopWindow.#labels;
+    for (const name of ["minimize", "maximize", "restore", "close"]) {
+      const button = this.#shadowRoot.querySelector(".btn-" + name);
+      button.setAttribute("aria-label", labels[name]);
+      button.title = labels[name];
+    }
+    this.#updateAccessibleName();
+  }
+  #referencedText(attribute) {
+    const root = this.getRootNode();
+    return (this.getAttribute(attribute) ?? "").split(/\s+/).filter(Boolean).map((id) => {
+      const element = root.getElementById?.(id);
+      return element?.getAttribute("aria-label") || element?.textContent || "";
+    }).join(" ").trim();
+  }
+  #updateAccessibleName() {
+    const titleSlot = this.#shadowRoot.querySelector('slot[name="titlebar-center"]');
+    const customTitle = titleSlot.assignedNodes().length ? titleSlot.assignedNodes({ flatten: true }).map((node) => node.textContent).join(" ").trim() : "";
+    const label = this.#referencedText("aria-labelledby") || this.getAttribute("aria-label");
+    this.#window.removeAttribute("aria-labelledby");
+    if (label || customTitle || !this.name) {
+      this.#window.setAttribute("aria-label", label || customTitle || _DesktopWindow.#labels.window);
+    } else {
+      this.#window.removeAttribute("aria-label");
+      this.#window.setAttribute("aria-labelledby", "titlebar-text");
+    }
+    const description = this.#referencedText("aria-describedby");
+    this.#shadowRoot.querySelector("#window-description").textContent = description;
+    if (description) this.#window.setAttribute("aria-describedby", "window-description");
+    else this.#window.removeAttribute("aria-describedby");
+  }
+  #observeLabels() {
+    this.#labelObserver.disconnect();
+    this.#labelObserver.observe(this, { childList: true, characterData: true, subtree: true });
+    const root = this.getRootNode();
+    for (const attribute of ["aria-labelledby", "aria-describedby"]) {
+      for (const id of (this.getAttribute(attribute) ?? "").split(/\s+/).filter(Boolean)) {
+        const element = root.getElementById?.(id);
+        if (element) this.#labelObserver.observe(element, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ["aria-label"] });
+      }
+    }
+    this.#updateAccessibleName();
+  }
+  #documentFocus() {
+    let element = this.ownerDocument.activeElement;
+    while (element) {
+      const shadow = element instanceof _DesktopWindow ? element.#shadowRoot : element.shadowRoot;
+      if (!shadow?.activeElement) break;
+      element = shadow.activeElement;
+    }
+    return element instanceof HTMLElement ? element : null;
+  }
+  #activeElement() {
+    const element = this.#shadowRoot.activeElement || (this.contains(this.ownerDocument.activeElement) ? this.ownerDocument.activeElement : null);
+    if (!(element instanceof HTMLElement)) return null;
+    let active = element;
+    while (active) {
+      const shadow = active instanceof _DesktopWindow ? active.#shadowRoot : active.shadowRoot;
+      if (!(shadow?.activeElement instanceof HTMLElement)) break;
+      active = shadow.activeElement;
+    }
+    return active;
+  }
+  #bringToFront() {
+    const zIndex = String(_DesktopWindow.#nextZIndex++);
+    this.#window.style.setProperty("--z-index", zIndex);
+    this.#shadowRoot.querySelector(".backdrop").style.setProperty("--z-index", zIndex);
+  }
+  #focusInitial() {
+    const target = this.querySelector("[autofocus]");
+    if (target && target.getClientRects().length && !this.minimized) {
+      target.focus();
+      if (target.matches(":focus-within")) return;
+    }
+    this.focus();
+  }
+  #restoreFocus() {
+    if (this.#returnFocus?.isConnected && !this.#returnFocus.closest("[inert], [hidden]")) {
+      this.#returnFocus.focus({ preventScroll: true });
+    }
+  }
+  #onKeyDown(event) {
+    if (event.defaultPrevented) return;
+    if (event.key === "Escape" && this.#cancelPointer) {
+      event.preventDefault();
+      this.#cancelPointer();
+    }
+  }
+  #syncState(changedAttribute) {
+    if (this.#cancelPointer && ["minimized", "maximized", "fullscreen", "hidden", "movable", "resizable"].includes(changedAttribute ?? "")) this.#cancelPointer();
+    const active = this.#activeElement();
+    const focused = this.isFocused() || this.#hadFocus && this.ownerDocument.activeElement === this.ownerDocument.body;
+    this.#clientArea.inert = this.minimized;
+    if (this.hidden) {
+      if (focused) this.#restoreFocus();
+      this.#hadFocus = false;
+      return;
+    }
+    if (focused && changedAttribute === "minimized" && !this.minimized && this.#contentFocus && this.contains(this.#contentFocus) && this.#contentFocus.getClientRects().length) {
+      this.#contentFocus.focus({ preventScroll: true });
+      if (this.#contentFocus.matches(":focus-within")) return;
+    }
+    if (focused && active && (!active.getClientRects().length || active.closest("[inert]") || this.minimized && this.contains(active))) {
+      const selector = this.minimized || this.maximized ? ".btn-restore" : changedAttribute === "maximized" ? ".btn-maximize" : ".btn-minimize";
+      const controls = [...this.#shadowRoot.querySelectorAll(selector), ...this.#shadowRoot.querySelectorAll(".control-btn")];
+      const replacement = controls.find((element) => element.getClientRects().length && getComputedStyle(element).visibility !== "hidden");
+      if (replacement) replacement.focus({ preventScroll: true });
+      else this.focus({ preventScroll: true });
     }
   }
   #setupDragging() {
@@ -618,31 +801,30 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     let start;
     let parentRect;
     this.#dragPointerMove = (event) => {
+      if (this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
       const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
       const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
       this.#window.style.left = `${Math.round(start.x + dx)}px`;
       this.#window.style.top = `${Math.round(start.y + dy)}px`;
     };
-    this.#dragPointerUp = () => {
-      window.removeEventListener("pointermove", this.#dragPointerMove);
-      window.removeEventListener("pointerup", this.#dragPointerUp);
-      this.x = this.#cssPixelToInteger(this.#window.style.left);
-      this.y = this.#cssPixelToInteger(this.#window.style.top);
+    this.#dragPointerUp = (event) => {
+      if (this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
+      this.#finishPointer();
     };
     const titlebar = this.#shadowRoot.querySelector(".titlebar");
     titlebar.addEventListener("pointerdown", (event) => {
-      if (!this.movable) return;
+      if (!this.movable || this.maximized || this.fullscreen || event.button !== 0 || this.#cancelPointer) return;
+      if (event.composedPath().some((target) => target instanceof HTMLElement && target.matches("button, input, select, textarea, a, [contenteditable]"))) return;
+      event.preventDefault();
+      this.focus({ preventScroll: true });
       startClientX = event.clientX;
       startClientY = event.clientY;
-      start = this.#window.getBoundingClientRect();
+      const bounds = this.getBounds();
+      start = new DOMRect(bounds.x, bounds.y, bounds.width, bounds.height);
       parentRect = this.parentElement.getBoundingClientRect();
+      this.#startPointer(event);
       window.addEventListener("pointermove", this.#dragPointerMove);
       window.addEventListener("pointerup", this.#dragPointerUp);
-      if (this.centered) {
-        this.x = start.x;
-        this.y = start.y;
-        this.centered = false;
-      }
     });
   }
   #setupResizing() {
@@ -657,6 +839,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
     let aspectExtraH;
     let aspectDominantAxis;
     this.#resizePointerMoveAspect = (event) => {
+      if (this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
       const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
       const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
       let newX = start.left;
@@ -690,6 +873,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
       if (dirN || dirS) this.#window.style.top = `${Math.round(newY)}px`;
     };
     this.#resizePointerMove = (event) => {
+      if (this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
       const dx = Math.max(parentRect.left, Math.min(event.clientX, parentRect.right)) - startClientX;
       const dy = Math.max(parentRect.top, Math.min(event.clientY, parentRect.bottom)) - startClientY;
       if (direction.includes("n")) {
@@ -709,23 +893,21 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
         this.#window.style.left = `${Math.round(start.right - w)}px`;
       }
     };
-    this.#resizePointerUp = () => {
-      window.removeEventListener("pointermove", this.#resizePointerMove);
-      window.removeEventListener("pointermove", this.#resizePointerMoveAspect);
-      window.removeEventListener("pointerup", this.#resizePointerUp);
-      this.x = this.#cssPixelToInteger(this.#window.style.left);
-      this.y = this.#cssPixelToInteger(this.#window.style.top);
-      this.width = this.#cssPixelToInteger(this.#window.style.width);
-      this.height = this.#cssPixelToInteger(this.#window.style.height);
+    this.#resizePointerUp = (event) => {
+      if (this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
+      this.#finishPointer(true);
     };
     const handles = this.#shadowRoot.querySelectorAll(".resize-handle");
     for (const handle of handles) {
       handle.addEventListener("pointerdown", (event) => {
-        if (!this.resizable) return;
+        if (!this.resizable || this.minimized || this.maximized || this.fullscreen || event.button !== 0 || this.#cancelPointer) return;
+        event.preventDefault();
+        this.focus({ preventScroll: true });
         direction = handle.dataset.direction;
         startClientX = event.clientX;
         startClientY = event.clientY;
-        start = this.#window.getBoundingClientRect();
+        const bounds = this.getBounds();
+        start = new DOMRect(bounds.x, bounds.y, bounds.width, bounds.height);
         startClient = this.#clientArea.getBoundingClientRect();
         parentRect = this.parentElement.getBoundingClientRect();
         minWidth = this.minWidth;
@@ -735,6 +917,7 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
         aspectRatio = this.aspectRatio;
         aspectExtraW = this.aspectRatioExtraWidth;
         aspectExtraH = this.aspectRatioExtraHeight;
+        this.#startPointer(event);
         if (direction.includes("w") || direction.includes("e")) aspectDominantAxis = "w";
         else aspectDominantAxis = "h";
         if (aspectRatio > 0) {
@@ -743,13 +926,51 @@ var DesktopWindow = class _DesktopWindow extends HTMLElement {
           window.addEventListener("pointermove", this.#resizePointerMove);
         }
         window.addEventListener("pointerup", this.#resizePointerUp);
-        if (this.centered) {
-          this.x = start.x;
-          this.y = start.y;
-          this.centered = false;
-        }
       });
     }
+  }
+  #startPointer(event) {
+    this.#pointerStart = { bounds: this.getNormalBounds(), centered: this.centered };
+    const bounds = this.getBounds();
+    this.centered = false;
+    this.setPosition(bounds.x, bounds.y);
+    this.#pointerId = event.pointerId || void 0;
+    this.#cancelPointer = () => {
+      const start = this.#pointerStart;
+      this.#removePointerListeners();
+      this.setBounds(start.bounds);
+      this.centered = start.centered;
+      this.#window.style.width = start.bounds.width + "px";
+      this.#window.style.height = start.bounds.height + "px";
+      if (!start.centered) {
+        this.#window.style.left = start.bounds.x + "px";
+        this.#window.style.top = start.bounds.y + "px";
+      }
+    };
+    window.addEventListener("pointercancel", this.#onPointerCancel);
+    window.addEventListener("blur", this.#onPointerCancel);
+  }
+  #onPointerCancel = (event) => {
+    if (event instanceof PointerEvent && this.#pointerId !== void 0 && event.pointerId !== this.#pointerId) return;
+    this.#cancelPointer?.();
+  };
+  #finishPointer(resized = false) {
+    const bounds = this.getBounds();
+    this.#removePointerListeners();
+    if (resized) this.setSize(bounds.width, bounds.height);
+    this.setPosition(bounds.x, bounds.y);
+  }
+  #removePointerListeners() {
+    window.removeEventListener("pointermove", this.#dragPointerMove);
+    window.removeEventListener("pointerup", this.#dragPointerUp);
+    window.removeEventListener("pointermove", this.#resizePointerMove);
+    window.removeEventListener("pointermove", this.#resizePointerMoveAspect);
+    window.removeEventListener("pointerup", this.#resizePointerUp);
+    window.removeEventListener("pointercancel", this.#onPointerCancel);
+    window.removeEventListener("blur", this.#onPointerCancel);
+    this.#cancelPointer = void 0;
+    this.#pointerId = void 0;
+    this.#pointerStart = void 0;
   }
 };
 function register({ tag = "desktop-window", shadowMode = "open" } = {}) {
