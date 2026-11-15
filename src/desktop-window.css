@@ -252,6 +252,7 @@
 }
 
 .client-area {
+	min-height: 0;
 	flex-grow: 1;
 	flex-shrink: 1;
 	height: calc(100% - var(--desktop-window-titlebar-height));
