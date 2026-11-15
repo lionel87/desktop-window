@@ -114,6 +114,14 @@ export class DesktopWindow extends HTMLElement {
 
 		//--
 
+		// Commands dispatched on the host also work with a closed shadow root.
+		for (const type of ['minimize', 'maximize', 'restore', 'close', 'request-fullscreen', 'exit-fullscreen', 'move', 'resize-n', 'resize-s', 'resize-e', 'resize-w', 'resize-ne', 'resize-nw', 'resize-se', 'resize-sw']) {
+			this.addEventListener(type, (event) => {
+				if (event.target !== this) return;
+				this.#shadowRoot.dispatchEvent(event instanceof CustomEvent ? new CustomEvent(type, { detail: event.detail }) : new Event(type));
+			});
+		}
+
 		this.#shadowRoot.addEventListener('minimize', (event) => {
 			event.stopPropagation(); // stops composed events to escape
 			const minimizing = new Event('minimizing', { bubbles: true, cancelable: true });
