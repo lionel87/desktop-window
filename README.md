@@ -6,15 +6,15 @@ A lightweight Web Components-based custom element that replicates the look and f
 
 ## NOT READY FOR PRODUCTION
 
-This package is in active development, and not yet reached the point where I can recommend using in production environment:
+This package is in active development.
 
-- Its tested to some degree, but not well tested or battle proven. I'm working on this now.
-- Minor behaviour and API changes are still possible.
+- The behaviour and API are settling, though minor changes may still be needed before v1.0.
+- A few accessibility improvements and a thorough round of testing remain.
 
 ### Roadmap to v1.0
 
-- test cases / unit tests?
-- accessibility
+- accessibility (its halfway there)
+- tests
 
 ## Usage
 
