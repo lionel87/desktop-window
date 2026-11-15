@@ -403,3 +403,11 @@
 @keyframes border-notice {
 	from, to { outline: 2px solid currentColor; outline-offset: -2px; }
 }
+
+@media (forced-colors: active) {
+	.control-btn { background-image: none !important; }
+	.control-btn::before { display: block !important; }
+	.control-btn::before { background-color: ButtonText; forced-color-adjust: none; }
+	.window:focus-within { border-color: Highlight; }
+	.window:focus-visible, .control-btn:focus-visible { outline-color: Highlight; }
+}
